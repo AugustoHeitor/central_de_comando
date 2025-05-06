@@ -1,3 +1,15 @@
-<div>
-    <!-- Well begun is half done. - Aristotle -->
-</div>
+@extends('layouts.template')
+
+@section('title', 'Cadastro')
+
+@section('links')
+  
+@endsection
+
+@section('scripts')
+ 
+@endsection
+
+@section('content')
+
+@endsection
