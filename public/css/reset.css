@@ -6,6 +6,7 @@ li{
     list-style: none;
 }
 
+select,
 input,
 button,
 h1,
@@ -22,15 +23,18 @@ body{
     padding: 0;
 }
 
+select,
 button,
 input{
     border: none;
 }
 
+select,
 input{
     background-color: transparent;
 }
 
+select:focus,
 input:focus{
     border: none;
     outline: none;

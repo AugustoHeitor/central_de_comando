@@ -164,6 +164,10 @@ TEXT ALIGN
 
 .d-flex { display: flex; }
 
+.d-grid {display: grid;}
+
+.g-auto-flow-colum {grid-auto-flow: column; }
+
 .flex-row { flex-direction: row; }
 .flex-column { flex-direction: column; }
 
@@ -260,6 +264,10 @@ Outros
 
 .w-full {
     width: 100%;
+}
+
+.min-h-full{
+    min-height: 100%;
 }
 
 .h-full {

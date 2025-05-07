@@ -11,35 +11,37 @@
 @endsection
 
 @section('content')
-    <main class="d-flex w-full h-full justify-center items-center">
+    <main class="d-grid justify-center items-center">
         <section class="pt-md bg-gradient d-flex flex-column w-full h-full justify-center items-center gap-lg">
-            <div class="d-flex flex-column justify-center items-center gap-sm">
-                <img src="{{ asset('imgs/logo.svg') }}" alt="Logo" class="img-logo animation-pulse">
-                <div class="d-flex flex-column justify-center items-center gap-md">
-                    <h1 class="text-3xl color-light">{{ config('app.name') }}</h1>
-                    <p class="text-base color-light">Sua jornada para uma vida equilibrada</p>
+            <div class="d-flex flex-column justify-center items-center gap-lg">
+                <div class="d-flex flex-column justify-center items-center gap-sm">
+                    <img src="{{ asset('imgs/logo.svg') }}" alt="Logo" class="img-logo animation-pulse">
+                    <div class="d-flex flex-column justify-center items-center gap-md">
+                        <h1 class="text-3xl color-light">{{ config('app.name') }}</h1>
+                        <p class="text-base color-light">Sua jornada para uma vida equilibrada</p>
+                    </div>
                 </div>
+                <ul class="d-flex flex-column justify-start items-start gap-md">
+                    <li class="d-flex justify-start items-center gap-md">
+                        <img src="{{ asset('imgs/circle-check.svg') }}" alt="Check" class="img-circle-check">
+                        <p class="text-base color-light">
+                            Acompanhe seu progresso pessoal
+                        </p>
+                    </li>
+                    <li class="d-flex justify-start items-center gap-md">
+                        <img src="{{ asset('imgs/circle-check.svg') }}" alt="Check" class="img-circle-check">
+                        <p class="text-base color-light">
+                            Melhore seus hábitos diários
+                        </p>
+                    </li>
+                    <li class="d-flex justify-start items-center gap-md">
+                        <img src="{{ asset('imgs/circle-check.svg') }}" alt="Check" class="img-circle-check">
+                        <p class="text-base color-light">
+                            Alcance seu potencial máximo
+                        </p>
+                    </li>
+                </ul>
             </div>
-            <ul class="d-flex flex-column justify-start items-start gap-md">
-                <li class="d-flex justify-start items-center gap-md">
-                    <img src="{{ asset('imgs/circle-check.svg') }}" alt="Check" class="img-circle-check">
-                    <p class="text-base color-light">
-                        Acompanhe seu progresso pessoal
-                    </p>
-                </li>
-                <li class="d-flex justify-start items-center gap-md">
-                    <img src="{{ asset('imgs/circle-check.svg') }}" alt="Check" class="img-circle-check">
-                    <p class="text-base color-light">
-                        Melhore seus hábitos diários
-                    </p>
-                </li>
-                <li class="d-flex justify-start items-center gap-md">
-                    <img src="{{ asset('imgs/circle-check.svg') }}" alt="Check" class="img-circle-check">
-                    <p class="text-base color-light">
-                        Alcance seu potencial máximo
-                    </p>
-                </li>
-            </ul>
         </section>
         <section class="pt-md d-flex flex-column w-full h-full justify-center items-center gap-md">
             <div class="d-flex flex-column w-full w-mx-400 justify-center items-center gap-md">
@@ -64,7 +66,7 @@
                             </div>
                         </div>
                     </div>
-                    <button class="hover-scale w-full d-flex justify-center items-center gap-sm bg-gradient w-full color-light text-sm pt-md radius-sm fw-sb">
+                    <button type="submit" class="hover-scale w-full d-flex justify-center items-center gap-sm bg-gradient w-full color-light text-sm pt-md radius-sm fw-sb">
                         <img src="{{ asset('imgs/right-bracket.svg') }}" alt="Login" class="img-size-20">
                         Acessar minha conta
                     </button>
@@ -72,7 +74,7 @@
                 <div class="d-flex justify-start items-start gap-sm">
                     <p class="color-secondary text-sm">
                         Não tem uma conta?
-                        <a href="#" class="text-sm">Cadastre-se agora</a>
+                        <a href="{{ route('register') }}" class="text-sm">Cadastre-se agora</a>
                     </p>
                 </div>
                 <div class="w-full d-flex justify-start items-start">
