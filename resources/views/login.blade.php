@@ -15,7 +15,7 @@
         <section class="pt-md bg-gradient d-flex flex-column w-full h-full justify-center items-center gap-lg">
             <div class="d-flex flex-column justify-center items-center gap-lg">
                 <div class="d-flex flex-column justify-center items-center gap-sm">
-                    <img src="{{ asset('imgs/logo.svg') }}" alt="Logo" class="img-logo animation-pulse">
+                    <img src="{{ asset('imgs/logo.svg') }}" alt="Logo" class="img-size-60 animation-pulse">
                     <div class="d-flex flex-column justify-center items-center gap-md">
                         <h1 class="text-3xl color-light">{{ config('app.name') }}</h1>
                         <p class="text-base color-light">Sua jornada para uma vida equilibrada</p>
@@ -23,19 +23,19 @@
                 </div>
                 <ul class="d-flex flex-column justify-start items-start gap-md">
                     <li class="d-flex justify-start items-center gap-md">
-                        <img src="{{ asset('imgs/circle-check.svg') }}" alt="Check" class="img-circle-check">
+                        <img src="{{ asset('imgs/circle-check.svg') }}" alt="Check" class="img-size-15">
                         <p class="text-base color-light">
                             Acompanhe seu progresso pessoal
                         </p>
                     </li>
                     <li class="d-flex justify-start items-center gap-md">
-                        <img src="{{ asset('imgs/circle-check.svg') }}" alt="Check" class="img-circle-check">
+                        <img src="{{ asset('imgs/circle-check.svg') }}" alt="Check" class="img-size-15">
                         <p class="text-base color-light">
                             Melhore seus hábitos diários
                         </p>
                     </li>
                     <li class="d-flex justify-start items-center gap-md">
-                        <img src="{{ asset('imgs/circle-check.svg') }}" alt="Check" class="img-circle-check">
+                        <img src="{{ asset('imgs/circle-check.svg') }}" alt="Check" class="img-size-15">
                         <p class="text-base color-light">
                             Alcance seu potencial máximo
                         </p>

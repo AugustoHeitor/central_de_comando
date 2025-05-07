@@ -3,15 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ config('app.name') }} - @yield('title')</title>
+    <title>{{ config('app.name') }} | @yield('title')</title>
     <link rel="icon" href="{{ asset('imgs/logo.svg') }}" type="image/svg+xml">
     <link rel="stylesheet" href="{{asset('css/globalStyles.css')}}">
     <link rel="stylesheet" href="{{asset('css/reset.css')}}">
     <link rel="stylesheet" href="{{asset('css/layouts/template.css')}}">
+
+    @if (true)
+        <link rel="stylesheet" href="{{asset('css/layouts/sideMenu.css')}}">
+    @endif
+
     @yield('links')
     @yield('scripts')
 </head>
-<body class="w-full h-full">
+<body class="w-full h-full {{ true ? 'd-flex justify-start items-start' : '' }}">
+
+    @if (true)
+        @include('layouts.sideMenu')
+    @endif
+
     @yield('content') 
+
 </body>
 </html>

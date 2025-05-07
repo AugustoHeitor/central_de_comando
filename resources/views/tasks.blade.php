@@ -11,7 +11,7 @@
 @endsection
 
 @section('content')
-    <main>
-        
+    <main class="w-full h-full">
+        @include('layouts.pageHeader', ['title' => 'Minhas Tarefas'])
     </main>
 @endsection
