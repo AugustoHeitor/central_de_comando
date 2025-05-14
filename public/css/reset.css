@@ -1,11 +1,15 @@
 *{
     box-sizing: border-box;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+    scroll-behavior: smooth;
 }
 
 li{
     list-style: none;
 }
 
+textarea,
 select,
 input,
 button,
@@ -23,17 +27,21 @@ body{
     padding: 0;
 }
 
+textarea,
 select,
 button,
 input{
     border: none;
 }
 
+textarea,
+button,
 select,
 input{
     background-color: transparent;
 }
 
+textarea:focus,
 select:focus,
 input:focus{
     border: none;
@@ -43,3 +51,22 @@ input:focus{
 button{
     cursor: pointer;
 }
+
+textarea{
+    resize: none;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+

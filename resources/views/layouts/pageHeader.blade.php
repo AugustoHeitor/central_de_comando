@@ -1,5 +1,11 @@
-<header class="w-full bd-bottom pt-md d-flex justify-start items-center">
-    <div class="h-40 d-flex justify-start items-center">
-        <h1 class="fw-m text-2xl color-third">{{$title}}</h1>
+<div id="page-header" class="min-max-65 bg-light radius-lg w-full bd-primary pt-md d-flex justify-between items-center w-mx-1200">
+    <div class="overflow-hidden d-flex justify-start items-center gap-sm">
+        @isset($img)
+            <img src="{{ asset($img) }}" alt="{{$title}}" class="img-size-20">
+        @endisset
+        <h1 class="text-2xl fw-sb color-third">{{$title}}</h1>
     </div>
-</header>
+    @isset($content)
+        {!! $content !!}
+    @endisset
+</div>
