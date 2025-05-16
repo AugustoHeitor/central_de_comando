@@ -1,6 +1,6 @@
 <div class="screen-modal-mobile">
     <div class="bd-primary w-full d-flex align-end justify-start flex-column gap-md bg-light radius-md-mobile">
-        <section class="pt-md bd-bottom pt-bottom-md w-full d-flex align-center justify-between gap-md">
+        <section class="pt-md bd-bottom pt-bottom-md w-full d-flex items-center justify-between gap-md">
             <div class="d-flex justify-start items-center gap-sm">
                 <img src="{{ asset('imgs/filter.svg') }}" alt="Filtro" class="img-size-20">
                 <h2 class="color-third text-xl fw-m">Filtrar Tarefas</h2>

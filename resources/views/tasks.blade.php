@@ -153,13 +153,13 @@
             </ul>
         </div>
         <div class="pt-md flex-mobile justify-center items-end gap-md flex-column fx-right fx-bottom fixed">
-            <button class="bd-primary bg-light h-50 w-50 radius-lg pt-sm d-flex align-center justify-center">
+            <button class="bd-primary bg-light h-50 w-50 radius-lg pt-sm d-flex items-center justify-center">
                 <img src="{{ asset('imgs/filter.svg') }}" alt="Filtros" class="img-size-20">
             </button>
-            <button class="bd-primary bg-light h-50 w-50 radius-lg pt-sm d-flex align-center justify-center">
+            <button class="bd-primary bg-light h-50 w-50 radius-lg pt-sm d-flex items-center justify-center">
                 <img src="{{ asset('imgs/sort.svg') }}" alt="Ordem" class="img-size-15">
             </button>
-            <button class="bd-primary bg-light h-50 w-50 radius-lg pt-sm d-flex align-center justify-center">
+            <button class="bd-primary bg-light h-50 w-50 radius-lg pt-sm d-flex items-center justify-center">
                 <img src="{{ asset('imgs/tag-dark.svg') }}" alt="Categorias" class="img-size-20">
             </button>
         </div> 

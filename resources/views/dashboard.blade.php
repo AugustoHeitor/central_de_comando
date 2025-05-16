@@ -72,22 +72,22 @@
                 <h3 class="text-base fw-sb color-dark">Tarefas</h3>
             </div>
             <div class="d-flex justify-start align-start gap-md flex-wrap">
-                <div class="w-full w-mx-389 pt-md d-flex justify-between align-center gap-md radius-lg bd-primary">
-                    <div class="w-full d-flex justify-start align-center gap-sm">
+                <div class="w-full w-mx-389 pt-md d-flex justify-between items-center gap-md radius-lg bd-primary">
+                    <div class="w-full d-flex justify-start items-center gap-sm">
                         <img src="{{ asset('imgs/circle.svg') }}" alt="A Fazer" class="img-size-15">
                         <h4 class="text-base fw-sb color-dark">A Fazer</h4>
                     </div>
                     <span class="text-xl fw-b color-dark">30</span>
                 </div>
-                <div class="w-full w-mx-389 pt-md d-flex justify-between align-center gap-md radius-lg bd-primary">
-                    <div class="w-full d-flex justify-start align-center gap-sm">
+                <div class="w-full w-mx-389 pt-md d-flex justify-between items-center gap-md radius-lg bd-primary">
+                    <div class="w-full d-flex justify-start items-center gap-sm">
                         <img src="{{ asset('imgs/spinner.svg') }}" alt="Em andamento" class="img-size-15">
                         <h4 class="text-base fw-sb color-dark">Em Andamento</h4>
                     </div>
                     <span class="text-xl fw-b color-dark">10</span>
                 </div>
-                <div class="w-full w-mx-389 pt-md d-flex justify-between align-center gap-md radius-lg bd-primary">
-                    <div class="w-full d-flex justify-start align-center gap-sm">
+                <div class="w-full w-mx-389 pt-md d-flex justify-between items-center gap-md radius-lg bd-primary">
+                    <div class="w-full d-flex justify-start items-center gap-sm">
                         <img src="{{ asset('imgs/circle-check-dark.svg') }}" alt="Finalizado" class="img-size-15">
                         <h4 class="text-base fw-sb color-dark">Finalizadas</h4>
                     </div>
@@ -103,21 +103,21 @@
             </div>
             <div class="d-flex justify-start align-start gap-md flex-wrap">
                 <div class="w-full w-mx-389 pt-md d-flex flex-column justify-start align-start gap-md radius-lg bd-primary">
-                    <div class="w-full d-flex justify-start align-center gap-sm">
+                    <div class="w-full d-flex justify-start items-center gap-sm">
                         <img src="{{ asset('imgs/piggy-bank-dark.svg') }}" alt="Entrada" class="img-size-15">
                         <h4 class="text-base fw-sb color-dark">Total de Entrada</h4>
                     </div>
                     <span class="text-xl fw-b color-dark">12.450,00</span>
                 </div>
                 <div class="w-full w-mx-389 pt-md d-flex flex-column justify-start align-start gap-md radius-lg bd-primary">
-                    <div class="w-full d-flex justify-start align-center gap-sm">
+                    <div class="w-full d-flex justify-start items-center gap-sm">
                         <img src="{{ asset('imgs/money-bill-wave-dark.svg') }}" alt="Saída" class="img-size-15">
                         <h4 class="text-base fw-sb color-dark">Total de Saída</h4>
                     </div>
                     <span class="text-xl fw-b color-dark">8.720,00</span>
                 </div>
                 <div class="w-full w-mx-389 pt-md d-flex flex-column justify-start align-start gap-md radius-lg bd-primary">
-                    <div class="w-full d-flex justify-start align-center gap-sm">
+                    <div class="w-full d-flex justify-start items-center gap-sm">
                         <img src="{{ asset('imgs/wallet-dark.svg') }}" alt="Todas" class="img-size-15">
                         <h4 class="text-base fw-sb color-dark">Saldo</h4>
                     </div>

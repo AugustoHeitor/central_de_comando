@@ -1,11 +1,11 @@
 <div class="screen-modal">
     <div class="bd-primary w-full h-full d-flex align-start justify-between flex-column gap-md bg-light radius-lg w-mx-1000">
-        <section class="pt-md bd-bottom pt-bottom-md w-full d-flex align-center justify-between gap-md">
+        <section class="pt-md bd-bottom pt-bottom-md w-full d-flex items-center justify-between gap-md">
             <div class="d-flex justify-start items-center gap-sm">
                 <img src="{{ asset('imgs/list-check-dark.svg') }}" alt="Tarefas" class="img-size-20">
                 <h2 class="color-third text-xl fw-m">Criar Tarefa</h2>
             </div>
-            <button class="d-flex align-center justify-center soft-shake">
+            <button class="d-flex items-center justify-center soft-shake">
                 <img src="{{ asset('imgs/xmark-dark.svg') }}" alt="Fechar" class="img-size-15">
             </button>
         </section>
@@ -16,7 +16,7 @@
                         <img src="{{ asset('imgs/heading-dark.svg') }}" alt="Título" class="img-size-15">
                         <label class="color-dark text-base fw-m" for="title">Título</label>
                     </div>
-                    <div class="d-flex align-center justify-between w-full bg-light pt-input-primary bd-primary radius-lg">
+                    <div class="d-flex items-center justify-between w-full bg-light pt-input-primary bd-primary radius-lg">
                         <input type="text" name="title" class="text-base color-secondary w-full">
                     </div>
                 </div>
@@ -96,7 +96,7 @@
             </div>
         </section>
         <section class="pt-md bd-top pt-top-md w-full d-flex align-start justify-end gap-md">
-            <button type="button" class="hover-scale w-full d-flex justify-center items-center gap-sm w-full color-secondary text-sm pt-btn-primary radius-lg fw-m bg-light bd-primary w-mx-280">Cancelar</button>
+            <button type="button" class="hover-scale w-full d-flex justify-center items-center gap-sm w-full color-secondary text-sm pt-btn-primary radius-lg fw-m bg-light bd-primary w-mx-280">Deletar</button>
             <button type="submit" class="hover-scale w-full d-flex justify-center items-center gap-sm w-full color-light text-sm pt-btn-primary radius-lg fw-m bg-btn-save w-mx-280">
                 <img src="{{ asset('imgs/save.svg') }}" alt="Salvar" class="img-size-15">
                 Salvar

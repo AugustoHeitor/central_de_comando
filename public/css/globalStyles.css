@@ -532,6 +532,14 @@ Outros
     width: 140px;
 }
 
+.w-130{
+    height: 130px;
+}
+
+.h-130{
+    width: 130px;
+}
+
 .txt-2-lines {
      max-width: 100%;
     display: -webkit-box;
@@ -619,8 +627,12 @@ Outros
     height: 60%;
 }
 
-.h-100-vh{
+.h-100vh{
     height: 100vh;
+}
+
+.h-80p{
+    height: 80%;
 }
 
 .position-fixed{
@@ -658,3 +670,8 @@ Outros
 .txt-align-end{
     text-align: end;
 }
+
+.img-size-100p{
+    width: 100%;
+}
+

@@ -25,7 +25,7 @@
     </section>
     <section class="w-full d-flex justify-between items-center gap-md pt-md bd-top">
         <div class="d-flex justify-start items-center gap-sm">
-            <img src="{{ asset('imgs/eu.png') }}" alt="Perfil" class="img-size-40 radius-50">
+            <img src="{{ asset('imgs/eu.png') }}" alt="Perfil" class="img-size-40 radius-50p">
             <div class="w-full d-flex flex-column justify-start items-start gap-sm">
                 <span class="text-sm fw-sb color-secondary">Augusto Heitor</span>
                 <span class="text-sm color-secondary">auuheitor@gmail.com</span>
