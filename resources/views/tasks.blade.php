@@ -128,7 +128,7 @@
             <ul class="w-full d-flex justify-between items-center gap-md">
                 <li class="w-full">
                     <button class="w-full marked-primary pt-sm radius-lg color-third text-sm fw-sb d-flex justify-center items-center gap-sm">
-                        <img src="{{ asset('imgs/all-tasks.svg') }}" alt="Todas" class="img-size-15">
+                        <img src="{{ asset('imgs/list-check-dark.svg') }}" alt="Todas" class="img-size-15">
                         Todas
                     </button>
                 </li>

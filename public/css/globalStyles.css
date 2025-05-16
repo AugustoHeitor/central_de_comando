@@ -63,6 +63,12 @@
     --color-btn-delete: #ff0000ba;
     --color-btn-create: #007cfffa;
 
+    --bg-income: rgba(0, 128, 0, 0.1);  
+    --bg-expense: rgba(255, 0, 0, 0.1);  
+
+    --color-income: #008000;   
+    --color-expense: #ff0000;  
+
     /* Radius */
     --radius-sm: 4px;
     --radius-md: 8px;
@@ -241,6 +247,22 @@ TEXT ALIGN
     background-color: var(--color-btn-create);
 }
 
+.bg-income {
+  background-color: var(--bg-income);
+}
+
+.bg-expense {
+  background-color: var(--bg-expense);
+}
+
+.color-income {
+  color: var(--color-income);
+}
+
+.color-expense {
+  color: var(--color-expense);
+}
+
 /*
 
 🎯 BORDER RADIUS
@@ -250,7 +272,7 @@ TEXT ALIGN
 .radius-sm { border-radius: var(--radius-sm); }
 .radius-md { border-radius: var(--radius-md); }
 .radius-lg { border-radius: var(--radius-lg); }
-.radius-50 { border-radius: 50%; }
+.radius-50p { border-radius: 50%; }
   
 /*
 
@@ -631,4 +653,8 @@ Outros
 
 .radius-md-mobile{
     border-radius: var(--space-lg) var(--space-lg) 0px 0px;
+}
+
+.txt-align-end{
+    text-align: end;
 }

@@ -20,6 +20,7 @@ body {
 @media screen and (max-width: 800px) {
     .body-container{
       flex-direction: column;
+      justify-content: start;
     }
 }
 
