@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{{asset('css/reset.css')}}">
     <link rel="stylesheet" href="{{asset('css/layouts/template.css')}}">
 
-    @if (true)
+    @if (Auth::check())
         <link rel="stylesheet" href="{{asset('css/layouts/sideMenu.css')}}">
         <link rel="stylesheet" href="{{asset('css/layouts/menuMobile.css')}}">
     @endif
@@ -17,10 +17,10 @@
     @yield('links')
     @yield('scripts')
 </head>
-<body class="w-full h-full {{ true ? 'd-flex' : '' }}">
+<body class="w-full h-full {{ Auth::check() ? 'd-flex' : '' }}">
 
-    <div class="{{ true ? 'body-container' : '' }}">
-        @if (true)
+    <div class="{{ Auth::check() ? 'body-container' : 'w-full h-full' }}">
+        @if (Auth::check())
             @include('layouts.sideMenu')
             @include('layouts.menuMobile')
         @endif

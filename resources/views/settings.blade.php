@@ -36,14 +36,13 @@
         ])
 
         <form action="#" class="w-full d-flex flex-column align-start justify-between gap-md h-full overflow-hidden">
-    
             <div class="w-full d-flex flex-column align-start justify-start gap-md h-full scroll-auto">
                 <div class="w-full pt-md radius-lg bd-primary bg-light d-flex flex-column items-center justify-center gap-lg">
                     <h3 class="color-dark text-base fw-m">Foto do Perfil</h3>
                     <div class="w-full d-flex flex-column items-center justify-center gap-lg">
                         <div class="overflow-hidden radius-50p d-flex items-center justify-center bg-light bd-primary w-130 h-130">
                             <label for="upload-photo" class="pointer">
-                                <img src="{{ asset('imgs/eu.png') }}" alt="Perfil" class="img-size-100p" onerror="this.src='{{ asset('imgs/image-dark.svg') }}'">
+                                <img src="{{ asset(Auth::user()->photo) }}" alt="Perfil" class="img-size-100p" onerror="this.src='{{ asset('imgs/photo-default.png') }}';">
                             </label>
                             <input type="file" id="upload-photo" class="none">
                         </div>

@@ -675,3 +675,11 @@ Outros
     width: 100%;
 }
 
+.img-cover{
+    object-fit: cover;
+}
+
+#toast-container > .toast-error,
+#toast-container > .toast-success {
+    border-radius: var(--radius-lg);
+}

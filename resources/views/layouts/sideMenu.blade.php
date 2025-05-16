@@ -25,13 +25,18 @@
     </section>
     <section class="w-full d-flex justify-between items-center gap-md pt-md bd-top">
         <div class="d-flex justify-start items-center gap-sm">
-            <img src="{{ asset('imgs/eu.png') }}" alt="Perfil" class="img-size-40 radius-50p">
+            <img 
+                src="{{ asset(Auth::user()->photo) }}" 
+                alt="Perfil" 
+                class="img-size-40 radius-50p img-cover"
+                onerror="this.src='{{ asset('imgs/photo-default.png') }}';"
+            />
             <div class="w-full d-flex flex-column justify-start items-start gap-sm">
-                <span class="text-sm fw-sb color-secondary">Augusto Heitor</span>
-                <span class="text-sm color-secondary">auuheitor@gmail.com</span>
+                <span class="text-sm fw-sb color-secondary">{{ Auth::user()->nickname }}</span>
+                <span class="text-sm color-secondary">{{ Auth::user()->email }}</span>
             </div>
         </div>
-        <a href="#">
+        <a href="{{ route('logout') }}">
             <img src="{{ asset('imgs/right-from-bracket.svg') }}" alt="Logout" class="img-size-20 soft-shake">
         </a>
     </section>

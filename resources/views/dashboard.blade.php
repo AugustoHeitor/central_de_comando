@@ -57,7 +57,7 @@
             ';
 
             $imgPageHeader = 'imgs/chart-dark.svg';
-            
+     
         @endphp
 
         @include('layouts.pageHeader', [
