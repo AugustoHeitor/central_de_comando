@@ -27,16 +27,21 @@
 }
 
 @media screen and (max-width: 800px) {
-    .screen-modal{
+    body > .screen-modal{
         padding: 0px;
-    }
-
-    .screen-modal>div{
-        border-radius: 0px;
     }
 
     .cnt-input-w{
         max-width: 100%;
+    }
+
+    .screen-modal{
+        align-items: end;
+    }
+
+    body > .screen-modal > form{
+        border-radius: 0px;
+        max-width: none;
     }
 
 }

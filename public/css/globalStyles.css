@@ -602,6 +602,12 @@ Outros
     max-height: 65px;
 }
 
+.h-auto{
+    height: 'auto';
+}              
+.h-mx-none{
+    max-height: none;
+}
 
 .h-100-mx-vh{
     max-height: 100vh;

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use App\Http\Middleware\AuthMiddleware;
 use Illuminate\Support\Facades\Auth;
 
@@ -37,6 +38,7 @@ Route::middleware('auth')->group(function () {
     })->name('settings');
 
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::post('/user/update', [UserController::class, 'update']);
 });
 
 Route::post('/login', [AuthController::class, 'login']);

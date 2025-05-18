@@ -11,10 +11,6 @@
   
 @endsection
 
-@section('modals')
-
-@endsection
-
 @section('content')
 
     <main class="h-full w-full d-flex justify-start items-center flex-column gap-md w-mx-1200">

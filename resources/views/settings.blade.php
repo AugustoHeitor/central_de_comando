@@ -3,16 +3,16 @@
 @section('title', 'Financeiro')
 
 @section('links')
-    <link rel="stylesheet" href="{{asset('css/financial.css')}}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="{{asset('css/settings.css')}}">
     <link rel="stylesheet" href="{{asset('css/layouts/modal.css')}}">
 @endsection
 
 @section('scripts')
-  
-@endsection
-
-@section('modals')
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script type="module" defer src="{{asset('js/settings.js')}}"></script>
 @endsection
 
 @section('content')
@@ -35,16 +35,17 @@
             'content' => $content
         ])
 
-        <form action="#" class="w-full d-flex flex-column align-start justify-between gap-md h-full overflow-hidden">
-            <div class="w-full d-flex flex-column align-start justify-start gap-md h-full scroll-auto">
+        <form action="#" class="w-full d-flex flex-column align-start justify-between gap-md h-full">
+            @csrf
+            <div class="w-full d-flex flex-column align-start justify-start gap-md">
                 <div class="w-full pt-md radius-lg bd-primary bg-light d-flex flex-column items-center justify-center gap-lg">
-                    <h3 class="color-dark text-base fw-m">Foto do Perfil</h3>
-                    <div class="w-full d-flex flex-column items-center justify-center gap-lg">
+                    <h3 class="color-dark text-xl fw-m">Foto do Perfil</h3>
+                    <div class="w-full d-flex flex-column items-center justify-center gap-md">
                         <div class="overflow-hidden radius-50p d-flex items-center justify-center bg-light bd-primary w-130 h-130">
                             <label for="upload-photo" class="pointer">
                                 <img src="{{ asset(Auth::user()->photo) }}" alt="Perfil" class="img-size-100p" onerror="this.src='{{ asset('imgs/photo-default.png') }}';">
                             </label>
-                            <input type="file" id="upload-photo" class="none">
+                            <input type="file" name="photo" id="upload-photo" class="none">
                         </div>
                         <button type="button" class="w-full d-flex justify-center items-center gap-sm color-light text-sm pt-btn-primary radius-lg fw-m bd-primary w-mx-280 bg-btn-delete">
                             <img src="{{ asset('imgs/trash-light.svg') }}" alt="Deletar" class="img-size-15">
@@ -54,81 +55,53 @@
                 </div>
 
                 <div class="w-full pt-md radius-lg bd-primary bg-light d-flex flex-column items-start justify-start gap-lg">
-                    <h3 class="color-dark text-base fw-m">Informações Pessoais</h3>
-                    <div class="w-full d-flex flex-column items-start justify-start gap-lg">
-                        <div class="w-full d-flex flex-column justify-start items-start gap-sm">
-                            <div class="d-flex justify-start items-center gap-sm">
-                                <img src="{{ asset('imgs/user-dark.svg') }}" alt="full-name" class="img-size-15">
-                                <label class="color-dark text-base fw-m" for="full-name">Nome Completo</label>
+                    <h3 class="color-dark text-xl fw-m">Informações Pessoais</h3>
+                    <div class="w-full d-flex items-start justify-start gap-lg">
+                        <div class="w-full d-flex flex-column items-start justify-start gap-lg w-mx-400">
+                            <div class="w-full d-flex flex-column justify-start items-start gap-sm">
+                                <div class="d-flex justify-start items-center gap-sm">
+                                    <img src="{{ asset('imgs/user-dark.svg') }}" alt="full-name" class="img-size-15">
+                                    <label class="color-dark text-base fw-m" for="full-name">Nome Completo</label>
+                                </div>
+                                <div class="d-flex items-center justify-between w-full  bg-light pt-input-primary bd-primary radius-lg">
+                                    <input value="{{Auth::user()->full_name}}" type="text" name="full-name" class="text-base color-secondary w-full">
+                                </div>
                             </div>
-                            <div class="d-flex items-center justify-between w-full w-mx-400 bg-light pt-input-primary bd-primary radius-lg">
-                                <input type="text" name="full-name" class="text-base color-secondary w-full">
-                            </div>
-                        </div>
-                        <div class="w-full d-flex flex-column justify-start items-start gap-sm">
-                            <div class="d-flex justify-start items-center gap-sm">
-                                <img src="{{ asset('imgs/nickname-dark.svg') }}" alt="nickname" class="img-size-15">
-                                <label class="color-dark text-base fw-m" for="nickname">Apelido</label>
-                            </div>
-                            <div class="d-flex items-center justify-between w-full w-mx-400 bg-light pt-input-primary bd-primary radius-lg">
-                                <input type="text" name="nickname" class="text-base color-secondary w-full">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="w-full pt-md radius-lg bd-primary bg-light d-flex flex-column items-start justify-start gap-lg">
-                    <h3 class="color-dark text-base fw-m">Endereço de E-mail</h3>
-                    <div class="w-full d-flex flex-column items-start justify-start gap-lg">
-                        <div class="w-full d-flex flex-column justify-start items-start gap-sm">
-                            <div class="d-flex justify-start items-center gap-sm">
-                                <img src="{{ asset('imgs/email-dark.svg') }}" alt="Email" class="img-size-15">
-                                <label class="color-dark text-base fw-m" for="email">E-mail</label>
-                            </div>
-                            <div class="d-flex items-center justify-between w-full w-mx-400 bg-light pt-input-primary bd-primary radius-lg">
-                                <input type="email" name="email" class="text-base color-secondary w-full">
+                            <div class="w-full d-flex flex-column justify-start items-start gap-sm">
+                                <div class="d-flex justify-start items-center gap-sm">
+                                    <img src="{{ asset('imgs/nickname-dark.svg') }}" alt="nickname" class="img-size-15">
+                                    <label class="color-dark text-base fw-m" for="nickname">Apelido</label>
+                                </div>
+                                <div class="d-flex items-center justify-between w-full  bg-light pt-input-primary bd-primary radius-lg">
+                                    <input value="{{Auth::user()->nickname }}" type="text" name="nickname" class="text-base color-secondary w-full">
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <div class="w-full pt-md radius-lg bd-primary bg-light d-flex flex-column items-start justify-start gap-lg">
-                    <h3 class="color-dark text-base fw-m">Alteração de Senha</h3>
-                    <div class="w-full d-flex flex-column items-start justify-start gap-lg">
-                        <div class="w-full d-flex flex-column justify-start items-start gap-sm">
-                            <div class="d-flex justify-start items-center gap-sm">
-                                <img src="{{ asset('imgs/lock-dark.svg') }}" alt="Senha" class="img-size-15">
-                                <label class="color-dark text-base fw-m" for="current-password">Senha Atual</label>
+                        <div class="w-full d-flex flex-column items-start justify-start gap-lg w-mx-400">
+                            <div class="w-full d-flex flex-column justify-start items-start gap-sm">
+                                <div class="d-flex justify-start items-center gap-sm">
+                                    <img src="{{ asset('imgs/email-dark.svg') }}" alt="Email" class="img-size-15">
+                                    <label class="color-dark text-base fw-m" for="email">E-mail</label>
+                                </div>
+                                <div class="d-flex items-center justify-between w-full  bg-light pt-input-primary bd-primary radius-lg">
+                                    <input value="{{Auth::user()->email}}" disabled type="email" name="email" class="text-base color-secondary w-full">
+                                </div>
                             </div>
-                            <div class="d-flex items-center justify-between w-full w-mx-400 bg-light pt-input-primary bd-primary radius-lg">
-                                <input type="password" id="current-password" class="text-base color-secondary w-full">
-                            </div>
-                        </div>
-
-                        <div class="w-full d-flex flex-column justify-start items-start gap-sm">
-                            <div class="d-flex justify-start items-center gap-sm">
-                                <img src="{{ asset('imgs/lock-dark.svg') }}" alt="Senha" class="img-size-15">
-                                <label class="color-dark text-base fw-m" for="new-password">Nova Senha</label>
-                            </div>
-                            <div class="d-flex items-center justify-between w-full w-mx-400 bg-light pt-input-primary bd-primary radius-lg">
-                                <input type="password" id="new-password" class="text-base color-secondary w-full">
-                            </div>
-                        </div>
-
-                        <div class="w-full d-flex flex-column justify-start items-start gap-sm">
-                            <div class="d-flex justify-start items-center gap-sm">
-                                <img src="{{ asset('imgs/lock-dark.svg') }}" alt="Senha" class="img-size-15">
-                                <label class="color-dark text-base fw-m" for="confirm-password">Confirmar Nova Senha</label>
-                            </div>
-                            <div class="d-flex items-center justify-between w-full w-mx-400 bg-light pt-input-primary bd-primary radius-lg">
-                                <input type="password" id="confirm-password" class="text-base color-secondary w-full">
+                            <div class="w-full d-flex flex-column justify-start items-start gap-sm">
+                                <div class="d-flex justify-start items-center gap-sm">
+                                    <img src="{{ asset('imgs/lock-dark.svg') }}" alt="Senha" class="img-size-15">
+                                    <label class="color-dark text-base fw-m" for="new-password">Nova Senha</label>
+                                </div>
+                                <div class="d-flex items-center justify-between w-full  bg-light pt-input-primary bd-primary radius-lg">
+                                    <input type="password" name="new-password" class="text-base color-secondary w-full">
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="w-ful d-flex items-end justify-end">
+            <div class="w-full d-flex items-end justify-end">
                 <button type="submit" class="hover-scale w-full d-flex justify-center items-center gap-sm w-full color-light text-sm pt-btn-primary radius-lg fw-m bg-btn-save w-mx-280">
                     <img src="{{ asset('imgs/save.svg') }}" alt="Salvar" class="img-size-15">
                     Salvar
@@ -139,7 +112,3 @@
     </main>
 @endsection
 
-<script type="module"> 
-
-
-</script>
