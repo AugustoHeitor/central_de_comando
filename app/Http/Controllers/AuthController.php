@@ -10,39 +10,61 @@ class AuthController extends Controller
 {
     public function login(LoginRequest $request) 
     {
-        $credentials = $request->only('email', 'password');
+        try{
 
-        if (Auth::attempt($credentials)) {
-                $request->session()->regenerate();
+            $credentials = $request->only('email', 'password');
 
-                $user = Auth::user();
+            if (Auth::attempt($credentials)) {
+                    $request->session()->regenerate();
 
-                $token = $user->createToken('login-token')->plainTextToken;
+                    $user = Auth::user();
 
-                $request->session()->put('auth_token', $token);
+                    $token = $user->createToken('login-token')->plainTextToken;
 
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Login realizado com sucesso!',
-                    'data' => [
-                        'redirect_url' => url('/dashboard')
-                    ], 
-                ], 200);
+                    $request->session()->put('auth_token', $token);
+
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => 'Login realizado com sucesso!',
+                        'data' => [
+                            'redirect_url' => url('/dashboard')
+                        ], 
+                    ], 200);
+            }
+    
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Erro ao fazer login',
+                'data' => [], 
+            ], 401);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+                'data' => [], 
+            ], 500);
         }
- 
-        return response()->json([
-            'status' => 'error',
-            'message' => 'Erro ao fazer login',
-            'data' => [], 
-        ], 401);
     }
 
     public function logout(Request $request)
     {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        try{
 
-        return redirect('/login');
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return redirect('/login');
+        
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+                'data' => [], 
+            ], 500);
+            
+        }
     }
 }

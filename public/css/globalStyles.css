@@ -69,6 +69,10 @@
     --color-income: #008000;   
     --color-expense: #ff0000;  
 
+    --color-warning: #cc0000;  
+
+    --color-marked-order: rgba(255, 166, 0, 0.57);
+
     /* Radius */
     --radius-sm: 4px;
     --radius-md: 8px;
@@ -261,6 +265,10 @@ TEXT ALIGN
 
 .color-expense {
   color: var(--color-expense);
+}
+
+.color-warning{
+    color: var(--color-warning);
 }
 
 /*
@@ -476,6 +484,10 @@ Outros
     max-width: 280px;
 }
 
+.w-mx-200{
+ max-width: 200px;
+}
+
 .w-full {
     width: 100%;
 }
@@ -486,6 +498,10 @@ Outros
 
 .h-full {
     height: 100%;
+}
+
+.h-mx-full {
+    max-height: 200px;
 }
 
 .txt-decoration-none{
@@ -532,6 +548,14 @@ Outros
     width: 140px;
 }
 
+.w-150{
+    width: 150px;
+}
+
+.w-160{
+    width: 160px;
+}
+
 .w-130{
     height: 130px;
 }
@@ -569,9 +593,17 @@ Outros
     display: none;
 }
 
+.flex-direction-mobile{
+    flex-direction: row;
+}
+
 @media screen and (max-width: 800px) {
     .flex-desktop{
       display: none;
+    }
+
+    .flex-direction-mobile{
+        flex-direction: column;
     }
     
     .flex-mobile{
@@ -604,7 +636,12 @@ Outros
 
 .h-auto{
     height: 'auto';
-}              
+}  
+
+.w-auto{
+    width: 'auto';
+} 
+
 .h-mx-none{
     max-height: none;
 }
@@ -688,4 +725,20 @@ Outros
 #toast-container > .toast-error,
 #toast-container > .toast-success {
     border-radius: var(--radius-lg);
+}
+
+.flex-grow{
+    flex-grow: 1;
+}
+
+.flex-shrink{
+    flex-shrink: 0;
+}
+
+.marked-order{
+    background-color: var(--color-marked-order);
+}
+
+.text-align-start{
+    text-align: start;
 }

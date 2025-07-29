@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @yield('metas')
+    
     <title>{{ config('app.name') }} | @yield('title')</title>
     <link rel="icon" href="{{ asset('imgs/satellite-solid.svg') }}" type="image/svg+xml">
     <link rel="stylesheet" href="{{asset('css/globalStyles.css')}}">

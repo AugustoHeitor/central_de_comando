@@ -126,17 +126,3 @@
 
 @endsection
 
-<script type="module"> 
-
-    import { addScrollY, openDropdown } from '{{ asset('js/utils.js') }}';
-
-    window.addEventListener('DOMContentLoaded', () => {
-        addScrollY('#task-section');
-    });
-
-    window.addEventListener('resize', () => {
-        addScrollY('#task-section');
-    });
-
-    window.openDropdown = openDropdown;
-</script>

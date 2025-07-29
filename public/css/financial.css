@@ -1,6 +1,12 @@
-
+.w-mx-200-mobile{
+    max-width: 200px;
+}
 
 @media screen and (max-width: 800px) {
+
+    .w-mx-200-mobile{
+        max-width: 100%;
+    }
 
     #page-header>div:nth-child(2)>div:nth-child(1){
         display: none;

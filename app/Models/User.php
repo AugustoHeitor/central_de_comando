@@ -23,4 +23,9 @@ class User extends Authenticatable
         'password',
     ];
 
+    public function taskCategories()
+    {
+        return $this->hasMany(TaskCategory::class);
+    }
+
 }

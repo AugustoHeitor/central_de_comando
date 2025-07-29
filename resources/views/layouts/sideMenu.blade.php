@@ -1,4 +1,4 @@
-<aside class="bg-light bd-primary bd-primary h-full w-full w-mx-280 flex-desktop flex-column justify-start items-start radius-lg overflow-hidden">
+<aside id="side-menu-desktop" class="bg-light bd-primary bd-primary h-full w-full w-mx-280 flex-desktop flex-column justify-start items-start radius-lg overflow-hidden">
     <section class="min-max-65 bg-gradient w-full pt-md bd-bottom d-flex justify-start items-center gap-sm">
         <img src="{{ asset('imgs/satellite-solid.svg') }}" alt="Logo" class="img-size-30">
         <span class="text-xl fw-sb color-light">{{ config('app.name') }}</span>
@@ -25,14 +25,14 @@
     </section>
     <section class="w-full d-flex justify-between items-center gap-md pt-md bd-top">
         <div class="d-flex justify-start items-center gap-sm">
-            <img 
+            <img
                 src="{{ asset(Auth::user()->photo) }}" 
                 alt="Perfil" 
-                class="img-size-40 radius-50p img-cover"
+                class="img-size-40 radius-50p img-cover img-profile-menu"
                 onerror="this.src='{{ asset('imgs/photo-default.png') }}';"
             />
             <div class="w-full d-flex flex-column justify-start items-start gap-sm">
-                <span class="text-sm fw-sb color-secondary">{{ Auth::user()->nickname }}</span>
+                <span class="text-sm fw-sb color-secondary nickname-menu">{{ Auth::user()->nickname }}</span>
                 <span class="text-sm color-secondary">{{ Auth::user()->email }}</span>
             </div>
         </div>

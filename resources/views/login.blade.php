@@ -11,7 +11,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script defer src="{{asset('js/login.js')}}"></script>
+    <script type="module" defer src="{{asset('js/initializers/pageLogin.js')}}"></script>
 @endsection
 
 @section('content')
