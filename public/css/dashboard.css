@@ -1,0 +1,16 @@
+
+@media screen and (max-width: 800px) {
+
+    .grid-tmp-columns-3.grid-tmp-rows-auto-mobile{
+        grid-template-rows: auto;
+    }
+
+    .grid-tmp-columns-3.grid-tmp-columns-1-mobile{
+        grid-template-columns: 1fr;
+    }
+
+    #page-header>div:nth-child(2){
+        display: none;
+    }  
+
+}

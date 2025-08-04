@@ -9,6 +9,7 @@ use App\Http\Controllers\TaskCategoryController;
 use App\Http\Controllers\FinancialCategoryController;
 use App\Http\Controllers\FinancialTransactionController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\DashboardController;
 
 // Rotas públicas (sem autenticação)
 Route::get('/', function () {
@@ -83,5 +84,11 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [FinancialTransactionController::class, 'store'])->name('transactions.store');
         Route::patch('/{id}', [FinancialTransactionController::class, 'update'])->name('transactions.update');
         Route::delete('/{id}', [FinancialTransactionController::class, 'destroy'])->name('transactions.destroy');
+    });
+
+    // Rotas API para Dashboard
+    Route::prefix('api/dashboard')->group(function () {
+        Route::get('/tasks', [DashboardController::class, 'indexTasks'])->name('dashboard.indexTasks');
+        Route::get('/financial-transactions', [DashboardController::class, 'indexFinancialTransactions'])->name('dashboard.indexFinancialTransactions');
     });
 });

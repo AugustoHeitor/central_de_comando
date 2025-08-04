@@ -39,7 +39,7 @@
             'content' => $content
         ])
 
-        <form action="#" class="w-full d-flex flex-column align-start justify-between gap-md h-full scroll-auto">
+        <form action="#" class="w-full d-flex flex-column align-start justify-start gap-md h-full scroll-auto">
 
             <div class="w-full d-flex flex-column align-start justify-start gap-md">
                 <div class="w-full pt-md radius-lg bd-primary bg-light d-flex flex-column items-center justify-center gap-lg">

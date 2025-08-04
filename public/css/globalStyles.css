@@ -678,10 +678,6 @@ Outros
     height: 80%;
 }
 
-.position-fixed{
-    position: fixed;
-}
-
 .position-relative{
     position: relative;
 }
@@ -690,8 +686,16 @@ Outros
     position: absolute;
 }
 
-.z-index-9{
+.z-index-dropdown{
     z-index: 9;
+}
+
+.z-index-modal{
+    z-index: 10;
+}
+
+.z-index-screen{
+    z-index: 11;
 }
 
 .bottom-negative-345{
@@ -741,4 +745,20 @@ Outros
 
 .text-align-start{
     text-align: start;
+}
+
+.grid-tmp-columns-3{
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-tmp-columns-4{
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.left-0{
+    left: 0px;
+}
+
+.bottom-0{
+    bottom: 0px;
 }

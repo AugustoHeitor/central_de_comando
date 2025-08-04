@@ -47,7 +47,7 @@
                             </div>
                         </div>
                         <div class="position-relative d-flex w-full">
-                            <ul id="dropdown-order" class="overflow-hidden w-140 dropdown bd-primary z-index-9 bg-light none align-start justify-start flex-column radius-lg position-absolute mt-top-sm">
+                            <ul id="dropdown-order" class="overflow-hidden w-140 dropdown bd-primary z-index-dropdown bg-light none align-start justify-start flex-column radius-lg position-absolute mt-top-sm">
                                 <li class="w-full bd-bottom"> 
                                     <button data-value="none" class="d-flex justify-start items-center w-full pt-md text-sm color-third fw-sb">
                                         Sem ordenação
@@ -113,13 +113,13 @@
         </div>
 
         <div class="pt-md flex-mobile justify-center items-end gap-md flex-column fx-right fx-bottom fixed">
-            <button class="bd-primary bg-light h-50 w-50 radius-lg pt-sm d-flex items-center justify-center">
+            <button class="btn-mobile-filter bd-primary bg-light h-50 w-50 radius-lg pt-sm d-flex items-center justify-center">
                 <img src="{{ asset('imgs/filter.svg') }}" alt="Filtros" class="img-size-20">
             </button>
-            <button class="bd-primary bg-light h-50 w-50 radius-lg pt-sm d-flex items-center justify-center">
+            <button class="btn-mobile-order bd-primary bg-light h-50 w-50 radius-lg pt-sm d-flex items-center justify-center">
                 <img src="{{ asset('imgs/sort.svg') }}" alt="Ordem" class="img-size-15">
             </button>
-            <button class="bd-primary bg-light h-50 w-50 radius-lg pt-sm d-flex items-center justify-center">
+            <button id="btn-category-mobile" class="bd-primary bg-light h-50 w-50 radius-lg pt-sm d-flex items-center justify-center">
                 <img src="{{ asset('imgs/tag-dark.svg') }}" alt="Categorias" class="img-size-20">
             </button>
         </div> 

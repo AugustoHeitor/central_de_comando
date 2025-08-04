@@ -1,4 +1,4 @@
-<div id="page-header" class="min-max-65 bg-light radius-lg w-full bd-primary pt-md d-flex justify-between items-center w-mx-1200">
+<div id="page-header" class="min-max-65 radius-lg w-full bd-primary pt-md d-flex justify-between items-center w-mx-1200">
     <div class="overflow-hidden d-flex justify-start items-center gap-sm">
         @isset($img)
             <img src="{{ asset($img) }}" alt="{{$title}}" class="img-size-20">

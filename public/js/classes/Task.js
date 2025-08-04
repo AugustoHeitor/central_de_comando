@@ -623,117 +623,335 @@ class Task extends Master {
     }
 
     createDropdownFilter(selectorContainer, selectorDropdown) {
-        const containerDropdown = document.querySelector(selectorContainer);
 
-        if (!containerDropdown.querySelector('ul')) {
-            const categories = this.categories.map((category) => ({
-                value: category.id,
-                label: category.name
-            }));
+        const widthWindow = window.screen.width
+    
+        if(widthWindow <= 800){
 
-            categories.unshift({
-                value: "",
-                label: "Todas"
-            });
+            const containerDropdown = document.querySelector("body");
+            const screen = document.createElement("div");
+            screen.classList.add("screen-modal");
 
-            const ul = document.createElement('ul');
-            ul.id = selectorDropdown;
-            ul.classList.add(
-                'dropdown', 'bd-primary', 'z-index-9', 'bg-light',
-                'pt-md', 'd-flex', 'align-start', 'justify-start',
-                'flex-column', 'gap-md', 'radius-lg', 'position-absolute', 'mt-top-sm'
-            );
+            screen.addEventListener("click", (event)=>{
+                if (event.target === screen) {
+                    screen.remove();
+                }
+            })
 
-            ul.append(
-                this.createDateDropdown('Prazo Inicial', 'input-start-deadline', 'start_deadline'),
-                this.createDateDropdown('Prazo Final', 'input-end-deadline', 'end_deadline'),
-                this.createSelectDropdown('Categorias', 'taskCategories', 'select-category', categories, 'category'),
-                this.createSelectDropdown('Prioridade', 'priority', 'select-priority', [
-                    { value: '', label: 'Todos' },
-                    { value: 'low', label: 'Baixa' },
-                    { value: 'medium', label: 'Média' },
-                    { value: 'urgent', label: 'Urgente' }
-                ], 'priority')
-            );
+            if (!containerDropdown.querySelector('screen-modal')) {
 
-            containerDropdown.append(ul);
-        } else {
-            containerDropdown.querySelector('ul').remove();
+                const categories = this.categories.map((category) => ({
+                    value: category.id,
+                    label: category.name
+                }));
+
+                categories.unshift({
+                    value: "",
+                    label: "Todas"
+                });
+
+                const dropdown = document.createElement("div");
+
+                const header = document.createElement("div");
+                header.classList.add("w-full", "d-flex", "items-start", "justify-start");
+
+                const buttonClose = document.createElement("button");
+                const imgClose = document.createElement("img");
+
+                const title = document.createElement("h3");
+                const imgTitle = document.createElement("img");
+                
+                const containerTitle = document.createElement("div");
+                
+                const ul = document.createElement('ul');
+                ul.id = selectorDropdown;
+                ul.classList.add(
+                    'w-full', 
+                    'd-flex', 'align-start', 'justify-start',
+                    'flex-column', 'gap-md', 
+                );
+
+                buttonClose.classList.add("d-flex", "items-center", "justify-center", "soft-shake");
+                imgClose.src = "/imgs/xmark-dark.svg";
+                imgClose.classList.add("img-size-15");
+                
+                dropdown.classList.add('w-full', 'bg-light',  'dropdown', 'pt-md', 'd-flex', 'align-start', 'justify-start', 'flex-column', 'gap-md', 'fixed', 'left-0', 'bottom-0')
+
+                containerTitle.classList.add("d-flex", "align-center", "justify-start", "gap-sm");
+                title.classList.add("color-third", "text-xl", "fw-m");
+
+                imgTitle.src="/imgs/filter.svg";
+                imgTitle.classList.add("img-size-20");
+
+                title.innerText = "Filtros"
+
+                header.classList.add("w-full", "d-dlex", "align-center", "justify-between", "gap-md")
+
+                ul.append(
+                    this.createDateDropdown('Prazo Inicial', 'input-start-deadline', 'start_deadline'),
+                    this.createDateDropdown('Prazo Final', 'input-end-deadline', 'end_deadline'),
+                    this.createSelectDropdown('Categorias', 'taskCategories', 'select-category', categories, 'category'),
+                    this.createSelectDropdown('Prioridade', 'priority', 'select-priority', [
+                        { value: '', label: 'Todos' },
+                        { value: 'low', label: 'Baixa' },
+                        { value: 'medium', label: 'Média' },
+                        { value: 'urgent', label: 'Urgente' }
+                    ], 'priority')
+                );
+
+                buttonClose.addEventListener("click", ()=>{
+                    screen.remove();
+                })
+
+                buttonClose.append(imgClose);
+                containerTitle.append(imgTitle, title);
+                header.append(containerTitle, buttonClose);
+                dropdown.append(header, ul);
+                screen.append(dropdown);
+                containerDropdown.append(screen);
+            } else {
+                containerDropdown.querySelector('ul').remove();
+            }
+        }else{
+
+            const containerDropdown = document.querySelector(selectorContainer);
+
+            if (!containerDropdown.querySelector('ul')) {
+
+                const categories = this.categories.map((category) => ({
+                    value: category.id,
+                    label: category.name
+                }));
+
+                categories.unshift({
+                    value: "",
+                    label: "Todas"
+                });
+
+                const ul = document.createElement('ul');
+                ul.id = selectorDropdown;
+                ul.classList.add(
+                    'dropdown', 'bd-primary', 'z-index-dropdown', 'bg-light',
+                    'pt-md', 'd-flex', 'align-start', 'justify-start',
+                    'flex-column', 'gap-md', 'radius-lg', 'position-absolute', 'mt-top-sm'
+                );
+
+               ul.append(
+                    this.createDateDropdown('Prazo Inicial', 'input-start-deadline', 'start_deadline'),
+                    this.createDateDropdown('Prazo Final', 'input-end-deadline', 'end_deadline'),
+                    this.createSelectDropdown('Categorias', 'taskCategories', 'select-category', categories, 'category'),
+                    this.createSelectDropdown('Prioridade', 'priority', 'select-priority', [
+                        { value: '', label: 'Todos' },
+                        { value: 'low', label: 'Baixa' },
+                        { value: 'medium', label: 'Média' },
+                        { value: 'urgent', label: 'Urgente' }
+                    ], 'priority')
+                );
+
+                containerDropdown.append(ul);
+
+            } else {
+                containerDropdown.querySelector('ul').remove();
+            }
         }
     }
 
     createDropdownOrder(selectorContainer, selectorDropdown) {
-        const containerDropdown = document.querySelector(selectorContainer);
-        const parameter = this.utils.getParams(this.localStorageName, ['order']);
 
-        if(!containerDropdown.querySelector('ul')){
-            const ul = document.createElement('ul');
+        const widthWindow = window.screen.width
+    
+        if(widthWindow <= 800){
 
-            ul.id = selectorDropdown;
-            ul.classList.add(
-            'overflow-hidden', 'w-160', 'dropdown', 'bd-primary', 'z-index-9',
-            'bg-light', 'align-start', 'justify-start', 'flex-column',
-            'radius-lg', 'position-absolute', 'mt-top-sm'
-            );
+            const containerDropdown = document.querySelector("body");
 
-            const markItem = (ul, button, value)=>{
+            const screen = document.createElement("div");
+            screen.classList.add("screen-modal");
 
-                const buttons = Array.from(ul.querySelectorAll('li > button'));
-
-                if (buttons.length > 0) {
-                    buttons.forEach((btn) => {
-                        if (btn.classList.contains('marked-order')) {
-                            btn.classList.remove('marked-order');
-                        }
-                    });
+            screen.addEventListener("click", (event)=>{
+                if (event.target === screen) {
+                    screen.remove();
                 }
+            })
 
-                if(button.dataset.value === value){
-                    button.classList.add('marked-order');
-                }
-            }
+            if(!containerDropdown.querySelector('screen-modal')){
 
-            const createListItem = (value, text, hasBorder = true)=> {
-                const li = document.createElement('li');
-                li.classList.add('w-full');
-                if (hasBorder) li.classList.add('bd-bottom');
+                const dropdown = document.createElement("div");
 
-                const button = document.createElement('button');
-                button.dataset.value = value;
-                button.textContent = text;
-                button.classList.add(
-                    'd-flex', 'justify-start', 'items-center', 'w-full', 'pt-md',
-                    'text-sm', 'color-third', 'fw-sb', 'text-align-start'
+                const header = document.createElement("div");
+                header.classList.add("w-full", "d-flex", "items-start", "justify-start");
+
+                const buttonClose = document.createElement("button");
+                const imgClose = document.createElement("img");
+
+                const title = document.createElement("h3");
+                const imgTitle = document.createElement("img");
+                
+                const containerTitle = document.createElement("div");
+                
+                const ul = document.createElement('ul');
+
+                ul.id = selectorDropdown;
+                ul.classList.add(
+                    'w-full', 
+                    'd-flex', 'align-start', 'justify-start',
+                    'flex-column', 'gap-md', 
                 );
 
-                li.append(button);
+                const markItem = (ul, button, value)=>{
 
-                li.addEventListener('click', ()=>{
-                    const value = button.dataset.value || null;
-                    this.utils.setLocalStroageParam(this.localStorageName, 'order', value);
-                    this.createCardTask();
-                    markItem(ul, button, value);
-                })
+                    const buttons = Array.from(ul.querySelectorAll('li > button'));
 
-                const parameter = this.utils.getParams(this.localStorageName, ['order']);
+                    if (buttons.length > 0) {
+                        buttons.forEach((btn) => {
+                            if (btn.classList.contains('marked-order')) {
+                                btn.classList.remove('marked-order');
+                            }
+                        });
+                    }
 
-                if(button.dataset.value === parameter.order){
-                    button.classList.add('marked-order');
+                    if(button.dataset.value === value){
+                        button.classList.add('marked-order');
+                    }
                 }
 
-                return li;
+                const createListItem = (value, text, hasBorder = true)=> {
+                    const li = document.createElement('li');
+                    li.classList.add('w-full');
+                    if (hasBorder) li.classList.add('bd-bottom');
+
+                    const button = document.createElement('button');
+                    button.dataset.value = value;
+                    button.textContent = text;
+                    button.classList.add(
+                        'd-flex', 'justify-start', 'items-center', 'w-full', 'pt-md',
+                        'text-sm', 'color-third', 'fw-sb', 'text-align-start'
+                    );
+
+                    li.append(button);
+
+                    li.addEventListener('click', ()=>{
+                        const value = button.dataset.value || null;
+                        this.utils.setLocalStroageParam(this.localStorageName, 'order', value);
+                        this.createCardTask();
+                        markItem(ul, button, value);
+                    })
+
+                    const parameter = this.utils.getParams(this.localStorageName, ['order']);
+
+                    if(button.dataset.value === parameter.order){
+                        button.classList.add('marked-order');
+                    }
+
+                    return li;
+                }
+
+                this.paramKeysOrder.forEach((order) => {
+                    ul.append(createListItem(order.value, order.name));
+                });
+
+                buttonClose.classList.add("d-flex", "items-center", "justify-center", "soft-shake");
+                imgClose.src = "/imgs/xmark-dark.svg";
+                imgClose.classList.add("img-size-15");
+                
+                dropdown.classList.add('w-full', 'bg-light',  'dropdown', 'pt-md', 'd-flex', 'align-start', 'justify-start', 'flex-column', 'gap-md', 'fixed', 'left-0', 'bottom-0')
+
+                containerTitle.classList.add("d-flex", "align-center", "justify-start", "gap-sm");
+                title.classList.add("color-third", "text-xl", "fw-m");
+
+                imgTitle.src="/imgs/sort.svg";
+                imgTitle.classList.add("img-size-15");
+
+                title.innerText = "Ordem"
+
+                header.classList.add("w-full", "d-dlex", "align-center", "justify-between", "gap-md")
+                
+                buttonClose.addEventListener("click", ()=>{
+                    screen.remove();
+                })
+
+                buttonClose.append(imgClose);
+                containerTitle.append(imgTitle, title);
+                header.append(containerTitle, buttonClose);
+                dropdown.append(header, ul);
+                screen.append(dropdown);
+                containerDropdown.append(screen);
+
+            }else{
+                containerDropdown.querySelector('ul').remove();
             }
 
-            this.paramKeysOrder.forEach((order) => {
-                ul.append(createListItem(order.value, order.name));
-            });
-
-
-            document.querySelector(selectorContainer).append(ul);
-
         }else{
-            containerDropdown.querySelector('ul').remove();
+            const containerDropdown = document.querySelector(selectorContainer);
+
+            if(!containerDropdown.querySelector('ul')){
+                const ul = document.createElement('ul');
+
+                ul.id = selectorDropdown;
+                ul.classList.add(
+                'overflow-hidden', 'w-160', 'dropdown', 'bd-primary', 'z-index-dropdown',
+                'bg-light', 'align-start', 'justify-start', 'flex-column',
+                'radius-lg', 'position-absolute', 'mt-top-sm'
+                );
+
+                const markItem = (ul, button, value)=>{
+
+                    const buttons = Array.from(ul.querySelectorAll('li > button'));
+
+                    if (buttons.length > 0) {
+                        buttons.forEach((btn) => {
+                            if (btn.classList.contains('marked-order')) {
+                                btn.classList.remove('marked-order');
+                            }
+                        });
+                    }
+
+                    if(button.dataset.value === value){
+                        button.classList.add('marked-order');
+                    }
+                }
+
+                const createListItem = (value, text, hasBorder = true)=> {
+                    const li = document.createElement('li');
+                    li.classList.add('w-full');
+                    if (hasBorder) li.classList.add('bd-bottom');
+
+                    const button = document.createElement('button');
+                    button.dataset.value = value;
+                    button.textContent = text;
+                    button.classList.add(
+                        'd-flex', 'justify-start', 'items-center', 'w-full', 'pt-md',
+                        'text-sm', 'color-third', 'fw-sb', 'text-align-start'
+                    );
+
+                    li.append(button);
+
+                    li.addEventListener('click', ()=>{
+                        const value = button.dataset.value || null;
+                        this.utils.setLocalStroageParam(this.localStorageName, 'order', value);
+                        this.createCardTask();
+                        markItem(ul, button, value);
+                    })
+
+                    const parameter = this.utils.getParams(this.localStorageName, ['order']);
+
+                    if(button.dataset.value === parameter.order){
+                        button.classList.add('marked-order');
+                    }
+
+                    return li;
+                }
+
+                this.paramKeysOrder.forEach((order) => {
+                    ul.append(createListItem(order.value, order.name));
+                });
+
+                document.querySelector(selectorContainer).append(ul);
+
+            }else{
+                containerDropdown.querySelector('ul').remove();
+            }
         }
+
     }
 
     createDateDropdown(labelText, inputClass, storageKey) {
