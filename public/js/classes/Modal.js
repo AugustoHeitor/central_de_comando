@@ -14,7 +14,7 @@ class Modal {
         modal.classList.add(
             'bd-primary', 'd-flex',
             'align-start', 'justify-between', 'flex-column',
-            'gap-md', 'bg-light', 'radius-lg', ...config?.class
+            'gap-md', 'bg-secondary', 'radius-lg', ...config?.class
         );
 
         modal.id = "form-modal";
@@ -30,7 +30,7 @@ class Modal {
         icon.classList.add('img-size-20');
 
         const title = document.createElement('h2');
-        title.classList.add('color-third', 'text-xl', 'fw-m');
+        title.classList.add('color-light', 'text-xl', 'fw-m');
         title.textContent = config.title;
 
         topLeft.append(icon);
@@ -42,7 +42,7 @@ class Modal {
         closeBtn.type = "button";
 
         const closeIcon = document.createElement('img');
-        closeIcon.src = '/imgs/xmark-dark.svg'; 
+        closeIcon.src = '/imgs/xmark-light.svg'; 
         closeIcon.alt = 'Fechar';
         closeIcon.classList.add('img-size-15');
 
@@ -99,7 +99,7 @@ class Modal {
 
             if (config.type === 'delete') {
 
-                btn.className = 'w-full d-flex justify-center items-center gap-sm color-light text-sm pt-btn-primary radius-lg fw-m bd-primary w-mx-280 bg-btn-delete';
+                btn.className = 'w-full d-flex justify-center items-center gap-sm color-light text-sm pt-btn-primary radius-lg fw-m bd-shadow-secondary w-mx-280 bg-btn-delete hover-scale';
                 const img = document.createElement('img');
                 img.src = '/imgs/trash-light.svg';
                 img.alt = 'Deletar';
@@ -109,9 +109,9 @@ class Modal {
 
             } else if (config.type === 'save') {
 
-                btn.className = 'hover-scale w-full d-flex justify-center items-center gap-sm color-light text-sm pt-btn-primary radius-lg fw-m bg-btn-save w-mx-280';
+                btn.className = 'hover-scale w-full d-flex justify-center items-center gap-sm color-light text-sm pt-btn-primary radius-lg fw-m bg-btn-save bd-shadow-secondary w-mx-280';
                 const img = document.createElement('img');
-                img.src = '/imgs/save.svg';
+                img.src = '/imgs/save-light.svg';
                 img.alt = 'Salvar';
                 img.classList.add('img-size-15');
                 btn.append(img);
@@ -119,7 +119,7 @@ class Modal {
 
             } else if (config.type === 'add') {
 
-                btn.className = 'hover-scale w-full d-flex justify-center items-center gap-sm color-light text-sm pt-btn-primary radius-lg fw-m bg-btn-create w-mx-280';
+                btn.className = 'hover-scale w-full d-flex justify-center items-center gap-sm color-light text-sm pt-btn-primary radius-lg fw-m bg-btn-create bd-shadow-secondary w-mx-280';
                 const img = document.createElement('img');
                 img.src = '/imgs/create-light.svg'; 
                 img.alt = 'Adicionar';
@@ -129,9 +129,9 @@ class Modal {
 
             }else if (config.type === 'cancel'){
 
-                btn.className = 'hover-scale w-full d-flex justify-center items-center gap-sm w-full color-secondary text-sm pt-btn-primary radius-lg fw-m bg-light bd-primary w-mx-280';
+                btn.className = 'hover-scale w-full d-flex justify-center items-center gap-sm w-full color-primary text-sm pt-btn-primary radius-lg fw-m bg-secondary bd-shadow-secondary w-mx-280';
                 const img = document.createElement('img');
-                img.src = '/imgs/xmark-dark.svg'; 
+                img.src = '/imgs/xmark-light.svg'; 
                 img.alt = 'Cancelar';
                 img.classList.add('img-size-15');
                 btn.append(img);
@@ -178,26 +178,26 @@ class Modal {
         wrapper.classList.add('d-flex', 'flex-column', 'justify-center', 'items-center', 'gap-sm', 'w-full', 'h-full', 'pt-md', ...config.class);
 
         const warningContainer = document.createElement('div');
-        warningContainer.classList.add('d-flex', 'justify-start', 'items-start', 'gap-md', 'w-full', 'bd-primary', 'radius-lg', 'pt-md', 'w-mx-600');
+        warningContainer.classList.add('d-flex', 'justify-start', 'items-center', 'gap-md', 'w-full', 'radius-lg', 'pt-md', 'w-mx-600');
 
         const warningIcon = document.createElement('img');
         warningIcon.src = '/imgs/circle-exclamation-red.svg'; 
         warningIcon.alt = 'Aviso';
-        warningIcon.classList.add('img-size-15');
+        warningIcon.classList.add('img-size-20');
 
         const warningTextContainer = document.createElement('div');
         warningTextContainer.classList.add('d-flex', 'justify-start', 'items-start');
 
         const warningText = document.createElement('p');
-        warningText.classList.add('text-sm', 'color-warning', 'fw-n');
-        warningText.innerHTML = `<strong class="text-sm color-warning fw-b">Atenção! </strong>${config.messageWarning}`;
+        warningText.classList.add('text-sm', 'color-primary', 'fw-n');
+        warningText.innerHTML = `<strong class="text-sm color-primary fw-b">Atenção! </strong>${config.messageWarning}`;
 
         warningTextContainer.append(warningText);
         warningContainer.append(warningIcon);
         warningContainer.append(warningTextContainer);
 
         const messageText = document.createElement('p');
-        messageText.classList.add('text-base', 'color-dark', 'fw-n', 'pt-md', 'w-full', 'w-mx-600');
+        messageText.classList.add('text-base', 'color-light', 'fw-n', 'pt-md', 'w-full', 'w-mx-600');
         messageText.textContent = config.message;
 
         wrapper.append(warningContainer);

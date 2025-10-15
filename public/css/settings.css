@@ -7,4 +7,9 @@
     form > div:nth-child(3){
         padding-bottom: var(--space-lg);
     }
+
+    .scroll-y-mobile{
+        overflow-y: auto;
+        padding-bottom: var(--space-lg);
+    }
 }

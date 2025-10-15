@@ -1,30 +1,44 @@
-main>section:nth-child(2){
-  padding: 5rem var(--space-md) 5rem var(--space-md);
+main>section:nth-child(1){
+  width: 100%;
+  height: 100%;
 }
 
+main > section:nth-child(1) {
+  background-image: 
+    linear-gradient(to right, #364dcd 1px, transparent 1px),
+    linear-gradient(to bottom, #364dcd 1px, transparent 1px);
+  background-size: 40px 40px;
+  animation: move-grid-matrix 20s linear infinite;
+}
 
-main>section:nth-child(1){
-  position: relative;
+@keyframes move-grid-matrix {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 1000px;
+  }
 }
 
 main>section:nth-child(1)>div:nth-child(1){
-  position: fixed;
   height: 100vh;
+  width: 100%;
+  background-color: rgb(0 3 44 / 49%);
+}
+
+.bg-transparent{
+  backdrop-filter: blur(1px);
+  background: #ffffff0d;
 }
 
 @media screen and (max-width: 800px) {
 
-    body > div:nth-child(1) > main{
-      height: auto;
-      flex-direction: column;
-    }
+  body > div:nth-child(1) > main{
+    height: auto;
+    flex-direction: column;
+  }
 
-    main>section:nth-child(1){
-      padding: 5rem var(--space-md) 5rem var(--space-md);
-    }
-
-    main>section:nth-child(1)>div:nth-child(1){
-      position: relative;
-      height: auto;
-    }
+  main>section:nth-child(1)>div:nth-child(1){
+    padding: 5rem var(--space-md) 5rem var(--space-md);
+  }
 }

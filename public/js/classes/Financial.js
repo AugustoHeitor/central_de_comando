@@ -11,8 +11,8 @@ class Financial extends Master {
         this.endpoint = endpoint;
         this.localStorageName = "financial_transactions";
         this.url = this.baseUrl + endpoint;
-        this.utils = new Utils(); 
-        this.modal = new Modal(); 
+        this.utils = new Utils();
+        this.modal = new Modal();
 
         this.paramKeysFilter = [
             'type',
@@ -60,7 +60,7 @@ class Financial extends Master {
             icon.classList.add('img-size-15');
 
             const label = document.createElement('label');
-            label.classList.add('color-dark', 'text-base', 'fw-m');
+            label.classList.add('color-light', 'text-base', 'fw-m');
             label.setAttribute('for', labelFor);
             label.textContent = labelText;
 
@@ -68,7 +68,7 @@ class Financial extends Master {
             labelWrapper.append(label);
 
             const inputWrapper = document.createElement('div');
-            inputWrapper.classList.add('d-flex', 'items-center', 'justify-between', 'w-full', 'bg-light', 'pt-input-primary', 'bd-primary', 'radius-lg');
+            inputWrapper.classList.add('d-flex', 'items-center', 'justify-between', 'w-full', 'bg-secondary', 'pt-input-primary', 'bd-primary', 'radius-lg');
             inputWrapper.append(inputElement);
 
             group.append(labelWrapper);
@@ -82,9 +82,9 @@ class Financial extends Master {
         titleInput.required = true;
         titleInput.type = 'text';
         titleInput.name = 'title';
-        titleInput.classList.add('text-base', 'color-secondary', 'w-full');
+        titleInput.classList.add('text-base', 'color-primary', 'w-full');
         containerPrimary.append(createInputGroup({
-            iconSrc: 'imgs/heading-dark.svg',
+            iconSrc: 'imgs/heading-light.svg',
             iconAlt: 'Título',
             labelFor: 'title',
             labelText: 'Título',
@@ -100,12 +100,12 @@ class Financial extends Master {
         amountLabelWrapper.classList.add('d-flex', 'justify-start', 'items-center', 'gap-sm');
 
         const amountIcon = document.createElement('img');
-        amountIcon.src = 'imgs/coins-dark.svg'; 
+        amountIcon.src = 'imgs/coins-light.svg';
         amountIcon.alt = 'Valor';
         amountIcon.classList.add('img-size-20');
 
         const amountLabel = document.createElement('label');
-        amountLabel.classList.add('color-dark', 'text-base', 'fw-m');
+        amountLabel.classList.add('color-light', 'text-base', 'fw-m');
         amountLabel.setAttribute('for', 'amount');
         amountLabel.textContent = 'Valor';
 
@@ -113,19 +113,19 @@ class Financial extends Master {
         amountLabelWrapper.append(amountLabel);
 
         const amountWrapper = document.createElement('div');
-        amountWrapper.classList.add("d-flex", "items-center", "justify-between", "w-full", "bg-light", "pt-input-primary", "bd-primary", "radius-lg");
+        amountWrapper.classList.add("d-flex", "items-center", "justify-between", "w-full", "bg-secondary", "pt-input-primary", "bd-primary", "radius-lg");
 
         const amountInput = document.createElement('input');
         amountInput.required = true;
         amountInput.type = 'number';
         amountInput.name = 'amount';
-        amountInput.classList.add('w-full', 'text-base', 'color-secondary', 'h-21');
-        amountInput.step = '0.01'; 
+        amountInput.classList.add('w-full', 'text-base', 'color-primary', 'h-21');
+        amountInput.step = '0.01';
 
         if(transaction?.amount){
             amountInput.value = transaction.amount;
         } else {
-            amountInput.value = ''; 
+            amountInput.value = '';
         }
 
         amountWrapper.append(amountInput);
@@ -134,12 +134,12 @@ class Financial extends Master {
         containerPrimary.append(amountGroup);
 
         const fieldsWrapper = document.createElement('div');
-        fieldsWrapper.classList.add('d-flex', 'w-full', 'align-start', 'justify-start', 'gap-lg', 'flex-wrap');
+        fieldsWrapper.classList.add('d-grid', 'grid-tmp-columns-3', 'grid-tmp-columns-2-responsive', 'grid-tmp-columns-1-responsive', 'w-full', 'align-start', 'justify-start', 'gap-lg');
 
         const fields = [
             {
                 name: 'type',
-                icon: 'imgs/up-down-dark.svg',
+                icon: 'imgs/up-down-light.svg',
                 label: 'Tipo',
                 iconClass: "img-size-20",
                 options: [
@@ -149,7 +149,7 @@ class Financial extends Master {
             },
             {
                 name: 'category_id',
-                icon: 'imgs/tag-dark.svg',
+                icon: 'imgs/tag-light.svg',
                 iconClass: "img-size-15",
                 label: 'Categorias',
                 options: categories
@@ -169,7 +169,7 @@ class Financial extends Master {
             icon.classList.add(field.iconClass);
 
             const label = document.createElement('label');
-            label.classList.add('color-dark', 'text-base', 'fw-m');
+            label.classList.add('color-light', 'text-base', 'fw-m');
             label.setAttribute('for', field.name);
             label.textContent = field.label;
 
@@ -177,16 +177,17 @@ class Financial extends Master {
             labelWrapper.append(label);
 
             const selectWrapper = document.createElement('div');
-            selectWrapper.classList.add('w-full', 'bg-light', 'radius-lg', 'bd-primary', 'pt-input-primary');
+            selectWrapper.classList.add('w-full', 'bg-secondary', 'radius-lg', 'bd-primary', 'pt-input-primary');
 
             const select = document.createElement('select');
             select.name = field.name;
             select.required = true;
-            select.classList.add('w-full', 'text-base', 'color-secondary', 'h-21');
+            select.classList.add('w-full', 'text-base', 'color-primary', 'h-21');
 
             field.options.forEach(opt => {
                 const option = document.createElement('option');
                 option.value = opt.value;
+                option.classList.add("color-dark");
 
                 if(transaction){
                     if (transaction[field.name] == opt.value) {
@@ -211,12 +212,12 @@ class Financial extends Master {
         dateLabelWrapper.classList.add('d-flex', 'justify-start', 'items-center', 'gap-sm');
 
         const dateIcon = document.createElement('img');
-        dateIcon.src = 'imgs/calendar-week-dark.svg';
+        dateIcon.src = 'imgs/calendar-week-light.svg';
         dateIcon.alt = 'Data';
         dateIcon.classList.add('img-size-15');
 
         const dateLabel = document.createElement('label');
-        dateLabel.classList.add('color-dark', 'text-base', 'fw-m');
+        dateLabel.classList.add('color-light', 'text-base', 'fw-m');
         dateLabel.setAttribute('for', 'transaction_date');
         dateLabel.textContent = 'Data';
 
@@ -224,21 +225,21 @@ class Financial extends Master {
         dateLabelWrapper.append(dateLabel);
 
         const dateWrapper = document.createElement('div');
-        dateWrapper.classList.add('w-full', 'bg-light', 'radius-lg', 'bd-primary', 'pt-input-primary');
+        dateWrapper.classList.add('w-full', 'bg-secondary', 'radius-lg', 'bd-primary', 'pt-input-primary');
 
         const dateInput = document.createElement('input');
         dateInput.required = true;
         dateInput.type = 'date';
         dateInput.name = 'transaction_date';
-        dateInput.classList.add('w-full', 'text-base', 'color-secondary', 'h-21');
-        
+        dateInput.classList.add('w-full', 'text-base', 'color-primary', 'h-21');
+
         if(transaction?.transaction_date){
-            const transactionDate = this.utils.formatDate(transaction?.transaction_date, 'iso'); 
-            dateInput.value = transactionDate;  
+            const transactionDate = this.utils.formatDate(transaction?.transaction_date, 'iso');
+            dateInput.value = transactionDate;
         }else{
 
-            const dateToday = this.utils.formatDate(new Date().toISOString().split('T')[0], 'iso'); 
-            dateInput.value = dateToday;  
+            const dateToday = this.utils.formatDate(new Date().toISOString().split('T')[0], 'iso');
+            dateInput.value = dateToday;
 
         }
 
@@ -265,9 +266,9 @@ class Financial extends Master {
             const card = document.createElement("div");
 
             card.classList.add(
-                "overflow-hidden", "h-mn-157", "radius-lg", "pointer", "d-flex",
+                "overflow-hidden", "h-mn-157", "hover-bg-primary", "radius-lg", "pointer", "d-flex",
                 "flex-column", "justify-between", "items-start", "gap-md", "w-full",
-                "bg-light", "bd-primary", "radius-sm"
+                "bg-secondary", "bd-shadow-primary", "radius-sm"
             );
 
             const contentTop = document.createElement("div");
@@ -280,13 +281,13 @@ class Financial extends Master {
             leftSide.classList.add("d-flex", "justify-center", "items-center", "gap-sm");
 
             const imgIcon = document.createElement("img");
-            imgIcon.src = "imgs/piggy-bank-dark.svg";
+            imgIcon.src = transaction.type === "income" ? "imgs/piggy-bank-gray.svg" : "imgs/money-bill-wave-gray.svg";
             imgIcon.alt = "Entrada";
             imgIcon.classList.add("img-size-15");
 
             const title = document.createElement("h3");
             title.textContent = transaction.title;
-            title.classList.add("color-third", "fw-m", "text-sm");
+            title.classList.add("color-primary", "fw-m", "text-sm", "txt-1-line-mobile");
 
             leftSide.append(imgIcon, title);
 
@@ -301,15 +302,15 @@ class Financial extends Master {
             });
 
             if(transaction.type === "income"){
-                value.classList.add("text-x1", "fw-sb", "color-income");
+                value.classList.add("text-x1", "fw-sb", "color-primary");
             }else{
-                value.classList.add("text-x1", "fw-sb", "color-expense");
+                value.classList.add("text-x1", "fw-sb", "color-primary");
             }
 
             const date = document.createElement("span");
 
             date.textContent = this.utils.formatDate(transaction?.transaction_date);
-            date.classList.add("text-sm", "fw-m", "color-secondary", "txt-align-end");
+            date.classList.add("text-sm", "fw-m", "color-primary", "txt-align-end");
 
             rightSide.append(value, date);
             header.append(leftSide, rightSide);
@@ -318,25 +319,25 @@ class Financial extends Master {
             const contentBottom = document.createElement("div");
             contentBottom.classList.add(
                 "w-full", "d-flex", "justify-start", "items-center", "gap-lg",
-                "bd-top", "bg-third", "pt-left-md", "pt-right-md", "pt-top-md",
+                "bd-top", "pt-left-md", "pt-right-md", "pt-top-md",
                 "pt-bottom-md", "flex-wrap"
             );
 
             const typeTag = document.createElement("p");
             typeTag.textContent = transaction.type === "income" ? "Entrada" : "Saída";
-            
+
 
             if(transaction.type === "income"){
-                typeTag.classList.add("d-flex", "justify-center", "items-center", "bg-income", "color-income", "radius-lg", "text-sm", "pt-top-sm", "pt-bottom-sm", "pt-left-md", "pt-right-md");
+                typeTag.classList.add("d-flex", "justify-center", "items-center", "bg-income", "color-income", "radius-lg", "text-xs", "pt-top-sm", "pt-bottom-sm", "pt-left-md", "pt-right-md");
             }else{
-                typeTag.classList.add("d-flex", "justify-center", "items-center", "bg-expense", "color-expense", "radius-lg", "text-sm", "pt-top-sm", "pt-bottom-sm", "pt-left-md", "pt-right-md");
+                typeTag.classList.add("d-flex", "justify-center", "items-center", "bg-expense", "color-expense", "radius-lg", "text-xs", "pt-top-sm", "pt-bottom-sm", "pt-left-md", "pt-right-md");
             }
 
             const category = document.createElement("div");
             category.classList.add("d-flex", "justify-start", "items-center", "gap-sm");
 
             const tagIcon = document.createElement("img");
-            tagIcon.src = "imgs/tag.svg";
+            tagIcon.src = "imgs/tag-gray.svg";
             tagIcon.alt = "Categoria";
             tagIcon.classList.add("img-size-10");
 
@@ -345,7 +346,7 @@ class Financial extends Master {
 
             const categoryText = document.createElement("span");
             categoryText.textContent = categoryName;
-            categoryText.classList.add("color-secondary", "text-sm", "fw-m");
+            categoryText.classList.add("color-primary", "text-xs", "fw-m");
 
             category.append(tagIcon, categoryText);
 
@@ -371,24 +372,24 @@ class Financial extends Master {
 
         if(type === 'add'){
             const buttonsConfig = [
-                { 
-                    text: "Cancelar", 
-                    type: "cancel", 
+                {
+                    text: "Cancelar",
+                    type: "cancel",
                     event: ()=>{
                         document.querySelector('.screen-modal').remove();
                     }
                 },
-                { 
-                    text: "Adicionar", 
+                {
+                    text: "Adicionar",
                     type: "add"
                 },
             ];
 
             const buttons = this.modal.createButtons(buttonsConfig);
 
-            const modalConfig = { 
-                title: "Criar Transação", 
-                img: "imgs/wallet-dark.svg",
+            const modalConfig = {
+                title: "Criar Transação",
+                img: "imgs/wallet-light.svg",
                 class: ["h-auto", "w-full", "w-mx-1000"],
                 visible: {
                     'footer': true,
@@ -412,9 +413,9 @@ class Financial extends Master {
         }else if(type === "save"){
 
             const buttonsConfig = [
-                { 
-                    text: "Deletar", 
-                    type: "delete", 
+                {
+                    text: "Deletar",
+                    type: "delete",
                     event: ()=>{
 
                         const configContainer = {
@@ -425,15 +426,15 @@ class Financial extends Master {
                         }
 
                         const buttonsConfig = [
-                            { 
-                                text: "Cancelar", 
-                                type: "cancel", 
+                            {
+                                text: "Cancelar",
+                                type: "cancel",
                                 event: ()=>{
                                     this.openModal('save', transaction)
                                 }
                             },
-                            { 
-                                text: "Deletar", 
+                            {
+                                text: "Deletar",
                                 type: "delete",
                                 event: (event)=>{
                                     const button = event.target;
@@ -446,17 +447,17 @@ class Financial extends Master {
                         this.modal.createContainerDelete(configContainer, buttonsConfig);
                     }
                 },
-                { 
-                    text: "Salvar", 
+                {
+                    text: "Salvar",
                     type: "save"
                 },
             ];
 
             const buttons = this.modal.createButtons(buttonsConfig);
 
-            const modalConfig = { 
-                title: "Editar Transação", 
-                img: "imgs/wallet-dark.svg",
+            const modalConfig = {
+                title: "Editar Transação",
+                img: "imgs/wallet-light.svg",
                 class: ["w-full", "w-mx-1000"],
                 visible: {
                     'footer': true,
@@ -471,7 +472,7 @@ class Financial extends Master {
                     const formData = this.utils.getFormValues(formModal);
 
                     this.updateTransaction(formData, buttonSubmit, transaction?.id);
-                    
+
                 }
             };
 
@@ -538,7 +539,7 @@ class Financial extends Master {
             }
 
             console.log(error)
-            
+
             toastr.error(message, 'Transação', { timeOut: 2000 });
 
             setTimeout(() => {
@@ -562,7 +563,7 @@ class Financial extends Master {
 
             if (response.status === 200 && response.data.status === 'success') {
 
-                this.transactions?.splice(0, this.transactions.length, 
+                this.transactions?.splice(0, this.transactions.length,
                     ...this.transactions.filter((transaction) => transaction.id !== id)
                 );
 
@@ -593,7 +594,7 @@ class Financial extends Master {
             }
 
             console.log(error)
-            
+
             toastr.error(message, 'Transação', { timeOut: 2000 });
 
             setTimeout(() => {
@@ -621,7 +622,7 @@ class Financial extends Master {
                     document.querySelector('.screen-modal').remove();
                 }
 
-                this.transactions?.splice(0, this.transactions.length, 
+                this.transactions?.splice(0, this.transactions.length,
                     ...this.transactions.filter((transaction) => transaction.id !== id)
                 );
 
@@ -639,7 +640,7 @@ class Financial extends Master {
             }
 
             console.log(error)
-            
+
             toastr.error(message, 'Tarefa', { timeOut: 2000 });
 
             setTimeout(() => {
@@ -647,7 +648,7 @@ class Financial extends Master {
             }, 2000);
 
         }
-        
+
     }
 
     async filterTransactions() {
@@ -656,7 +657,7 @@ class Financial extends Master {
 
         const result = await this.getAllTransactions(params);
 
-        this.transactions?.splice(0, this.transactions.length, 
+        this.transactions?.splice(0, this.transactions.length,
             ...result
         );
 
@@ -668,23 +669,23 @@ class Financial extends Master {
         let orderedTransactions = [...transactions];
 
         if (order === "highest_value") {
-            orderedTransactions.sort((a, b) => b.amount - a.amount); 
+            orderedTransactions.sort((a, b) => b.amount - a.amount);
         } else if (order === "lowest_value") {
-            orderedTransactions.sort((a, b) => a.amount - b.amount); 
+            orderedTransactions.sort((a, b) => a.amount - b.amount);
         } else if (order === "transaction_date") {
-            orderedTransactions.sort((a, b) => new Date(a.transaction_date) - new Date(b.transaction_date)); 
+            orderedTransactions.sort((a, b) => new Date(a.transaction_date) - new Date(b.transaction_date));
         }else{
-            orderedTransactions.sort((a, b) => new Date(a.created_at) - new Date(b.created_at)); 
+            orderedTransactions.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
         }
 
         return orderedTransactions;
 
     }
-    
+
     createDropdownFilter(selectorContainer, selectorDropdown) {
 
         const widthWindow = window.screen.width
-    
+
         if(widthWindow <= 800){
 
             const containerDropdown = document.querySelector("body");
@@ -719,27 +720,27 @@ class Financial extends Master {
 
                 const title = document.createElement("h3");
                 const imgTitle = document.createElement("img");
-                
+
                 const containerTitle = document.createElement("div");
-                
+
                 const ul = document.createElement('ul');
                 ul.id = selectorDropdown;
                 ul.classList.add(
-                    'w-full', 
+                    'w-full',
                     'd-flex', 'align-start', 'justify-start',
-                    'flex-column', 'gap-md', 
+                    'flex-column', 'gap-md',
                 );
 
                 buttonClose.classList.add("d-flex", "items-center", "justify-center", "soft-shake");
-                imgClose.src = "/imgs/xmark-dark.svg";
+                imgClose.src = "/imgs/xmark-light.svg";
                 imgClose.classList.add("img-size-15");
-                
-                dropdown.classList.add('w-full', 'bg-light',  'dropdown', 'pt-md', 'd-flex', 'align-start', 'justify-start', 'flex-column', 'gap-md', 'fixed', 'left-0', 'bottom-0')
+
+                dropdown.classList.add('w-full', 'bg-secondary',  'dropdown', 'pt-md', 'd-flex', 'align-start', 'justify-start', 'flex-column', 'gap-md', 'fixed', 'left-0', 'bottom-0')
 
                 containerTitle.classList.add("d-flex", "align-center", "justify-start", "gap-sm");
-                title.classList.add("color-third", "text-xl", "fw-m");
+                title.classList.add("color-light", "text-xl", "fw-m");
 
-                imgTitle.src="/imgs/filter.svg";
+                imgTitle.src="/imgs/filter-light.svg";
                 imgTitle.classList.add("img-size-20");
 
                 title.innerText = "Filtros"
@@ -772,6 +773,8 @@ class Financial extends Master {
 
             if (!containerDropdown.querySelector('ul')) {
 
+                this.utils.removeElements(".dropdown");
+
                 const categories = this.categories.map((category) => ({
                     value: category.id,
                     label: category.name
@@ -785,7 +788,7 @@ class Financial extends Master {
                 const ul = document.createElement('ul');
                 ul.id = selectorDropdown;
                 ul.classList.add(
-                    'dropdown', 'bd-primary', 'z-index-dropdown', 'bg-light',
+                    'dropdown', 'bd-primary', 'z-index-dropdown', 'bg-secondary',
                     'pt-md', 'd-flex', 'align-start', 'justify-start',
                     'flex-column', 'gap-md', 'radius-lg', 'position-absolute', 'mt-top-sm'
                 );
@@ -798,7 +801,7 @@ class Financial extends Master {
 
                 containerDropdown.append(ul);
             } else {
-                containerDropdown.querySelector('ul').remove();
+                this.utils.removeElements(".dropdown");
             }
         }
     }
@@ -807,7 +810,7 @@ class Financial extends Master {
     createDropdownOrder(selectorContainer, selectorDropdown) {
 
         const widthWindow = window.screen.width
-    
+
         if(widthWindow <= 800){
 
             const containerDropdown = document.querySelector("body");
@@ -833,16 +836,16 @@ class Financial extends Master {
 
                 const title = document.createElement("h3");
                 const imgTitle = document.createElement("img");
-                
+
                 const containerTitle = document.createElement("div");
-                
+
                 const ul = document.createElement('ul');
 
                 ul.id = selectorDropdown;
                 ul.classList.add(
-                    'w-full', 
+                    'w-full',
                     'd-flex', 'align-start', 'justify-start',
-                    'flex-column', 'gap-md', 
+                    'flex-column', 'gap-md',
                 );
 
                 const markItem = (ul, button, value)=>{
@@ -872,7 +875,7 @@ class Financial extends Master {
                     button.textContent = text;
                     button.classList.add(
                         'd-flex', 'justify-start', 'items-center', 'w-full', 'pt-md',
-                        'text-sm', 'color-third', 'fw-sb', 'text-align-start'
+                        'text-sm', 'color-primary', 'fw-nm', 'text-align-start'
                     );
 
                     li.append(button);
@@ -898,21 +901,21 @@ class Financial extends Master {
                 });
 
                 buttonClose.classList.add("d-flex", "items-center", "justify-center", "soft-shake");
-                imgClose.src = "/imgs/xmark-dark.svg";
+                imgClose.src = "/imgs/xmark-light.svg";
                 imgClose.classList.add("img-size-15");
-                
-                dropdown.classList.add('w-full', 'bg-light',  'dropdown', 'pt-md', 'd-flex', 'align-start', 'justify-start', 'flex-column', 'gap-md', 'fixed', 'left-0', 'bottom-0')
+
+                dropdown.classList.add('w-full', 'bg-secondary',  'dropdown', 'pt-md', 'd-flex', 'align-start', 'justify-start', 'flex-column', 'gap-md', 'fixed', 'left-0', 'bottom-0')
 
                 containerTitle.classList.add("d-flex", "align-center", "justify-start", "gap-sm");
-                title.classList.add("color-third", "text-xl", "fw-m");
+                title.classList.add("color-light", "text-xl", "fw-m");
 
-                imgTitle.src="/imgs/sort.svg";
+                imgTitle.src="/imgs/sort-light.svg";
                 imgTitle.classList.add("img-size-15");
 
                 title.innerText = "Ordem"
 
                 header.classList.add("w-full", "d-dlex", "align-center", "justify-between", "gap-md")
-                
+
                 buttonClose.addEventListener("click", ()=>{
                     screen.remove();
                 })
@@ -932,12 +935,14 @@ class Financial extends Master {
             const containerDropdown = document.querySelector(selectorContainer);
 
             if(!containerDropdown.querySelector('ul')){
+
+                this.utils.removeElements(".dropdown");
                 const ul = document.createElement('ul');
 
                 ul.id = selectorDropdown;
                 ul.classList.add(
                 'overflow-hidden', 'w-160', 'dropdown', 'bd-primary', 'z-index-dropdown',
-                'bg-light', 'align-start', 'justify-start', 'flex-column',
+                'bg-secondary', 'align-start', 'justify-start', 'flex-column',
                 'radius-lg', 'position-absolute', 'mt-top-sm'
                 );
 
@@ -968,7 +973,7 @@ class Financial extends Master {
                     button.textContent = text;
                     button.classList.add(
                         'd-flex', 'justify-start', 'items-center', 'w-full', 'pt-md',
-                        'text-sm', 'color-third', 'fw-sb', 'text-align-start'
+                        'text-sm', 'color-primary', 'fw-nm', 'text-align-start'
                     );
 
                     li.append(button);
@@ -996,7 +1001,7 @@ class Financial extends Master {
                 document.querySelector(selectorContainer).append(ul);
 
             }else{
-                containerDropdown.querySelector('ul').remove();
+                this.utils.removeElements(".dropdown");
             }
         }
 
@@ -1005,24 +1010,24 @@ class Financial extends Master {
     createDateDropdown(labelText, inputClass, storageKey) {
 
         const params = this.utils.getParams(this.localStorageName, this.paramKeysFilter);
-   
+
         const li = document.createElement('li');
 
         const container = document.createElement('div');
         container.classList.add('w-full', 'd-flex', 'flex-column', 'justify-start', 'items-start', 'gap-sm', 'cnt-input-w');
 
         const label = document.createElement('label');
-        label.classList.add('text-sm', 'color-third', 'fw-m');
+        label.classList.add('text-sm', 'color-primary', 'fw-m');
         label.textContent = labelText;
         label.setAttribute('for', storageKey);
 
         const divInput = document.createElement('div');
-        divInput.classList.add('w-full', 'bg-light', 'radius-lg', 'bd-primary');
+        divInput.classList.add('w-full', 'bg-secondary', 'radius-lg', 'bd-primary');
 
         const input = document.createElement('input');
         input.type = 'date';
         input.name = storageKey;
-        input.classList.add('pt-input-primary', inputClass, 'w-full', 'text-sm', 'color-secondary');
+        input.classList.add('pt-input-primary', inputClass, 'w-full', 'text-sm', 'color-primary');
 
         input.addEventListener('blur', () => {
             const value = input.value || null;
@@ -1050,21 +1055,22 @@ class Financial extends Master {
         container.classList.add('w-full', 'd-flex', 'flex-column', 'justify-start', 'items-start', 'gap-sm', 'cnt-input-w');
 
         const label = document.createElement('label');
-        label.classList.add('text-sm', 'color-third', 'fw-m');
+        label.classList.add('text-sm', 'color-primary', 'fw-m');
         label.textContent = labelText;
         label.setAttribute('for', name);
 
         const divSelect = document.createElement('div');
-        divSelect.classList.add('w-full', 'bg-light', 'radius-lg', 'bd-primary');
+        divSelect.classList.add('pt-input-primary', 'w-full', 'bg-secondary', 'radius-lg', 'bd-primary');
 
         const select = document.createElement('select');
         select.name = name;
-        select.classList.add('pt-input-primary', selectClass, 'w-full', 'text-sm', 'color-secondary');
+        select.classList.add(selectClass, 'w-full', 'text-sm', 'color-primary');
 
         options.forEach(opt => {
             const option = document.createElement('option');
             option.value = opt.value;
             option.textContent = opt.label;
+            option.classList.add("color-dark");
 
             if (params[storageKey] == option.value) {
                 option.selected = true;
@@ -1089,7 +1095,7 @@ class Financial extends Master {
 
         return li;
     }
-    
+
 }
 
 export default Financial;

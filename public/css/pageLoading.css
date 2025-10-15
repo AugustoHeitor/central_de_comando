@@ -1,0 +1,84 @@
+.loading-container {
+    background: var(--color-dark);
+    z-index: 9999;
+    transition: opacity 0.5s ease-out;
+}
+
+.loading-text {
+    margin-top: 2rem;
+    font-size: var(--text-xl);
+    color: var(--color-primary);
+    font-weight: var(--fw-l);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.progress-bar {
+    width: 200px;
+    height: 4px;
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-sm);
+    margin-top: 1.5rem;
+    overflow: hidden;
+}
+
+.progress {
+    background: var(--color-bg-tertiary);
+    border-radius: var(--radius-sm);
+    transition: width 0.3s ease;
+    width: 0%;
+}
+
+.dot-flashing {
+    position: relative;
+    width: 10px;
+    height: 10px;
+    border-radius: var(--radius-sm);
+    background: var(--color-bg-tertiary);
+    color: var(--color-bg-tertiary);
+    animation: dot-flashing 1s infinite linear alternate;
+    animation-delay: 0.5s;
+    margin-top: 1rem;
+}
+
+.dot-flashing::before, .dot-flashing::after {
+    content: '';
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: var(--radius-sm);
+    background: var(--color-bg-tertiary);
+    color: var(--color-bg-tertiary);
+}
+
+.dot-flashing::before {
+    left: -15px;
+    animation: dot-flashing 1s infinite alternate;
+    animation-delay: 0s;
+}
+
+.dot-flashing::after {
+    left: 15px;
+    animation: dot-flashing 1s infinite alternate;
+    animation-delay: 1s;
+}
+
+@keyframes dot-flashing {
+    0% {
+        background: var(--color-bg-tertiary);
+        opacity: 0.5;
+        transform: scale(0.8);
+    }
+    50%, 100% {
+        background: var(--color-bg-tertiary);
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+#canvas {
+    width: 200px;
+    height: 200px;
+}

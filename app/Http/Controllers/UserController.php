@@ -34,44 +34,46 @@ class UserController extends Controller
                 if ($request->hasFile('photo')) {
 
                     if ($user->photo) {
-                            $filePath = str_replace('/storage/', '', $user->photo);
+                        $filePath = str_replace('/storage/', '', $user->photo);
+
                             if (Storage::disk('public')->exists($filePath)) {
                                 Storage::disk('public')->delete($filePath);
                             }
+
                         }
-                        
-                        $path = $request->file('photo')->store('profile_photos', 'public');
-                        $user->photo = '/storage/' . $path;
+
+                        $path = $request->file('photo')->store("$user->id/images", 'public');
+                        $user->photo = "/storage/$path";
                 }
 
                 $user->save();
 
-                $user->photo = asset($user->photo); 
+                $user->photo = asset($user->photo);
 
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Dados atualizados com sucesso!',
                     'data' => new UserResource($user),
                 ], 200);
-                
+
             }else{
 
                 return response()->json([
                     'status' => 'error',
                     'message' => 'Erro ao salvar os dados',
-                    'data' => [], 
+                    'data' => [],
                 ], 401);
 
             }
-        
+
          } catch (\Exception $e) {
 
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage(),
-                'data' => [], 
+                'data' => [],
             ], 500);
-            
+
         }
     }
 }

@@ -3,16 +3,20 @@ import Master from './Master.js';
 import Utils from './Utils.js';
 
 class Setting extends Master {
-    
+
     constructor(endpoint, form) {
         super();
         this.baseUrl = '/api/';
         this.endpoint = endpoint;
         this.localStorageName = "settings";
         this.url = this.baseUrl + endpoint;
-        this.utils = new Utils(); 
-        this.modal = new Modal(); 
+        this.utils = new Utils();
+        this.modal = new Modal();
         this.form = form;
+    }
+
+    init(){
+        this.utils.addScrollY('form');
     }
 
     async updateUser(formData, button, screenModal) {
@@ -44,7 +48,7 @@ class Setting extends Master {
             }
 
             console.log(error)
-            
+
             toastr.error(message, 'Configurações', { timeOut: 2000 });
 
             setTimeout(() => {
@@ -56,15 +60,15 @@ class Setting extends Master {
 
     openModal(){
         const buttonsConfig = [
-            { 
-                text: "Cancelar", 
-                type: "cancel", 
+            {
+                text: "Cancelar",
+                type: "cancel",
                 event: ()=>{
                     document.querySelector('.screen-modal').remove();
                 }
             },
-            { 
-                text: "Salvar", 
+            {
+                text: "Salvar",
                 type: "save",
             },
         ];
@@ -72,9 +76,9 @@ class Setting extends Master {
         const buttons = this.modal.createButtons(buttonsConfig);
         const content = this.createContentModal();
 
-        const modalConfig = { 
-            title: "Insira sua senha", 
-            img: "imgs/lock-dark.svg",
+        const modalConfig = {
+            title: "Insira sua senha",
+            img: "imgs/lock-light.svg",
             class: ["h-mx-none", "w-mx-400", "h-auto", "w-full"],
             visible: {
                 'footer': true,
@@ -88,13 +92,13 @@ class Setting extends Master {
                 const buttonSubmit = e.submitter;
 
                 const formData = this.utils.getFormValues(this.form);
-                
+
                 const currentPasswordInput = formModal.querySelector('input[name="current_password"]');
 
                 if (currentPasswordInput.value) {
                     formData.append(currentPasswordInput.name, currentPasswordInput.value);
                 }
-                
+
                 this.updateUser(formData, buttonSubmit, screenModal);
             }
         };
@@ -112,14 +116,14 @@ class Setting extends Master {
 
         const paragraph = document.createElement('p');
 
-        paragraph.classList.add('text-xs', 'color-secondary', 'w-full');
+        paragraph.classList.add('text-xs', 'color-primary', 'w-full');
 
         paragraph.innerText = 'Antes de continuar o salvamento das alterações precisamos que confirme que é realmente você que está alterando suas informações, por favor insira sua senha';
-        
+
         const label = document.createElement('label');
-        label.className = 'color-dark text-base fw-m';
+        label.className = 'color-light text-base fw-m';
         label.htmlFor = 'current_password';
-        label.innerText = 'Senha Atual'; 
+        label.innerText = 'Senha Atual';
 
         const containerInput = document.createElement('div');
 
@@ -134,21 +138,21 @@ class Setting extends Master {
             'items-center',
             'justify-between',
             'w-full',
-            'bg-light',
+            'bg-secondary',
             'pt-input-primary',
             'bd-primary',
             'radius-lg'
         );
 
         label.classList.add(
-            'color-dark',
+            'color-light',
             'text-base',
             'fw-m'
         );
 
         input.classList.add(
             'text-base',
-            'color-secondary',
+            'color-primary',
             'w-full'
         );
 
@@ -183,9 +187,9 @@ class Setting extends Master {
 
         if (img) img.src = data.photo;
         if (nickname) nickname.innerText = data.nickname;
-    
+
     }
-    
+
 
 }
 

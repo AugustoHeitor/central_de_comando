@@ -10,8 +10,8 @@ class Category extends Master {
         this.endpoint = endpoint;
         this.url = this.baseUrl + endpoint;
         this.messageWarning = messageWarning;
-        this.utils = new Utils(); 
-        this.modal = new Modal(); 
+        this.utils = new Utils();
+        this.modal = new Modal();
     }
 
     async init() {
@@ -21,9 +21,9 @@ class Category extends Master {
 
     openModal(){
 
-        const config = { 
-            title: "Gestão de Categorias", 
-            img: "imgs/tag-dark.svg",
+        const config = {
+            title: "Gestão de Categorias",
+            img: "imgs/tag-light.svg",
             class: ["h-full", "w-full", "w-mx-600"],
             visible: {
                 'footer': false,
@@ -41,9 +41,9 @@ class Category extends Master {
                 this.createCategory(name, buttonSubmit, inputName, csrfToken);
             }
         };
-        
+
         const content = this.createModalContent();
-        
+
         this.modal.createModal(config, content, '');
     }
 
@@ -52,26 +52,26 @@ class Category extends Master {
         wrapper.classList.add('d-flex', 'flex-column', 'justify-start', 'items-start', 'gap-sm', 'w-full', ...config.class);
 
         const warningContainer = document.createElement('div');
-        warningContainer.classList.add('d-flex', 'justify-start', 'items-start', 'gap-md', 'w-full', 'bd-primary', 'radius-lg', 'pt-md');
+        warningContainer.classList.add('d-flex', 'justify-start', 'items-center', 'gap-md', 'w-full', 'radius-lg', 'pt-md');
 
         const warningIcon = document.createElement('img');
-        warningIcon.src = '/imgs/circle-exclamation-red.svg'; 
+        warningIcon.src = '/imgs/circle-exclamation-red.svg';
         warningIcon.alt = 'Aviso';
-        warningIcon.classList.add('img-size-15');
+        warningIcon.classList.add('img-size-20');
 
         const warningTextContainer = document.createElement('div');
         warningTextContainer.classList.add('d-flex', 'justify-start', 'items-start');
 
         const warningText = document.createElement('p');
-        warningText.classList.add('text-xs', 'color-warning', 'fw-n');
-        warningText.innerHTML = `<strong class="text-xs color-warning fw-b">Atenção! </strong>${config.messageWarning}`;
+        warningText.classList.add('text-xs', 'color-primary', 'fw-n');
+        warningText.innerHTML = `<strong class="text-xs color-primary fw-b">Atenção! </strong>${config.messageWarning}`;
 
         warningTextContainer.append(warningText);
         warningContainer.append(warningIcon);
         warningContainer.append(warningTextContainer);
 
         const messageText = document.createElement('p');
-        messageText.classList.add('text-sm', 'color-dark', 'fw-n', 'pt-md');
+        messageText.classList.add('text-sm', 'color-light', 'fw-n', 'pt-md');
         messageText.textContent = config.message;
 
         const buttonsContainer = document.createElement('div');
@@ -95,7 +95,7 @@ class Category extends Master {
         containerContent.classList.add('d-flex', 'flex-column', 'justify-start', 'items-start', 'gap-sm', 'w-full');
 
         const label = document.createElement('label');
-        label.className = 'color-dark text-sm fw-m';
+        label.className = 'color-light text-sm fw-m';
         label.htmlFor = 'name';
         label.innerText = 'Nome da Categoria';
 
@@ -113,15 +113,15 @@ class Category extends Master {
             'items-center',
             'justify-between',
             'w-full',
-            'bg-light',
+            'bg-secondary',
             'pt-input-primary',
             'bd-primary',
             'radius-lg',
         );
 
         input.classList.add(
-            'text-base',
-            'color-secondary',
+            'text-sm',
+            'color-primary',
             'w-full',
         );
 
@@ -149,7 +149,7 @@ class Category extends Master {
         labelWrapper.classList.add("d-flex", "justify-start", "items-center", "gap-sm");
 
         const label = document.createElement("label");
-        label.classList.add("color-dark", "text-base", "fw-m");
+        label.classList.add("color-light", "text-base", "fw-m");
         label.setAttribute("for", "name");
         label.textContent = "Adicionar nova categoria";
 
@@ -159,19 +159,19 @@ class Category extends Master {
         containerCreateCategory.classList.add("d-flex", "items-center", "justify-between", "w-full", "gap-md");
 
         const inputBox = document.createElement("div");
-        inputBox.classList.add("d-flex", "items-center", "justify-between", "w-full", "bg-light", "pt-input-primary", "bd-primary", "radius-lg");
+        inputBox.classList.add("d-flex", "items-center", "justify-between", "w-full", "bg-secondary", "pt-input-primary", "bd-primary", "radius-lg");
 
         const input = document.createElement("input");
         input.setAttribute("type", "text");
         input.setAttribute("name", "name");
         input.required = true;
-        input.classList.add("text-base", "color-secondary", "w-full");
+        input.classList.add("text-sm", "color-primary", "w-full");
 
         inputBox.append(input);
 
         const button = document.createElement("button");
         button.setAttribute("type", "submit");
-        button.classList.add("bg-btn-create", "bd-primary", "d-flex", "justify-start", "items-center", "gap-sm", "pt-btn-primary", "radius-lg", "h-36");
+        button.classList.add("bg-btn-create", 'hover-scale', "bd-shadow-secondary", "d-flex", "justify-start", "items-center", "gap-sm", "pt-btn-primary", "radius-lg", "h-36");
 
         const img = document.createElement("img");
         img.setAttribute("src", "imgs/create-light.svg");
@@ -199,11 +199,11 @@ class Category extends Master {
         secondBlockHeader.classList.add("d-flex", "justify-between", "items-center", "gap-sm", "w-full");
 
         const h3 = document.createElement("h3");
-        h3.classList.add("color-dark", "text-base", "fw-m");
+        h3.classList.add("color-light", "text-base", "fw-m");
         h3.textContent = "Suas categorias";
 
         const categoryCount = document.createElement("span");
-        categoryCount.classList.add("color-secondary", "text-sm", "fw-m", 'category-count');
+        categoryCount.classList.add("color-primary", "text-sm", "fw-m", 'category-count');
         categoryCount.textContent = this.categories.length > 1 ? `${this.categories.length} Categorias` : this.categories.length == 1
         ? `${this.categories.length} Categoria` : "";
 
@@ -228,7 +228,7 @@ class Category extends Master {
     }
 
     createCardCategory() {
-        
+
         this.categories.sort((a, b) => a.id - b.id);
 
         return this.categories.map((category) => {
@@ -247,7 +247,7 @@ class Category extends Master {
                 'items-center',
                 'gap-md',
                 'w-full',
-                'bg-light',
+                'bg-secondary',
                 'bd-primary',
                 'radius-sm',
                 'pt-left-md',
@@ -258,17 +258,17 @@ class Category extends Master {
             );
 
             const title = document.createElement('p');
-            title.classList.add('color-dark', 'text-sm', 'fw-m');
+            title.classList.add('color-primary', 'text-sm', 'fw-m');
             title.textContent = category.name;
 
             const actionWrapper = document.createElement('div');
             actionWrapper.classList.add('d-flex', 'justify-start', 'items-center', 'gap-sm');
 
             const editBtn = document.createElement('button');
-            editBtn.classList.add('radius-lg', 'bd-primary', 'pt-md', 'bg-third', 'h-36', 'pt-btn-primary');
+            editBtn.classList.add('radius-lg', 'bd-shadow-secondary', 'pt-md', 'bg-tertiary', 'h-36', 'pt-btn-primary', 'hover-scale');
 
             const editImg = document.createElement('img');
-            editImg.src = '/imgs/pencil-dark.svg'; 
+            editImg.src = '/imgs/pencil-light.svg';
             editImg.alt = 'Editar';
             editImg.classList.add('img-size-15');
             editBtn.type = 'button';
@@ -281,16 +281,16 @@ class Category extends Master {
                 this.utils.removeElements('.container-edit-category');
 
                 const buttonsConfig = [
-                    { 
-                        text: "Cancelar", 
-                        type: "cancel", 
+                    {
+                        text: "Cancelar",
+                        type: "cancel",
                         event: ()=>{
                             const container = card.children[1];
                             if (container) container.remove();
                         }
                     },
-                    { 
-                        text: "Salvar", 
+                    {
+                        text: "Salvar",
                         type: "save",
                         event:  (event)=>{
 
@@ -312,15 +312,15 @@ class Category extends Master {
                 }
 
                 const editContainer = this.createContainerEdit(configContainer, buttons);
-                
+
                 card.append(editContainer);
             })
 
             const deleteBtn = document.createElement('button');
-            deleteBtn.classList.add('radius-lg', 'bd-primary', 'pt-md', 'bg-third', 'h-36', 'pt-btn-primary');
+            deleteBtn.classList.add('radius-lg', 'bd-shadow-secondary', 'pt-md', 'bg-tertiary', 'h-36', 'pt-btn-primary', 'hover-scale');
 
             const deleteImg = document.createElement('img');
-            deleteImg.src = '/imgs/trash-dark.svg'; 
+            deleteImg.src = '/imgs/trash-light.svg';
             deleteImg.alt = 'Deletar';
             deleteImg.classList.add('img-size-15');
             deleteBtn.type = 'button';
@@ -333,16 +333,16 @@ class Category extends Master {
                 this.utils.removeElements('.container-edit-category');
 
                 const buttonsConfig = [
-                    { 
-                        text: "Cancelar", 
-                        type: "cancel", 
+                    {
+                        text: "Cancelar",
+                        type: "cancel",
                         event: ()=>{
                             const container = card.children[1];
                             if (container) container.remove();
                         }
                     },
-                    { 
-                        text: "Deletar", 
+                    {
+                        text: "Deletar",
                         type: "delete",
                         event:  (event)=>{
 
@@ -362,7 +362,7 @@ class Category extends Master {
                 }
 
                 const deleteCategory = this.createContainerDelete(configContainer, buttons);
-                
+
                 card.append(deleteCategory);
             })
 
@@ -387,7 +387,7 @@ class Category extends Master {
         }else{
             document.querySelector('.category-count').innerText = "";
         }
-        
+
         const cards = this.createCardCategory();
         container.append(...cards);
 
@@ -430,7 +430,7 @@ class Category extends Master {
             }
 
             console.log(error)
-            
+
             toastr.error(message, 'Categoria', { timeOut: 2000 });
 
             setTimeout(() => {
@@ -454,11 +454,11 @@ class Category extends Master {
 
             if (response.status === 200 && response.data.status === 'success') {
 
-        
+
                 this.utils.removeElements('.container-delete-category');
                 this.utils.removeElements('.container-edit-category');
 
-                this.categories?.splice(0, this.categories.length, 
+                this.categories?.splice(0, this.categories.length,
                     ...this.categories.filter((category) => category.id !== id)
                 );
 
@@ -476,7 +476,7 @@ class Category extends Master {
             }
 
             console.log(error)
-            
+
             toastr.error(message, 'Categoria', { timeOut: 2000 });
 
             setTimeout(() => {
@@ -503,11 +503,11 @@ class Category extends Master {
             });
 
             if (response.status === 200 && response.data.status === 'success') {
-        
+
                 this.utils.removeElements('.container-delete-category');
                 this.utils.removeElements('.container-edit-category');
 
-                this.categories?.splice(0, this.categories.length, 
+                this.categories?.splice(0, this.categories.length,
                     ...this.categories.filter((category) => category.id !== id)
                 );
 
@@ -527,7 +527,7 @@ class Category extends Master {
             }
 
             console.log(error)
-            
+
             toastr.error(message, 'Categoria', { timeOut: 2000 });
 
             setTimeout(() => {

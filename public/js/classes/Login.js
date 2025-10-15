@@ -1,9 +1,11 @@
 import Utils from './Utils.js';
+import PageLoading from './PageLoading.js';
 
 class Login {
 
     constructor() {
         this.utils = new Utils(); 
+        this.pageLoading = new PageLoading();
     }
 
     
@@ -30,11 +32,16 @@ class Login {
 
             if (response.status === 200 && response.data.status === 'success') {
 
-                toastr.success(response.data.message, 'Login', { timeOut: 2000 });
+                document.querySelector("body > div:nth-child(1)").remove();
 
-                setTimeout(() => {
-                    window.location.href = response.data.data.redirect_url;
-                }, 2000);
+                this.pageLoading.init();
+                
+                setTimeout(()=>{
+                    this.pageLoading.removePageLoading();
+                    setTimeout(()=>{
+                        window.location.href = response.data.data.redirect_url;
+                    }, 1200)
+                }, 2000)
 
             }
         } catch (error) {

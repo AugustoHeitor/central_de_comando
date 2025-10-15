@@ -1,24 +1,38 @@
 class Utils {
 
-    addScrollY(selector) {
-    
-        const container = document.querySelector(selector);
+   addScrollY(selector, main = false) {
 
+        const container = document.querySelector(selector);
         if (!container) return;
 
-        if (container.scrollHeight > container.clientHeight) {
-            container.classList.add('scroll-auto');
-        } else {
-            container.classList.remove('scroll-auto');
+        let scrollHeight = container.scrollHeight;
+        let clientHeight = container.clientHeight;
+
+        if (main) {
+            const mainElement = document.querySelector("main");
+            if (!mainElement) return;
+            scrollHeight = mainElement.scrollHeight;
+            clientHeight = mainElement.clientHeight;
         }
 
+        const isOverflowing = scrollHeight >= clientHeight;
+
+        if (isOverflowing) {
+            if (!container.classList.contains("scroll-auto")) {
+                container.classList.add("scroll-auto");
+            }
+        } else {
+            if (container.classList.contains("scroll-auto")) {
+                container.classList.remove("scroll-auto");
+            }
+        }
     }
 
     openDropdown(selector){
-    
+
         const selectedDropdown = document.querySelector(selector);
         const dropdowns = document.querySelectorAll(selector);
-        const dropdownArray = Array.from(dropdowns); 
+        const dropdownArray = Array.from(dropdowns);
 
         if(dropdownArray.length > 0){
             dropdownArray.forEach((dropdown) => {
@@ -31,7 +45,7 @@ class Utils {
                 }
             })
         }
-    
+
         if(selectedDropdown){
             if(selectedDropdown.classList.contains('d-flex')){
                 selectedDropdown.classList.remove('d-flex');
@@ -57,9 +71,9 @@ class Utils {
     getFormValues(form) {
 
         const data = {};
-        
+
         const fields = form.querySelectorAll('input, textarea, select');
-        
+
         fields.forEach(field => {
             if (field.name) {
             if (field.type === 'file') {
@@ -84,7 +98,7 @@ class Utils {
     }
 
     formatDate(isoDate, type) {
-        const date = new Date(isoDate + 'T00:00:00Z'); 
+        const date = new Date(isoDate + 'T00:00:00Z');
 
         const day = String(date.getUTCDate()).padStart(2, '0');
         const month = String(date.getUTCMonth() + 1).padStart(2, '0');
@@ -96,7 +110,7 @@ class Utils {
             return `${day}/${month}/${year}`;
         }
     }
-   
+
     navigation(btnSelector, activeSelector, filterCallback, storagePrefix, navigationName) {
 
         const buttons = document.querySelectorAll(btnSelector);
@@ -138,7 +152,7 @@ class Utils {
     getParams(storagePrefix, paramKeys) {
 
         const params = {};
-        
+
         if (!Array.isArray(paramKeys)) {
             return {};
         }
@@ -161,6 +175,13 @@ class Utils {
 
     setLocalStroageParam(storagePrefix, paramKey, value){
         localStorage.setItem(`${storagePrefix}_param_${paramKey}`, value);
+    }
+
+    formatToBRLCurrency(number){
+        return number.toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL"
+        })
     }
 }
 

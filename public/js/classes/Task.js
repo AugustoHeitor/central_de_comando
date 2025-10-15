@@ -1,4 +1,5 @@
-import Modal  from './Modal.js';
+import Modal  from './components/Modal.js';
+import Dropdown  from './components/Dropdown.js';
 import Utils from './Utils.js';
 import Master from './Master.js';
 
@@ -11,8 +12,7 @@ class Task extends Master {
         this.endpoint = endpoint;
         this.localStorageName = "tasks";
         this.url = this.baseUrl + endpoint;
-        this.utils = new Utils(); 
-        this.modal = new Modal(); 
+        this.utils = new Utils();
         this.paramKeysFilter = [
             'status',
             'priority',
@@ -20,425 +20,20 @@ class Task extends Master {
             'start_deadline',
             'end_deadline',
         ];
-
         this.paramKeysOrder = [
             { name: "Sem Ordenação", value: "none" },
             { name: "Prazo", value: "deadline" },
             { name: "Prioridade", value: "priority" },
         ];
+
+        this.components = {
+            'modal': new Modal(),
+            'dropdown': new Dropdown(this.localStorageName, this.paramKeysFilter, this.filterTasks.bind(this)),
+        };
     }
 
     init() {
         this.filterTasks();
-    }
-
-    createContentModal(task = null) {
-
-        const categories = this.categories.map((category) => ({
-            value: category.id,
-            text: category.name
-        }));
-
-        const container = document.createElement('div');
-        container.classList.add('w-full', 'h-full', 'd-flex', 'align-start', 'justify-start', 'flex-column', 'gap-lg', 'scroll-auto');
-
-        function createInputGroup({ iconSrc, iconAlt, labelFor, labelText, inputElement }) {
-            const group = document.createElement('div');
-            group.classList.add('w-full', 'd-flex', 'flex-column', 'justify-start', 'items-start', 'gap-sm');
-
-            const labelWrapper = document.createElement('div');
-            labelWrapper.classList.add('d-flex', 'justify-start', 'items-center', 'gap-sm');
-
-            const icon = document.createElement('img');
-            icon.src = iconSrc;
-            icon.alt = iconAlt;
-            icon.classList.add('img-size-15');
-
-            const label = document.createElement('label');
-            label.classList.add('color-dark', 'text-base', 'fw-m');
-            label.setAttribute('for', labelFor);
-            label.textContent = labelText;
-
-            labelWrapper.append(icon);
-            labelWrapper.append(label);
-
-            const inputWrapper = document.createElement('div');
-            inputWrapper.classList.add('d-flex', 'items-center', 'justify-between', 'w-full', 'bg-light', 'pt-input-primary', 'bd-primary', 'radius-lg');
-            inputWrapper.append(inputElement);
-
-            group.append(labelWrapper);
-            group.append(inputWrapper);
-
-            return group;
-        }
-
-        const titleInput = document.createElement('input');
-        titleInput.value = task?.title ? task.title : "";
-        titleInput.required = true;
-        titleInput.type = 'text';
-        titleInput.name = 'title';
-        titleInput.classList.add('text-base', 'color-secondary', 'w-full');
-        container.append(createInputGroup({
-            iconSrc: 'imgs/heading-dark.svg',
-            iconAlt: 'Título',
-            labelFor: 'title',
-            labelText: 'Título',
-            inputElement: titleInput
-        }));
-
-        const descGroup = document.createElement('div');
-        descGroup.classList.add('w-full', 'd-flex', 'flex-column', 'justify-start', 'items-start', 'gap-sm');
-
-        const descLabelWrapper = document.createElement('div');
-        descLabelWrapper.classList.add('d-flex', 'justify-start', 'items-center', 'gap-sm');
-
-        const descIcon = document.createElement('img');
-        descIcon.src = 'imgs/text-dark.svg';
-        descIcon.alt = 'Descrição';
-        descIcon.classList.add('img-size-15');
-
-        const descLabel = document.createElement('label');
-        descLabel.classList.add('color-dark', 'text-base', 'fw-m');
-        descLabel.setAttribute('for', 'description');
-        descLabel.textContent = 'Descrição';
-
-        descLabelWrapper.append(descIcon);
-        descLabelWrapper.append(descLabel);
-
-        const descWrapper = document.createElement('div');
-        descWrapper.classList.add('w-full', 'h-mn-300', 'bg-light', 'pt-right-sm', 'bd-primary', 'radius-lg');
-
-        const descTextarea = document.createElement('textarea');
-        descTextarea.value = task?.description ? task.description : "";
-        descTextarea.name = 'description';
-        descTextarea.classList.add('w-full', 'h-full', 'text-base', 'color-secondary', 'pt-input-primary');
-
-        descWrapper.append(descTextarea);
-        descGroup.append(descLabelWrapper);
-        descGroup.append(descWrapper);
-        container.append(descGroup);
-
-        const fieldsWrapper = document.createElement('div');
-        fieldsWrapper.classList.add('d-flex', 'w-full', 'align-start', 'justify-start', 'gap-lg', 'flex-wrap');
-
-        const fields = [
-            {
-                name: 'status',
-                icon: 'imgs/columns-dark.svg',
-                label: 'Status',
-                options: [
-                    { value: 'to_do', text: 'A fazer' },
-                    { value: 'in_progress', text: 'Em andamento' },
-                    { value: 'done', text: 'Concluído' }
-                ]
-            },
-            {
-                name: 'priority',
-                icon: 'imgs/circle-exclamation-dark.svg',
-                label: 'Prioridade',
-                options: [
-                    { value: 'low', text: 'Baixa' },
-                    { value: 'medium', text: 'Média' },
-                    { value: 'urgent', text: 'Urgente' }
-                ]
-            },
-            {
-                name: 'category_id',
-                icon: 'imgs/tag-dark.svg',
-                label: 'Categorias',
-                options: categories
-            }
-        ];
-
-        fields.forEach((field) => {
-            const group = document.createElement('div');
-            group.classList.add('w-full', 'd-flex', 'flex-column', 'justify-start', 'items-start', 'gap-sm', 'cnt-input-w');
-
-            const labelWrapper = document.createElement('div');
-            labelWrapper.classList.add('d-flex', 'justify-start', 'items-center', 'gap-sm');
-
-            const icon = document.createElement('img');
-            icon.src = field.icon;
-            icon.alt = field.label;
-            icon.classList.add('img-size-15');
-
-            const label = document.createElement('label');
-            label.classList.add('color-dark', 'text-base', 'fw-m');
-            label.setAttribute('for', field.name);
-            label.textContent = field.label;
-
-            labelWrapper.append(icon);
-            labelWrapper.append(label);
-
-            const selectWrapper = document.createElement('div');
-            selectWrapper.classList.add('w-full', 'bg-light', 'radius-lg', 'bd-primary', 'pt-input-primary');
-
-            const select = document.createElement('select');
-            select.name = field.name;
-            select.required = true;
-            select.classList.add('w-full', 'text-base', 'color-secondary', 'h-21');
-
-            field.options.forEach(opt => {
-                const option = document.createElement('option');
-                option.value = opt.value;
-
-                if(task){
-                    if (task[field.name] == opt.value) {
-                        option.selected = true;
-                    }
-                }
-
-                option.textContent = opt.text;
-                select.append(option);
-            });
-
-            selectWrapper.append(select);
-            group.append(labelWrapper);
-            group.append(selectWrapper);
-            fieldsWrapper.append(group);
-        });
-
-        const deadlineGroup = document.createElement('div');
-        deadlineGroup.classList.add('w-full', 'd-flex', 'flex-column', 'justify-start', 'items-start', 'gap-sm', 'cnt-input-w');
-
-        const deadlineLabelWrapper = document.createElement('div');
-        deadlineLabelWrapper.classList.add('d-flex', 'justify-start', 'items-center', 'gap-sm');
-
-        const deadlineIcon = document.createElement('img');
-        deadlineIcon.src = 'imgs/calendar-week-dark.svg';
-        deadlineIcon.alt = 'Tempo';
-        deadlineIcon.classList.add('img-size-15');
-
-        const deadlineLabel = document.createElement('label');
-        deadlineLabel.classList.add('color-dark', 'text-base', 'fw-m');
-        deadlineLabel.setAttribute('for', 'deadline');
-        deadlineLabel.textContent = 'Prazo';
-
-        deadlineLabelWrapper.append(deadlineIcon);
-        deadlineLabelWrapper.append(deadlineLabel);
-
-        const deadlineWrapper = document.createElement('div');
-        deadlineWrapper.classList.add('w-full', 'bg-light', 'radius-lg', 'bd-primary', 'pt-input-primary');
-
-        const deadlineInput = document.createElement('input');
-        deadlineInput.required = true;
-        deadlineInput.type = 'date';
-        deadlineInput.name = 'deadline';
-        deadlineInput.classList.add('w-full', 'text-base', 'color-secondary', 'h-21');
-        
-        if(task?.deadline){
-            const taskDeadline = this.utils.formatDate(task?.deadline, 'iso'); 
-            deadlineInput.value = taskDeadline;  
-        }else{
-            const dateToday = this.utils.formatDate(new Date().toISOString().split('T')[0], 'iso'); 
-            deadlineInput.value = dateToday;  
-        }
-
-        deadlineWrapper.append(deadlineInput);
-        deadlineGroup.append(deadlineLabelWrapper);
-        deadlineGroup.append(deadlineWrapper);
-        fieldsWrapper.append(deadlineGroup);
-
-        container.append(fieldsWrapper);
-
-        return container;
-    }
-
-    createCardTask() {
-
-        document.querySelector('#task-section').innerHTML = "";
-
-        const parameter = this.utils.getParams(this.localStorageName, ['order']);
-
-        let orderedTasks = this.sortTasks(this.tasks, parameter.order);
-        
-        orderedTasks?.forEach((task)=>{
-            const card = document.createElement('div');
-
-            card.classList.add(
-                'overflow-hidden', 'h-mn-157', 'radius-lg', 'pointer',
-                'd-flex', 'flex-column', 'justify-start', 'items-start',
-                'gap-md', 'w-full', 'bg-light', 'bd-primary', 'radius-sm'
-            );
-
-            const topContent = document.createElement('div');
-            topContent.classList.add('d-flex', 'flex-column', 'justify-start', 'items-start', 'gap-md', 'w-full');
-
-            const header = document.createElement('div');
-            header.classList.add('w-full', 'd-flex', 'justify-between', 'items-center', 'gap-md', 'pt-top-md', 'pt-left-md', 'pt-right-md');
-
-            const title = document.createElement('h3');
-            title.classList.add('color-third', 'fw-m', 'text-sm');
-            title.textContent = task.title;
-
-            const priorityBadge = document.createElement('span');
-            priorityBadge.classList.add('d-flex', 'justify-center', 'items-center', 'badge-high', 'w-70', 'radius-lg', 'text-xs', 'pt-xs');
-
-            priorityBadge.textContent = task.priority.charAt(0).toUpperCase() + task.priority.slice(1);
-
-            header.append(title, priorityBadge);
-
-            const description = document.createElement('p');
-            description.classList.add('txt-2-lines', 'color-secondary', 'd-flex', 'justify-start', 'items-start', 'text-sm', 'h-36', 'pt-left-md', 'pt-right-md');
-            description.textContent = task.description || 'Sem descrição';
-
-            topContent.append(header, description);
-
-            const footer = document.createElement('div');
-            footer.classList.add('w-full', 'd-flex', 'justify-start', 'items-center', 'gap-lg', 'bd-top', 'bg-third', 'pt-left-md', 'pt-right-md', 'pt-top-md', 'pt-bottom-md', 'flex-wrap');
-
-            const createInfoItem = (imgSrc, altText, spanText) => {
-                const wrapper = document.createElement('div');
-                wrapper.classList.add('d-flex', 'justify-start', 'items-center', 'gap-sm');
-
-                const icon = document.createElement('img');
-                icon.src = imgSrc;
-                icon.alt = altText;
-                icon.classList.add('img-size-10');
-
-                const text = document.createElement('span');
-                text.classList.add('color-secondary', 'text-xs');
-                text.textContent = spanText;
-
-                wrapper.append(icon, text);
-                return wrapper;
-            };
-
-            const categoryName = this.categories.find(category => category.id == task.category_id)?.name;
-
-            footer.append(
-                createInfoItem('imgs/clock.svg', 'Iniciar', task.duration || '00:00:00'),
-                createInfoItem('imgs/calendar-week.svg', 'Prazo', this.utils.formatDate(task.deadline, null)),
-                createInfoItem('imgs/tag.svg', 'Categoria', categoryName)
-            );
-
-            card.append(topContent, footer);
-
-            card.addEventListener('click', (e) => {
-                this.openModal('save', task);
-            });
-
-            document.querySelector('#task-section').append(card);
-        })
-
-        this.utils.addScrollY('#task-section');
-    }
-
-    openModal(type, task = null){
-
-        if(document.querySelector('.screen-modal')){
-            document.querySelector('.screen-modal').remove();
-        }
-
-        if(type === 'add'){
-            const buttonsConfig = [
-                { 
-                    text: "Cancelar", 
-                    type: "cancel", 
-                    event: ()=>{
-                        document.querySelector('.screen-modal').remove();
-                    }
-                },
-                { 
-                    text: "Adicionar", 
-                    type: "add"
-                },
-            ];
-
-            const buttons = this.modal.createButtons(buttonsConfig);
-
-            const modalConfig = { 
-                title: "Criar Tarefa", 
-                img: "imgs/list-check-dark.svg",
-                class: ["h-full", "w-full", "w-mx-1000"],
-                visible: {
-                    'footer': true,
-                },
-                csrfToken: true,
-                event: (e)=>{
-                    e.preventDefault();
-
-                    const formModal = document.querySelector('#form-modal');
-                    const buttonSubmit = e.submitter;
-
-                    const formData = this.utils.getFormValues(formModal);
-
-                    this.createTask(formData, buttonSubmit);
-                }
-            };
-
-            const content = this.createContentModal();
-
-            this.modal.createModal(modalConfig, content, buttons);
-        }else if(type === "save"){
-            const buttonsConfig = [
-                { 
-                    text: "Deletar", 
-                    type: "delete", 
-                    event: ()=>{
-
-                        const configContainer = {
-                            'message': `Tem certeza de que deseja excluir a tarefa ${task.title}?`,
-                            'messageWarning': 'Atenção: essa ação não poderá ser desfeita. Você irá excluir todas as informações que estão interligadas a esta tarefa.',
-                            'class': ['container-delete-task'],
-                            'title': 'Tarefa'
-                        }
-
-                        const buttonsConfig = [
-                            { 
-                                text: "Cancelar", 
-                                type: "cancel", 
-                                event: ()=>{
-                                    this.openModal('save', task)
-                                }
-                            },
-                            { 
-                                text: "Deletar", 
-                                type: "delete",
-                                event: (event)=>{
-                                    const button = event.target;
-                                    const csrfToken = document.querySelector('input[name="_token"]').value;
-                                    this.deleteTask(button, csrfToken, task.id);
-                                }
-                            }
-                        ];
-
-                        this.modal.createContainerDelete(configContainer, buttonsConfig);
-                    }
-                },
-                { 
-                    text: "Salvar", 
-                    type: "save"
-                },
-            ];
-
-            const buttons = this.modal.createButtons(buttonsConfig);
-
-            const modalConfig = { 
-                title: "Editar Tarefa", 
-                img: "imgs/list-check-dark.svg",
-                class: ["h-full", "w-full", "w-mx-1000"],
-                visible: {
-                    'footer': true,
-                },
-                csrfToken: true,
-                event: (e)=>{
-                    e.preventDefault();
-
-                    const formModal = document.querySelector('#form-modal');
-                    const buttonSubmit = e.submitter;
-
-                    const formData = this.utils.getFormValues(formModal);
-
-                    this.updateTask(formData, buttonSubmit, task?.id);
-                    
-                }
-            };
-
-            const content = this.createContentModal(task);
-
-            this.modal.createModal(modalConfig, content, buttons);
-        }
     }
 
     async getAllTasks(params){
@@ -497,7 +92,7 @@ class Task extends Master {
             }
 
             console.log(error)
-            
+
             toastr.error(message, 'Tarefa', { timeOut: 2000 });
 
             setTimeout(() => {
@@ -521,7 +116,7 @@ class Task extends Master {
 
             if (response.status === 200 && response.data.status === 'success') {
 
-                this.tasks?.splice(0, this.tasks.length, 
+                this.tasks?.splice(0, this.tasks.length,
                     ...this.tasks.filter((task) => task.id !== id)
                 );
 
@@ -552,7 +147,7 @@ class Task extends Master {
             }
 
             console.log(error)
-            
+
             toastr.error(message, 'Tarefa', { timeOut: 2000 });
 
             setTimeout(() => {
@@ -580,7 +175,7 @@ class Task extends Master {
                     document.querySelector('.screen-modal').remove();
                 }
 
-                this.tasks?.splice(0, this.tasks.length, 
+                this.tasks?.splice(0, this.tasks.length,
                     ...this.tasks.filter((task) => task.id !== id)
                 );
 
@@ -598,7 +193,7 @@ class Task extends Master {
             }
 
             console.log(error)
-            
+
             toastr.error(message, 'Tarefa', { timeOut: 2000 });
 
             setTimeout(() => {
@@ -606,7 +201,7 @@ class Task extends Master {
             }, 2000);
 
         }
-        
+
     }
 
     async filterTasks() {
@@ -615,151 +210,474 @@ class Task extends Master {
 
         const result = await this.getAllTasks(params);
 
-        this.tasks?.splice(0, this.tasks.length, 
+        this.tasks?.splice(0, this.tasks.length,
             ...result
         );
 
         this.createCardTask();
     }
 
-    createDropdownFilter(selectorContainer, selectorDropdown) {
+    sortTasks(tasks, order){
 
-        const widthWindow = window.screen.width
-    
-        if(widthWindow <= 800){
+        let orderedTasks = [...tasks];
 
-            const containerDropdown = document.querySelector("body");
-            const screen = document.createElement("div");
-            screen.classList.add("screen-modal");
+        if (order === "deadline") {
 
-            screen.addEventListener("click", (event)=>{
-                if (event.target === screen) {
-                    screen.remove();
-                }
-            })
+            orderedTasks.sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
 
-            if (!containerDropdown.querySelector('screen-modal')) {
+        } else if (order === "priority") {
 
-                const categories = this.categories.map((category) => ({
-                    value: category.id,
-                    label: category.name
-                }));
+            const priorityOrder = ['urgent', 'medium', 'low'];
 
-                categories.unshift({
-                    value: "",
-                    label: "Todas"
-                });
+            orderedTasks.sort((a, b) => {
+                return priorityOrder.indexOf(a.priority) - priorityOrder.indexOf(b.priority);
+            });
 
-                const dropdown = document.createElement("div");
-
-                const header = document.createElement("div");
-                header.classList.add("w-full", "d-flex", "items-start", "justify-start");
-
-                const buttonClose = document.createElement("button");
-                const imgClose = document.createElement("img");
-
-                const title = document.createElement("h3");
-                const imgTitle = document.createElement("img");
-                
-                const containerTitle = document.createElement("div");
-                
-                const ul = document.createElement('ul');
-                ul.id = selectorDropdown;
-                ul.classList.add(
-                    'w-full', 
-                    'd-flex', 'align-start', 'justify-start',
-                    'flex-column', 'gap-md', 
-                );
-
-                buttonClose.classList.add("d-flex", "items-center", "justify-center", "soft-shake");
-                imgClose.src = "/imgs/xmark-dark.svg";
-                imgClose.classList.add("img-size-15");
-                
-                dropdown.classList.add('w-full', 'bg-light',  'dropdown', 'pt-md', 'd-flex', 'align-start', 'justify-start', 'flex-column', 'gap-md', 'fixed', 'left-0', 'bottom-0')
-
-                containerTitle.classList.add("d-flex", "align-center", "justify-start", "gap-sm");
-                title.classList.add("color-third", "text-xl", "fw-m");
-
-                imgTitle.src="/imgs/filter.svg";
-                imgTitle.classList.add("img-size-20");
-
-                title.innerText = "Filtros"
-
-                header.classList.add("w-full", "d-dlex", "align-center", "justify-between", "gap-md")
-
-                ul.append(
-                    this.createDateDropdown('Prazo Inicial', 'input-start-deadline', 'start_deadline'),
-                    this.createDateDropdown('Prazo Final', 'input-end-deadline', 'end_deadline'),
-                    this.createSelectDropdown('Categorias', 'taskCategories', 'select-category', categories, 'category'),
-                    this.createSelectDropdown('Prioridade', 'priority', 'select-priority', [
-                        { value: '', label: 'Todos' },
-                        { value: 'low', label: 'Baixa' },
-                        { value: 'medium', label: 'Média' },
-                        { value: 'urgent', label: 'Urgente' }
-                    ], 'priority')
-                );
-
-                buttonClose.addEventListener("click", ()=>{
-                    screen.remove();
-                })
-
-                buttonClose.append(imgClose);
-                containerTitle.append(imgTitle, title);
-                header.append(containerTitle, buttonClose);
-                dropdown.append(header, ul);
-                screen.append(dropdown);
-                containerDropdown.append(screen);
-            } else {
-                containerDropdown.querySelector('ul').remove();
-            }
         }else{
+            orderedTasks.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+        }
 
-            const containerDropdown = document.querySelector(selectorContainer);
+        return orderedTasks;
+    }
 
-            if (!containerDropdown.querySelector('ul')) {
+    createCardTask() {
 
-                const categories = this.categories.map((category) => ({
-                    value: category.id,
-                    label: category.name
-                }));
+        document.querySelector('#task-section').innerHTML = "";
 
-                categories.unshift({
-                    value: "",
-                    label: "Todas"
-                });
+        const parameter = this.utils.getParams(this.localStorageName, ['order']);
 
-                const ul = document.createElement('ul');
-                ul.id = selectorDropdown;
-                ul.classList.add(
-                    'dropdown', 'bd-primary', 'z-index-dropdown', 'bg-light',
-                    'pt-md', 'd-flex', 'align-start', 'justify-start',
-                    'flex-column', 'gap-md', 'radius-lg', 'position-absolute', 'mt-top-sm'
-                );
+        let orderedTasks = this.sortTasks(this.tasks, parameter.order);
 
-               ul.append(
-                    this.createDateDropdown('Prazo Inicial', 'input-start-deadline', 'start_deadline'),
-                    this.createDateDropdown('Prazo Final', 'input-end-deadline', 'end_deadline'),
-                    this.createSelectDropdown('Categorias', 'taskCategories', 'select-category', categories, 'category'),
-                    this.createSelectDropdown('Prioridade', 'priority', 'select-priority', [
-                        { value: '', label: 'Todos' },
-                        { value: 'low', label: 'Baixa' },
-                        { value: 'medium', label: 'Média' },
-                        { value: 'urgent', label: 'Urgente' }
-                    ], 'priority')
-                );
+        orderedTasks?.forEach((task, index)=>{
+            const card = document.createElement('div');
 
-                containerDropdown.append(ul);
+            card.classList.add(
+                'overflow-hidden', 'hover-bg-primary', 'h-mn-157', 'radius-lg', 'pointer',
+                'd-flex', 'flex-column', 'justify-start', 'items-start',
+                'gap-md', 'w-full', 'bg-secondary', 'bd-shadow-primary', 'radius-sm'
+            );
 
-            } else {
-                containerDropdown.querySelector('ul').remove();
+            const topContent = document.createElement('div');
+            topContent.classList.add('d-flex', 'flex-column', 'justify-start', 'items-start', 'gap-md', 'w-full');
+
+            const header = document.createElement('div');
+            header.classList.add('w-full', 'd-flex', 'justify-between', 'items-center', 'gap-md', 'pt-top-md', 'pt-left-md', 'pt-right-md');
+
+            const title = document.createElement('h3');
+            title.classList.add('color-primary', 'fw-m', 'text-sm', "txt-1-line-mobile");
+            title.textContent = task.title;
+
+            const priorityBadge = document.createElement('span');
+            priorityBadge.classList.add('d-flex', 'justify-center', 'items-center', 'w-70', 'radius-lg', 'text-xs', 'pt-xs');
+
+            const priorities = [
+                { value: 'low', label: 'Baixa', class: "badge-low" },
+                { value: 'medium', label: 'Média', class: "badge-medium" },
+                { value: 'urgent', label: 'Urgente', class: "badge-high" }
+            ];
+
+            const priority = priorities.find(p => p.value === task.priority);
+
+            priorityBadge.classList.add(priority.class)
+
+            priorityBadge.textContent = priority.label;
+
+            header.append(title, priorityBadge);
+
+            const description = document.createElement('p');
+            description.classList.add('txt-2-lines', 'color-primary', 'd-flex', 'justify-start', 'items-start', 'text-sm', 'h-36', 'pt-left-md', 'pt-right-md');
+            description.textContent = task.description || 'Sem descrição';
+
+            topContent.append(header, description);
+
+            const footer = document.createElement('div');
+            footer.classList.add('w-full', 'd-flex', 'justify-start', 'items-center', 'gap-lg', 'bd-top', 'pt-left-md', 'pt-right-md', 'pt-top-md', 'pt-bottom-md', 'flex-wrap');
+
+            const createInfoItem = (imgSrc, altText, spanText) => {
+                const wrapper = document.createElement('div');
+                wrapper.classList.add('d-flex', 'justify-start', 'items-center', 'gap-sm');
+
+                const icon = document.createElement('img');
+                icon.src = imgSrc;
+                icon.alt = altText;
+                icon.classList.add('img-size-10');
+
+                const text = document.createElement('span');
+                text.classList.add('color-primary', 'text-xs');
+                text.textContent = spanText;
+
+                wrapper.append(icon, text);
+                return wrapper;
+            };
+
+            const categoryName = this.categories.find(category => category.id == task.category_id)?.name;
+
+            footer.append(
+                createInfoItem('imgs/clock-gray.svg', 'Iniciar', task.duration || '00:00:00'),
+                createInfoItem('imgs/calendar-week-gray.svg', 'Prazo', this.utils.formatDate(task.deadline, null)),
+                createInfoItem('imgs/tag-gray.svg', 'Categoria', categoryName)
+            );
+
+            card.append(topContent, footer);
+
+            card.addEventListener('click', (e) => {
+                this.openModal('save', task);
+            });
+
+            document.querySelector('#task-section').append(card);
+        })
+
+        this.utils.addScrollY('#task-section', true);
+    }
+
+    createCategoryOptions(){
+        const categoryOptions = this.categories.map((category) => ({
+            value: category.id,
+            label: category.name
+        }));
+
+        categoryOptions.unshift({
+            value: "",
+            label: "Todas"
+        });
+
+        return categoryOptions;
+    }
+
+    createContentModal(task = null) {
+
+        const categories = this.categories.map((category) => ({
+            value: category.id,
+            text: category.name
+        }));
+
+        const container = document.createElement('div');
+        container.classList.add('w-full', 'h-full', 'd-flex', 'align-start', 'justify-start', 'flex-column', 'gap-lg', 'scroll-auto');
+
+        function createInputGroup({ iconSrc, iconAlt, labelFor, labelText, inputElement }) {
+            const group = document.createElement('div');
+            group.classList.add('w-full', 'd-flex', 'flex-column', 'justify-start', 'items-start', 'gap-sm');
+
+            const labelWrapper = document.createElement('div');
+            labelWrapper.classList.add('d-flex', 'justify-start', 'items-center', 'gap-sm');
+
+            const icon = document.createElement('img');
+            icon.src = iconSrc;
+            icon.alt = iconAlt;
+            icon.classList.add('img-size-15');
+
+            const label = document.createElement('label');
+            label.classList.add('color-light', 'text-base', 'fw-m');
+            label.setAttribute('for', labelFor);
+            label.textContent = labelText;
+
+            labelWrapper.append(icon);
+            labelWrapper.append(label);
+
+            const inputWrapper = document.createElement('div');
+            inputWrapper.classList.add('d-flex', 'items-center', 'justify-between', 'w-full', 'bg-secondary', 'pt-input-primary', 'bd-primary', 'radius-lg');
+            inputWrapper.append(inputElement);
+
+            group.append(labelWrapper);
+            group.append(inputWrapper);
+
+            return group;
+        }
+
+        const titleInput = document.createElement('input');
+        titleInput.value = task?.title ? task.title : "";
+        titleInput.required = true;
+        titleInput.type = 'text';
+        titleInput.name = 'title';
+        titleInput.classList.add('text-base', 'color-primary', 'w-full');
+        container.append(createInputGroup({
+            iconSrc: 'imgs/heading-light.svg',
+            iconAlt: 'Título',
+            labelFor: 'title',
+            labelText: 'Título',
+            inputElement: titleInput
+        }));
+
+        const descGroup = document.createElement('div');
+        descGroup.classList.add('w-full', 'd-flex', 'flex-column', 'justify-start', 'items-start', 'gap-sm');
+
+        const descLabelWrapper = document.createElement('div');
+        descLabelWrapper.classList.add('d-flex', 'justify-start', 'items-center', 'gap-sm');
+
+        const descIcon = document.createElement('img');
+        descIcon.src = 'imgs/text-light.svg';
+        descIcon.alt = 'Descrição';
+        descIcon.classList.add('img-size-15');
+
+        const descLabel = document.createElement('label');
+        descLabel.classList.add('color-light', 'text-base', 'fw-m');
+        descLabel.setAttribute('for', 'description');
+        descLabel.textContent = 'Descrição';
+
+        descLabelWrapper.append(descIcon);
+        descLabelWrapper.append(descLabel);
+
+        const descWrapper = document.createElement('div');
+        descWrapper.classList.add('w-full', 'h-mn-300', 'bg-secondary', 'pt-right-sm', 'bd-primary', 'radius-lg');
+
+        const descTextarea = document.createElement('textarea');
+        descTextarea.value = task?.description ? task.description : "";
+        descTextarea.name = 'description';
+        descTextarea.classList.add('w-full', 'h-full', 'text-base', 'color-primary', 'pt-input-primary');
+
+        descWrapper.append(descTextarea);
+        descGroup.append(descLabelWrapper);
+        descGroup.append(descWrapper);
+        container.append(descGroup);
+
+        const fieldsWrapper = document.createElement('div');
+        fieldsWrapper.classList.add('d-grid', 'w-full', 'align-start', 'justify-start', 'gap-lg', 'grid-tmp-columns-4', "grid-tmp-columns-3-responsive", "grid-tmp-columns-2-responsive", "grid-tmp-columns-1-responsive");
+
+        const fields = [
+            {
+                name: 'status',
+                icon: 'imgs/columns-light.svg',
+                label: 'Status',
+                options: [
+                    { value: 'to_do', text: 'A fazer' },
+                    { value: 'in_progress', text: 'Em andamento' },
+                    { value: 'done', text: 'Concluído' }
+                ]
+            },
+            {
+                name: 'priority',
+                icon: 'imgs/circle-exclamation-light.svg',
+                label: 'Prioridade',
+                options: [
+                    { value: 'low', text: 'Baixa' },
+                    { value: 'medium', text: 'Média' },
+                    { value: 'urgent', text: 'Urgente' }
+                ]
+            },
+            {
+                name: 'category_id',
+                icon: 'imgs/tag-light.svg',
+                label: 'Categorias',
+                options: categories
             }
+        ];
+
+        fields.forEach((field) => {
+            const group = document.createElement('div');
+            group.classList.add('w-full', 'd-flex', 'flex-column', 'justify-start', 'items-start', 'gap-sm', 'cnt-input-w');
+
+            const labelWrapper = document.createElement('div');
+            labelWrapper.classList.add('d-flex', 'justify-start', 'items-center', 'gap-sm');
+
+            const icon = document.createElement('img');
+            icon.src = field.icon;
+            icon.alt = field.label;
+            icon.classList.add('img-size-15');
+
+            const label = document.createElement('label');
+            label.classList.add('color-light', 'text-base', 'fw-m');
+            label.setAttribute('for', field.name);
+            label.textContent = field.label;
+
+            labelWrapper.append(icon);
+            labelWrapper.append(label);
+
+            const selectWrapper = document.createElement('div');
+            selectWrapper.classList.add('w-full', 'bg-secondary', 'radius-lg', 'bd-primary', 'pt-input-primary');
+
+            const select = document.createElement('select');
+            select.name = field.name;
+            select.required = true;
+            select.classList.add('w-full', 'text-base', 'color-primary', 'h-21');
+
+            field.options.forEach(opt => {
+                const option = document.createElement('option');
+                option.value = opt.value;
+                option.classList.add("color-dark");
+
+                if(task){
+                    if (task[field.name] == opt.value) {
+                        option.selected = true;
+                    }
+                }
+
+                option.textContent = opt.text;
+                select.append(option);
+            });
+
+            selectWrapper.append(select);
+            group.append(labelWrapper);
+            group.append(selectWrapper);
+            fieldsWrapper.append(group);
+        });
+
+        const deadlineGroup = document.createElement('div');
+        deadlineGroup.classList.add('w-full', 'd-flex', 'flex-column', 'justify-start', 'items-start', 'gap-sm', 'cnt-input-w');
+
+        const deadlineLabelWrapper = document.createElement('div');
+        deadlineLabelWrapper.classList.add('d-flex', 'justify-start', 'items-center', 'gap-sm');
+
+        const deadlineIcon = document.createElement('img');
+        deadlineIcon.src = 'imgs/calendar-week-light.svg';
+        deadlineIcon.alt = 'Tempo';
+        deadlineIcon.classList.add('img-size-15');
+
+        const deadlineLabel = document.createElement('label');
+        deadlineLabel.classList.add('color-light', 'text-base', 'fw-m');
+        deadlineLabel.setAttribute('for', 'deadline');
+        deadlineLabel.textContent = 'Prazo';
+
+        deadlineLabelWrapper.append(deadlineIcon);
+        deadlineLabelWrapper.append(deadlineLabel);
+
+        const deadlineWrapper = document.createElement('div');
+        deadlineWrapper.classList.add('w-full', 'bg-secondary', 'radius-lg', 'bd-primary', 'pt-input-primary');
+
+        const deadlineInput = document.createElement('input');
+        deadlineInput.required = true;
+        deadlineInput.type = 'date';
+        deadlineInput.name = 'deadline';
+        deadlineInput.classList.add('w-full', 'text-base', 'color-primary', 'h-21');
+
+        if(task?.deadline){
+            const taskDeadline = this.utils.formatDate(task?.deadline, 'iso');
+            deadlineInput.value = taskDeadline;
+        }else{
+            const dateToday = this.utils.formatDate(new Date().toISOString().split('T')[0], 'iso');
+            deadlineInput.value = dateToday;
+        }
+
+        deadlineWrapper.append(deadlineInput);
+        deadlineGroup.append(deadlineLabelWrapper);
+        deadlineGroup.append(deadlineWrapper);
+        fieldsWrapper.append(deadlineGroup);
+
+        container.append(fieldsWrapper);
+
+        return container;
+    }
+
+    openModal(type, task = null){
+
+        if(document.querySelector('.screen-modal')){
+            document.querySelector('.screen-modal').remove();
+        }
+
+        if(type === 'add'){
+            const buttonsConfig = [
+                {
+                    text: "Cancelar",
+                    type: "cancel",
+                    event: ()=>{
+                        document.querySelector('.screen-modal').remove();
+                    }
+                },
+                {
+                    text: "Adicionar",
+                    type: "add"
+                },
+            ];
+
+            const buttons = this.components.modal.createButtons(buttonsConfig);
+
+            const modalConfig = {
+                title: "Criar Tarefa",
+                img: "imgs/list-check-light.svg",
+                class: ["h-full", "w-full", "w-mx-1000"],
+                visible: {
+                    'footer': true,
+                },
+                csrfToken: true,
+                event: (e)=>{
+                    e.preventDefault();
+
+                    const formModal = document.querySelector('#form-modal');
+                    const buttonSubmit = e.submitter;
+
+                    const formData = this.utils.getFormValues(formModal);
+
+                    this.createTask(formData, buttonSubmit);
+                }
+            };
+
+            const content = this.createContentModal();
+
+            this.components.modal.createModal(modalConfig, content, buttons);
+        }else if(type === "save"){
+            const buttonsConfig = [
+                {
+                    text: "Deletar",
+                    type: "delete",
+                    event: ()=>{
+
+                        const configContainer = {
+                            'message': `Tem certeza de que deseja excluir a tarefa ${task.title}?`,
+                            'messageWarning': 'Atenção: essa ação não poderá ser desfeita. Você irá excluir todas as informações que estão interligadas a esta tarefa.',
+                            'class': ['container-delete-task'],
+                            'title': 'Tarefa'
+                        }
+
+                        const buttonsConfig = [
+                            {
+                                text: "Cancelar",
+                                type: "cancel",
+                                event: ()=>{
+                                    this.openModal('save', task)
+                                }
+                            },
+                            {
+                                text: "Deletar",
+                                type: "delete",
+                                event: (event)=>{
+                                    const button = event.target;
+                                    const csrfToken = document.querySelector('input[name="_token"]').value;
+                                    this.deleteTask(button, csrfToken, task.id);
+                                }
+                            }
+                        ];
+
+                        this.components.modal.createContainerDelete(configContainer, buttonsConfig);
+                    }
+                },
+                {
+                    text: "Salvar",
+                    type: "save"
+                },
+            ];
+
+            const buttons = this.components.modal.createButtons(buttonsConfig);
+
+            const modalConfig = {
+                title: "Editar Tarefa",
+                img: "imgs/list-check-light.svg",
+                class: ["h-full", "w-full", "w-mx-1000"],
+                visible: {
+                    'footer': true,
+                },
+                csrfToken: true,
+                event: (e)=>{
+                    e.preventDefault();
+
+                    const formModal = document.querySelector('#form-modal');
+                    const buttonSubmit = e.submitter;
+
+                    const formData = this.utils.getFormValues(formModal);
+
+                    this.updateTask(formData, buttonSubmit, task?.id);
+
+                }
+            };
+
+            const content = this.createContentModal(task);
+
+            this.components.modal.createModal(modalConfig, content, buttons);
         }
     }
 
     createDropdownOrder(selectorContainer, selectorDropdown) {
 
         const widthWindow = window.screen.width
-    
+
         if(widthWindow <= 800){
 
             const containerDropdown = document.querySelector("body");
@@ -785,16 +703,16 @@ class Task extends Master {
 
                 const title = document.createElement("h3");
                 const imgTitle = document.createElement("img");
-                
+
                 const containerTitle = document.createElement("div");
-                
+
                 const ul = document.createElement('ul');
 
                 ul.id = selectorDropdown;
                 ul.classList.add(
-                    'w-full', 
+                    'w-full',
                     'd-flex', 'align-start', 'justify-start',
-                    'flex-column', 'gap-md', 
+                    'flex-column', 'gap-md',
                 );
 
                 const markItem = (ul, button, value)=>{
@@ -824,7 +742,7 @@ class Task extends Master {
                     button.textContent = text;
                     button.classList.add(
                         'd-flex', 'justify-start', 'items-center', 'w-full', 'pt-md',
-                        'text-sm', 'color-third', 'fw-sb', 'text-align-start'
+                        'text-sm', 'color-primary', 'fw-nm', 'text-align-start'
                     );
 
                     li.append(button);
@@ -845,26 +763,30 @@ class Task extends Master {
                     return li;
                 }
 
-                this.paramKeysOrder.forEach((order) => {
-                    ul.append(createListItem(order.value, order.name));
+                this.paramKeysOrder.forEach((order, index) => {
+                    if(this.paramKeysOrder.length === index + 1){
+                        ul.append(createListItem(order.value, order.name, false));
+                    }else{
+                        ul.append(createListItem(order.value, order.name));
+                    }
                 });
 
                 buttonClose.classList.add("d-flex", "items-center", "justify-center", "soft-shake");
-                imgClose.src = "/imgs/xmark-dark.svg";
+                imgClose.src = "/imgs/xmark-light.svg";
                 imgClose.classList.add("img-size-15");
-                
-                dropdown.classList.add('w-full', 'bg-light',  'dropdown', 'pt-md', 'd-flex', 'align-start', 'justify-start', 'flex-column', 'gap-md', 'fixed', 'left-0', 'bottom-0')
+
+                dropdown.classList.add('w-full', 'bg-secondary',  'dropdown', 'pt-md', 'd-flex', 'align-start', 'justify-start', 'flex-column', 'gap-md', 'fixed', 'left-0', 'bottom-0')
 
                 containerTitle.classList.add("d-flex", "align-center", "justify-start", "gap-sm");
-                title.classList.add("color-third", "text-xl", "fw-m");
+                title.classList.add("color-light", "text-xl", "fw-m");
 
-                imgTitle.src="/imgs/sort.svg";
+                imgTitle.src="/imgs/sort-light.svg";
                 imgTitle.classList.add("img-size-15");
 
                 title.innerText = "Ordem"
 
                 header.classList.add("w-full", "d-dlex", "align-center", "justify-between", "gap-md")
-                
+
                 buttonClose.addEventListener("click", ()=>{
                     screen.remove();
                 })
@@ -884,12 +806,15 @@ class Task extends Master {
             const containerDropdown = document.querySelector(selectorContainer);
 
             if(!containerDropdown.querySelector('ul')){
+
+                this.utils.removeElements(".dropdown");
+
                 const ul = document.createElement('ul');
 
                 ul.id = selectorDropdown;
                 ul.classList.add(
                 'overflow-hidden', 'w-160', 'dropdown', 'bd-primary', 'z-index-dropdown',
-                'bg-light', 'align-start', 'justify-start', 'flex-column',
+                'bg-secondary', 'align-start', 'justify-start', 'flex-column',
                 'radius-lg', 'position-absolute', 'mt-top-sm'
                 );
 
@@ -920,7 +845,7 @@ class Task extends Master {
                     button.textContent = text;
                     button.classList.add(
                         'd-flex', 'justify-start', 'items-center', 'w-full', 'pt-md',
-                        'text-sm', 'color-third', 'fw-sb', 'text-align-start'
+                        'text-sm', 'color-primary', 'fw-nm', 'text-align-start'
                     );
 
                     li.append(button);
@@ -941,130 +866,23 @@ class Task extends Master {
                     return li;
                 }
 
-                this.paramKeysOrder.forEach((order) => {
-                    ul.append(createListItem(order.value, order.name));
+                this.paramKeysOrder.forEach((order, index) => {
+                    if(this.paramKeysOrder.length === index + 1){
+                        ul.append(createListItem(order.value, order.name, false));
+                    }else{
+                        ul.append(createListItem(order.value, order.name));
+                    }
                 });
 
                 document.querySelector(selectorContainer).append(ul);
 
             }else{
-                containerDropdown.querySelector('ul').remove();
+                this.utils.removeElements(".dropdown");
             }
         }
 
     }
 
-    createDateDropdown(labelText, inputClass, storageKey) {
-
-        const params = this.utils.getParams(this.localStorageName, this.paramKeysFilter);
-   
-        const li = document.createElement('li');
-
-        const container = document.createElement('div');
-        container.classList.add('w-full', 'd-flex', 'flex-column', 'justify-start', 'items-start', 'gap-sm', 'cnt-input-w');
-
-        const label = document.createElement('label');
-        label.classList.add('text-sm', 'color-third', 'fw-m');
-        label.textContent = labelText;
-        label.setAttribute('for', storageKey);
-
-        const divInput = document.createElement('div');
-        divInput.classList.add('w-full', 'bg-light', 'radius-lg', 'bd-primary');
-
-        const input = document.createElement('input');
-        input.type = 'date';
-        input.name = storageKey;
-        input.classList.add('pt-input-primary', inputClass, 'w-full', 'text-sm', 'color-secondary');
-
-        input.addEventListener('blur', () => {
-            const value = input.value || null;
-            this.utils.setLocalStroageParam(this.localStorageName, storageKey, value);
-            this.filterTasks();
-        });
-
-        if (params[storageKey] != null) {
-            input.value = params[storageKey];
-        }
-
-        divInput.append(input);
-        container.append(label, divInput);
-        li.append(container);
-
-        return li;
-    }
-
-    createSelectDropdown(labelText, name, selectClass, options, storageKey) {
-        const params = this.utils.getParams(this.localStorageName, this.paramKeysFilter);
-
-        const li = document.createElement('li');
-
-        const container = document.createElement('div');
-        container.classList.add('w-full', 'd-flex', 'flex-column', 'justify-start', 'items-start', 'gap-sm', 'cnt-input-w');
-
-        const label = document.createElement('label');
-        label.classList.add('text-sm', 'color-third', 'fw-m');
-        label.textContent = labelText;
-        label.setAttribute('for', name);
-
-        const divSelect = document.createElement('div');
-        divSelect.classList.add('w-full', 'bg-light', 'radius-lg', 'bd-primary');
-
-        const select = document.createElement('select');
-        select.name = name;
-        select.classList.add('pt-input-primary', selectClass, 'w-full', 'text-sm', 'color-secondary');
-
-        options.forEach(opt => {
-            const option = document.createElement('option');
-            option.value = opt.value;
-            option.textContent = opt.label;
-
-            if (params[storageKey] == option.value) {
-                option.selected = true;
-            }else if(params[storageKey] == null){
-                if(opt.value === ""){
-                    option.selected = true;
-                }
-            }
-
-            select.append(option);
-        });
-
-        select.addEventListener('change', () => {
-            const value = select.value || null;
-            this.utils.setLocalStroageParam(this.localStorageName, storageKey, value);
-            this.filterTasks();
-        });
-
-        divSelect.append(select);
-        container.append(label, divSelect);
-        li.append(container);
-
-        return li;
-    }
-
-    sortTasks(tasks, order){
-
-        let orderedTasks = [...tasks];
-
-        if (order === "deadline") {
-
-            orderedTasks.sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
-
-        } else if (order === "priority") {
-
-            const priorityOrder = ['urgent', 'medium', 'low'];
-
-            orderedTasks.sort((a, b) => {
-                return priorityOrder.indexOf(a.priority) - priorityOrder.indexOf(b.priority);
-            });
-            
-        }else{
-            orderedTasks.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
-        }
-
-        return orderedTasks;
-    }
-    
 }
 
 export default Task;

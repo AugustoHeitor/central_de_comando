@@ -13,4 +13,9 @@
         display: none;
     }  
 
+    .scroll-y-mobile{
+        overflow-y: auto;
+        padding-bottom: var(--space-lg);
+    }
+
 }

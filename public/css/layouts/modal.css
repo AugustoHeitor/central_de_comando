@@ -2,7 +2,7 @@
     padding: var(--space-md);
     position: fixed;
     z-index: 10;
-    background-color: var(--color-screen-modal);
+    background: var(--color-bg-screen-modal);
     width: 100vw;
     height: 100vh;
     display: flex;
@@ -14,7 +14,7 @@
     padding: 0px;
     position: fixed;
     z-index: 10;
-    background-color: var(--color-screen-modal);
+    background: var(--color-bg-screen-modal);
     width: 100vw;
     height: 100vh;
     display: flex;

@@ -6,7 +6,7 @@
     @yield('metas')
     
     <title>{{ config('app.name') }} | @yield('title')</title>
-    <link rel="icon" href="{{ asset('imgs/satellite-solid.svg') }}" type="image/svg+xml">
+    <link rel="icon" href="{{ asset('imgs/satellite-light.svg') }}" type="image/svg+xml">
     <link rel="stylesheet" href="{{asset('css/globalStyles.css')}}">
     <link rel="stylesheet" href="{{asset('css/reset.css')}}">
     <link rel="stylesheet" href="{{asset('css/layouts/template.css')}}">

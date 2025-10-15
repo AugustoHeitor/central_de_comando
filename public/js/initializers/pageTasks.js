@@ -4,6 +4,44 @@ import Task from '../classes/Task.js';
 let categories = [];
 let tasks = [];
 
+const priorityOptions = [
+    { value: '', label: 'Todos' },
+    { value: 'low', label: 'Baixa' },
+    { value: 'medium', label: 'Média' },
+    { value: 'urgent', label: 'Urgente' }
+];
+
+const itemsDropdown = [
+    {
+        "type": "inputDate",
+        "label": "Prazo Inicial",
+        "class": "input-start-deadline",
+        "storageKey": "start_deadline"
+    },
+    {
+        "type": "inputDate",
+        "label": "Prazo Final",
+        "class": "input-end-deadline",
+        "storageKey": "end_deadline"
+    },
+    {
+        "type": "select",
+        "label": "Categorias",
+        "class": "select-category",
+        "storageKey": "category",
+        "nameAttribute": "taskCategories",
+        "options": []
+    },
+    {
+        "type": "select",
+        "label": "Prioridade",
+        "class": "select-priority",
+        "storageKey": "priority",
+        "nameAttribute": "priority",
+        "options": priorityOptions
+    },
+];
+
 document.addEventListener('DOMContentLoaded', async ()=>{
 
     const messageWarning = 'Ao excluir esta categoria, todas as tarefas relacionadas a ela também serão permanentemente excluídas. Esta ação não pode ser desfeita.';
@@ -44,7 +82,14 @@ document.addEventListener('DOMContentLoaded', async ()=>{
 
     if(btnDropdownFilter){
         btnDropdownFilter.addEventListener('click', ()=>{
-            task.createDropdownFilter('.container-dropdown-filter', 'dropdown-filter');
+
+            itemsDropdown.forEach((item)=>{
+                if(item.nameAttribute === "taskCategories"){
+                    item.options = task.createCategoryOptions();
+                }
+            })
+
+            task.components.dropdown.createDropdownFilter('.container-dropdown-filter', 'dropdown-filter', itemsDropdown);
         })
     }
 
@@ -73,7 +118,7 @@ document.addEventListener('DOMContentLoaded', async ()=>{
     const btnCategoryMobile = document.querySelector('#btn-category-mobile');
 
     if(btnCategoryMobile){
-  
+
         btnCategoryMobile.addEventListener('click', ()=>{
             category.openModal()
         })
@@ -83,7 +128,14 @@ document.addEventListener('DOMContentLoaded', async ()=>{
 
     if(btnFilterMobile){
         btnFilterMobile.addEventListener('click', ()=>{
-            task.createDropdownFilter('.container-dropdown-filter', 'dropdown-filter');
+
+            itemsDropdown.forEach((item)=>{
+                if(item.nameAttribute === "taskCategories"){
+                    item.options = task.createCategoryOptions();
+                }
+            })
+
+            task.components.dropdown.createDropdownFilter('.container-dropdown-filter', 'dropdown-filter', itemsDropdown);
         })
     }
 
@@ -91,7 +143,6 @@ document.addEventListener('DOMContentLoaded', async ()=>{
 
     if(btnOrderMobile){
         btnOrderMobile.addEventListener('click', ()=>{
-            console.log("oi");
             task.createDropdownOrder('.container-dropdown-order', 'dropdown-order');
         })
     }

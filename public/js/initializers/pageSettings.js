@@ -1,10 +1,12 @@
 import Setting from '../classes/Setting.js';
 
 document.addEventListener('DOMContentLoaded', ()=>{
-    
+
     const form = document.querySelector('form');
 
     const setting = new Setting('user', form);
+
+    setting.init();
 
     if(form){
 
@@ -12,7 +14,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
             event.preventDefault();
             setting.openModal();
         })
-        
+
     }
 
     const inputUpload = document.querySelector("input[name='photo']");
@@ -31,7 +33,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
             })
         }
     }
-      
+
     const btnDeleteUpload = document.querySelector('#btn-delete-upload');
 
     if(btnDeleteUpload){

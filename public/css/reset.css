@@ -1,12 +1,17 @@
 *{
     box-sizing: border-box;
     scrollbar-width: thin;
-    scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+    scrollbar-color: rgb(218, 218, 218) transparent;
     scroll-behavior: smooth;
 }
 
 li{
     list-style: none;
+}
+
+body, html{
+  overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 form,
@@ -45,6 +50,7 @@ input{
 input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0px 1000px rgba(255, 255, 255, 0) inset !important; 
   transition: background-color 5000s ease-in-out 0s !important;
+  -webkit-text-fill-color: var(--color-light); 
 }
 
 textarea:focus,
@@ -74,5 +80,10 @@ textarea{
 *::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, 0.3);
   border-radius: 10px;
+}
+
+input::-webkit-calendar-picker-indicator {
+  filter: brightness(0) saturate(100%) invert(83%) sepia(7%) saturate(88%) hue-rotate(158deg) brightness(93%) contrast(88%);
+  color: var(--color-primary);
 }
 

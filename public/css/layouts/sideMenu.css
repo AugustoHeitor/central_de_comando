@@ -1,4 +1,9 @@
 .link-page:hover{
-    background-color: var(--color-hover);
+    background-color: var(--color-bg-hover);
 }
 
+.img-preview-menu{
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+}
