@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', async ()=>{
 
     if(btnDropdownOrder){
         btnDropdownOrder.addEventListener('click', ()=>{
-            task.createDropdownOrder('.container-dropdown-order', 'dropdown-order');
+            task.components.dropdown.createDropdownOrder('.container-dropdown-order', 'dropdown-order');
         })
     }
 
@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', async ()=>{
 
     if(btnOrderMobile){
         btnOrderMobile.addEventListener('click', ()=>{
-            task.createDropdownOrder('.container-dropdown-order', 'dropdown-order');
+            task.components.dropdown.createDropdownOrder('.container-dropdown-order', 'dropdown-order');
         })
     }
 })
