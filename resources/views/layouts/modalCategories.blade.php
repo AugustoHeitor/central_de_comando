@@ -31,7 +31,7 @@
                         <span class="color-primary text-sm fw-m">3 Categorias</span>
                     </div>
                     <div class="d-flex align-start justify-start w-full flex-column gap-sm scroll-auto h-100vh pt-top-md pt-bottom-sm">
-                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary radius-sm pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
+                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary  pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
                             <p class="color-light text-sm fw-m">Leitura</p>
                             <div class="d-flex justify-start items-center gap-sm">
                                 <button class="radius-lg bd-shadow-secondary pt-md bg-tertiary h-36 pt-btn-primary">
@@ -42,7 +42,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary radius-sm pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
+                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary  pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
                             <p class="color-light text-sm fw-m">Leitura</p>
                             <div class="d-flex justify-start items-center gap-sm">
                                 <button class="radius-lg bd-shadow-secondary pt-md bg-tertiary h-36 pt-btn-primary">
@@ -53,7 +53,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary radius-sm pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
+                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary  pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
                             <p class="color-light text-sm fw-m">Leitura</p>
                             <div class="d-flex justify-start items-center gap-sm">
                                 <button class="radius-lg bd-shadow-secondary pt-md bg-tertiary h-36 pt-btn-primary">
@@ -64,7 +64,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary radius-sm pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
+                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary  pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
                             <p class="color-light text-sm fw-m">Leitura</p>
                             <div class="d-flex justify-start items-center gap-sm">
                                 <button class="radius-lg bd-shadow-secondary pt-md bg-tertiary h-36 pt-btn-primary">
@@ -75,7 +75,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary radius-sm pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
+                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary  pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
                             <p class="color-light text-sm fw-m">Leitura</p>
                             <div class="d-flex justify-start items-center gap-sm">
                                 <button class="radius-lg bd-shadow-secondary pt-md bg-tertiary h-36 pt-btn-primary">
@@ -86,7 +86,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary radius-sm pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
+                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary  pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
                             <p class="color-light text-sm fw-m">Leitura</p>
                             <div class="d-flex justify-start items-center gap-sm">
                                 <button class="radius-lg bd-shadow-secondary pt-md bg-tertiary h-36 pt-btn-primary">
@@ -97,7 +97,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary radius-sm pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
+                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary  pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
                             <p class="color-light text-sm fw-m">Leitura</p>
                             <div class="d-flex justify-start items-center gap-sm">
                                 <button class="radius-lg bd-shadow-secondary pt-md bg-tertiary h-36 pt-btn-primary">
@@ -108,7 +108,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary radius-sm pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
+                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary  pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
                             <p class="color-light text-sm fw-m">Leitura</p>
                             <div class="d-flex justify-start items-center gap-sm">
                                 <button class="radius-lg bd-shadow-secondary pt-md bg-tertiary h-36 pt-btn-primary">
@@ -119,7 +119,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary radius-sm pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
+                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary  pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
                             <p class="color-light text-sm fw-m">Leitura</p>
                             <div class="d-flex justify-start items-center gap-sm">
                                 <button class="radius-lg bd-shadow-secondary pt-md bg-tertiary h-36 pt-btn-primary">
@@ -130,7 +130,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary radius-sm pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
+                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary  pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
                             <p class="color-light text-sm fw-m">Leitura</p>
                             <div class="d-flex justify-start items-center gap-sm">
                                 <button class="radius-lg bd-shadow-secondary pt-md bg-tertiary h-36 pt-btn-primary">
@@ -141,7 +141,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary radius-sm pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
+                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary  pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
                             <p class="color-light text-sm fw-m">Leitura</p>
                             <div class="d-flex justify-start items-center gap-sm">
                                 <button class="radius-lg bd-shadow-secondary pt-md bg-tertiary h-36 pt-btn-primary">
@@ -152,7 +152,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary radius-sm pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
+                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary  pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
                             <p class="color-light text-sm fw-m">Leitura</p>
                             <div class="d-flex justify-start items-center gap-sm">
                                 <button class="radius-lg bd-shadow-secondary pt-md bg-tertiary h-36 pt-btn-primary">
@@ -163,7 +163,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary radius-sm pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
+                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary  pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
                             <p class="color-light text-sm fw-m">Leitura</p>
                             <div class="d-flex justify-start items-center gap-sm">
                                 <button class="radius-lg bd-shadow-secondary pt-md bg-tertiary h-36 pt-btn-primary">
@@ -174,7 +174,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary radius-sm pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
+                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary  pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
                             <p class="color-light text-sm fw-m">Leitura</p>
                             <div class="d-flex justify-start items-center gap-sm">
                                 <button class="radius-lg bd-shadow-secondary pt-md bg-tertiary h-36 pt-btn-primary">
@@ -185,7 +185,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary radius-sm pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
+                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary  pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
                             <p class="color-light text-sm fw-m">Leitura</p>
                             <div class="d-flex justify-start items-center gap-sm">
                                 <button class="radius-lg bd-shadow-secondary pt-md bg-tertiary h-36 pt-btn-primary">
@@ -196,7 +196,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary radius-sm pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
+                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary  pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
                             <p class="color-light text-sm fw-m">Leitura</p>
                             <div class="d-flex justify-start items-center gap-sm">
                                 <button class="radius-lg bd-shadow-secondary pt-md bg-tertiary h-36 pt-btn-primary">
@@ -207,7 +207,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary radius-sm pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
+                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary  pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
                             <p class="color-light text-sm fw-m">Leitura</p>
                             <div class="d-flex justify-start items-center gap-sm">
                                 <button class="radius-lg bd-shadow-secondary pt-md bg-tertiary h-36 pt-btn-primary">
@@ -218,7 +218,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary radius-sm pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
+                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary  pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
                             <p class="color-light text-sm fw-m">Leitura</p>
                             <div class="d-flex justify-start items-center gap-sm">
                                 <button class="radius-lg bd-shadow-secondary pt-md bg-tertiary h-36 pt-btn-primary">
@@ -229,7 +229,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary radius-sm pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
+                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary  pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
                             <p class="color-light text-sm fw-m">Leitura</p>
                             <div class="d-flex justify-start items-center gap-sm">
                                 <button class="radius-lg bd-shadow-secondary pt-md bg-tertiary h-36 pt-btn-primary">
@@ -240,7 +240,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary radius-sm pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
+                        <div class="h-mn-55 overflow-hidden radius-lg d-flex justify-between items-center gap-md w-full bg-secondary bd-shadow-secondary  pt-left-md pt-right-md pt-top-sm pt-bottom-sm">
                             <p class="color-light text-sm fw-m">Leitura</p>
                             <div class="d-flex justify-start items-center gap-sm">
                                 <button class="radius-lg bd-shadow-secondary pt-md bg-tertiary h-36 pt-btn-primary">

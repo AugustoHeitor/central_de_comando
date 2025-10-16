@@ -2,11 +2,11 @@ import Utils from '../Utils.js';
 
 class Dropdown{
 
-    constructor(localStorageName, paramKeysFilter, filter, paramKeysOrder = null, reorderItems = null){
+    constructor(localStorageName, paramKeysFilter, filterItems, paramKeysOrder = null, reorderItems = null){
         this.utils = new Utils();
         this.localStorageName = localStorageName;
         this.paramKeysFilter = paramKeysFilter;
-        this.filter = filter;
+        this.filterItems = filterItems;
         this.paramKeysOrder = paramKeysOrder;
         this.reorderItems = reorderItems;
     }
@@ -29,13 +29,16 @@ class Dropdown{
         label.textContent = labelText;
         input.name = storageKey;
 
-        label.setAttribute('for', storageKey);
+        label.addEventListener("click", ()=>{
+            input.focus();
+        });
+
         input.type = 'date';
 
         input.addEventListener('input', () => {
             const value = input.value || null;
             this.utils.setLocalStroageParam(this.localStorageName, storageKey, value);
-            this.filter();
+            this.filterItems();
         });
 
         if (params[storageKey] != null) {
@@ -50,24 +53,26 @@ class Dropdown{
     }
 
     createSelectDropdown(labelText, name, selectClass, options, storageKey) {
+
         const params = this.utils.getParams(this.localStorageName, this.paramKeysFilter);
 
         const li = document.createElement('li');
-
         const container = document.createElement('div');
-        container.classList.add('w-full', 'd-flex', 'flex-column', 'justify-start', 'items-start', 'gap-sm', 'cnt-input-w');
-
         const label = document.createElement('label');
-        label.classList.add('text-sm', 'color-primary', 'fw-m');
-        label.textContent = labelText;
-        label.setAttribute('for', name);
-
         const divSelect = document.createElement('div');
-        divSelect.classList.add('pt-input-primary', 'w-full', 'bg-secondary', 'radius-lg', 'bd-primary');
-
         const select = document.createElement('select');
-        select.name = name;
+
+        container.classList.add('w-full', 'd-flex', 'flex-column', 'justify-start', 'items-start', 'gap-sm', 'cnt-input-w');
+        label.classList.add('text-sm', 'color-primary', 'fw-m');
+        divSelect.classList.add('pt-input-primary', 'w-full', 'bg-secondary', 'radius-lg', 'bd-primary');
         select.classList.add(selectClass, 'w-full', 'text-sm', 'color-primary');
+
+        label.textContent = labelText;
+        select.name = name;
+
+        label.addEventListener('click', () => {
+            select.focus();
+        });
 
         options.forEach(opt => {
             const option = document.createElement('option');
@@ -89,7 +94,7 @@ class Dropdown{
         select.addEventListener('change', () => {
             const value = select.value || null;
             this.utils.setLocalStroageParam(this.localStorageName, storageKey, value);
-            this.filter();
+            this.filterItems();
         });
 
         divSelect.append(select);
@@ -226,26 +231,29 @@ class Dropdown{
             if(!containerDropdown.querySelector('screen-modal')){
 
                 const dropdown = document.createElement("div");
-
                 const header = document.createElement("div");
-                header.classList.add("w-full", "d-flex", "items-start", "justify-start");
-
                 const buttonClose = document.createElement("button");
                 const imgClose = document.createElement("img");
-
                 const title = document.createElement("h3");
                 const imgTitle = document.createElement("img");
-
                 const containerTitle = document.createElement("div");
-
                 const ul = document.createElement('ul');
 
-                ul.id = selectorDropdown;
+                buttonClose.classList.add("d-flex", "items-center", "justify-center", "soft-shake");
+                imgClose.classList.add("img-size-15");
+                dropdown.classList.add('w-full', 'bg-secondary',  'dropdown', 'pt-md', 'd-flex', 'align-start', 'justify-start', 'flex-column', 'gap-md', 'fixed', 'left-0', 'bottom-0');
+                header.classList.add("w-full", "d-flex", "items-start", "justify-start");
+                containerTitle.classList.add("d-flex", "align-center", "justify-start", "gap-sm");
+                title.classList.add("color-light", "text-xl", "fw-m");
+                imgTitle.classList.add("img-size-15");
+                header.classList.add("w-full", "d-dlex", "align-center", "justify-between", "gap-md");
                 ul.classList.add(
                     'w-full',
                     'd-flex', 'align-start', 'justify-start',
                     'flex-column', 'gap-md',
                 );
+
+                ul.id = selectorDropdown;
 
                 const markItem = (ul, button, value)=>{
 
@@ -267,6 +275,7 @@ class Dropdown{
                 const createListItem = (value, text, hasBorder = true)=> {
                     const li = document.createElement('li');
                     li.classList.add('w-full');
+
                     if (hasBorder) li.classList.add('bd-bottom');
 
                     const button = document.createElement('button');
@@ -303,21 +312,10 @@ class Dropdown{
                     }
                 });
 
-                buttonClose.classList.add("d-flex", "items-center", "justify-center", "soft-shake");
                 imgClose.src = "/imgs/xmark-light.svg";
-                imgClose.classList.add("img-size-15");
-
-                dropdown.classList.add('w-full', 'bg-secondary',  'dropdown', 'pt-md', 'd-flex', 'align-start', 'justify-start', 'flex-column', 'gap-md', 'fixed', 'left-0', 'bottom-0')
-
-                containerTitle.classList.add("d-flex", "align-center", "justify-start", "gap-sm");
-                title.classList.add("color-light", "text-xl", "fw-m");
-
                 imgTitle.src="/imgs/sort-light.svg";
-                imgTitle.classList.add("img-size-15");
 
                 title.innerText = "Ordem"
-
-                header.classList.add("w-full", "d-dlex", "align-center", "justify-between", "gap-md")
 
                 buttonClose.addEventListener("click", ()=>{
                     screen.remove();
@@ -343,12 +341,13 @@ class Dropdown{
 
                 const ul = document.createElement('ul');
 
-                ul.id = selectorDropdown;
                 ul.classList.add(
                 'overflow-hidden', 'w-160', 'dropdown', 'bd-primary', 'z-index-dropdown',
                 'bg-secondary', 'align-start', 'justify-start', 'flex-column',
                 'radius-lg', 'position-absolute', 'mt-top-sm'
                 );
+
+                ul.id = selectorDropdown;
 
                 const markItem = (ul, button, value)=>{
 

@@ -33,7 +33,7 @@
                             Filtros
                         </button>
                         <div class="position-relative d-flex w-full container-dropdown-filter">
-                            
+
                         </div>
                     </div>
                     <div class="d-flex justify-start items-start flex-column">
@@ -43,7 +43,7 @@
                                 Ordenar
                             </button>
                             <div class="position-relative d-flex w-full container-dropdown-order">
-                                
+
                             </div>
                         </div>
                     </div>
@@ -59,7 +59,7 @@
             ';
 
             $imgPageHeader = 'imgs/wallet-light.svg';
-            
+
         @endphp
 
         @include('layouts.pageHeader', [
@@ -69,7 +69,7 @@
         ])
 
 
-        <div class="bg-secondary bd-shadow-primary radius-lg pt-md w-full flex-desktop justify-start items-center gap-md radius-sm flex-wrap">
+        <div class="bg-secondary bd-shadow-primary radius-lg pt-md w-full flex-desktop justify-start items-center gap-md flex-wrap">
             <ul class="w-full d-flex justify-between items-center gap-md">
                 <li class="w-full">
                     <button data-navigation="null" class="w-full btn-filter-type pt-sm radius-lg color-primary text-sm fw-sb d-flex justify-center items-center gap-sm">
@@ -95,7 +95,7 @@
 
         <section class="overflow-hidden w-full h-100-mx-vh d-flex flex-column justify-start items-start gap-md" id="financial-section">
 
-            
+
         </section>
 
     </main>
@@ -110,6 +110,6 @@
         <button id="btn-category-mobile" class="hover-scale bd-shadow-secondary bg-tertiary h-50 w-50 radius-lg pt-sm d-flex items-center justify-center">
             <img src="{{ asset('imgs/tag-light.svg') }}" alt="Categorias" class="img-size-20">
         </button>
-    </div> 
+    </div>
 @endsection
 

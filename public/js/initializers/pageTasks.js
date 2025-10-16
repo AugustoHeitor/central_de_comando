@@ -135,7 +135,25 @@ document.addEventListener('DOMContentLoaded', async ()=>{
                 }
             })
 
-            task.components.dropdown.createDropdownFilter('.container-dropdown-filter', 'dropdown-filter', itemsDropdown);
+            const itemsDropdownMobile = itemsDropdown.map(item => ({ ...item }));
+
+            const selectStatus = {
+                "type": "select",
+                "label": "Status",
+                "class": "select-status",
+                "storageKey": "status",
+                "nameAttribute": "taskStatus",
+                "options": [
+                    { value: '', label: 'Todos' },
+                    { value: 'to_do', label: 'A Fazer' },
+                    { value: 'in_progress', label: 'Em andamento' },
+                    { value: 'done', label: 'Finalizado' }
+                ]
+            }
+
+            itemsDropdownMobile.push(selectStatus);
+
+            task.components.dropdown.createDropdownFilter('.container-dropdown-filter', 'dropdown-filter', itemsDropdownMobile);
         })
     }
 

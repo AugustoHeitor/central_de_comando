@@ -1,5 +1,6 @@
 import Modal  from './components/Modal.js';
 import Dropdown  from './components/Dropdown.js';
+import ContainerEmpty  from './components/ContainerEmpty.js';
 import Utils from './Utils.js';
 import Master from './Master.js';
 
@@ -29,6 +30,7 @@ class Task extends Master {
         this.components = {
             'modal': new Modal(),
             'dropdown': new Dropdown(this.localStorageName, this.paramKeysFilter, this.filterTasks.bind(this), this.paramKeysOrder, this.createCardTask.bind(this)),
+            'containerEmpty': new ContainerEmpty()
         };
     }
 
@@ -248,84 +250,89 @@ class Task extends Master {
 
         let orderedTasks = this.sortTasks(this.tasks, parameter.order);
 
-        orderedTasks?.forEach((task, index)=>{
-            const card = document.createElement('div');
+        if(Array.isArray(orderedTasks) && orderedTasks.length > 0){
 
-            card.classList.add(
-                'overflow-hidden', 'hover-bg-primary', 'h-mn-157', 'radius-lg', 'pointer',
-                'd-flex', 'flex-column', 'justify-start', 'items-start',
-                'gap-md', 'w-full', 'bg-secondary', 'bd-shadow-primary', 'radius-sm'
-            );
+            orderedTasks?.forEach((task, index)=>{
+                const card = document.createElement('div');
 
-            const topContent = document.createElement('div');
-            topContent.classList.add('d-flex', 'flex-column', 'justify-start', 'items-start', 'gap-md', 'w-full');
+                card.classList.add(
+                    'overflow-hidden', 'hover-bg-primary', 'h-mn-157', 'radius-lg', 'pointer',
+                    'd-flex', 'flex-column', 'justify-start', 'items-start',
+                    'gap-md', 'w-full', 'bg-secondary', 'bd-shadow-primary'
+                );
 
-            const header = document.createElement('div');
-            header.classList.add('w-full', 'd-flex', 'justify-between', 'items-center', 'gap-md', 'pt-top-md', 'pt-left-md', 'pt-right-md');
+                const topContent = document.createElement('div');
+                topContent.classList.add('d-flex', 'flex-column', 'justify-start', 'items-start', 'gap-md', 'w-full');
 
-            const title = document.createElement('h3');
-            title.classList.add('color-primary', 'fw-m', 'text-sm', "txt-1-line-mobile");
-            title.textContent = task.title;
+                const header = document.createElement('div');
+                header.classList.add('w-full', 'd-flex', 'justify-between', 'items-center', 'gap-md', 'pt-top-md', 'pt-left-md', 'pt-right-md');
 
-            const priorityBadge = document.createElement('span');
-            priorityBadge.classList.add('d-flex', 'justify-center', 'items-center', 'w-70', 'radius-lg', 'text-xs', 'pt-xs');
+                const title = document.createElement('h3');
+                title.classList.add('color-primary', 'fw-m', 'text-sm', "txt-1-line-mobile");
+                title.textContent = task.title;
 
-            const priorities = [
-                { value: 'low', label: 'Baixa', class: "badge-low" },
-                { value: 'medium', label: 'Média', class: "badge-medium" },
-                { value: 'urgent', label: 'Urgente', class: "badge-high" }
-            ];
+                const priorityBadge = document.createElement('span');
+                priorityBadge.classList.add('d-flex', 'justify-center', 'items-center', 'w-70', 'radius-lg', 'text-xs', 'pt-xs');
 
-            const priority = priorities.find(p => p.value === task.priority);
+                const priorities = [
+                    { value: 'low', label: 'Baixa', class: "badge-low" },
+                    { value: 'medium', label: 'Média', class: "badge-medium" },
+                    { value: 'urgent', label: 'Urgente', class: "badge-high" }
+                ];
 
-            priorityBadge.classList.add(priority.class)
+                const priority = priorities.find(p => p.value === task.priority);
 
-            priorityBadge.textContent = priority.label;
+                priorityBadge.classList.add(priority.class)
 
-            header.append(title, priorityBadge);
+                priorityBadge.textContent = priority.label;
 
-            const description = document.createElement('p');
-            description.classList.add('txt-2-lines', 'color-primary', 'd-flex', 'justify-start', 'items-start', 'text-sm', 'h-36', 'pt-left-md', 'pt-right-md');
-            description.textContent = task.description || 'Sem descrição';
+                header.append(title, priorityBadge);
 
-            topContent.append(header, description);
+                const description = document.createElement('p');
+                description.classList.add('txt-2-lines', 'color-primary', 'd-flex', 'justify-start', 'items-start', 'text-sm', 'h-36', 'pt-left-md', 'pt-right-md');
+                description.textContent = task.description || 'Sem descrição';
 
-            const footer = document.createElement('div');
-            footer.classList.add('w-full', 'd-flex', 'justify-start', 'items-center', 'gap-lg', 'bd-top', 'pt-left-md', 'pt-right-md', 'pt-top-md', 'pt-bottom-md', 'flex-wrap');
+                topContent.append(header, description);
 
-            const createInfoItem = (imgSrc, altText, spanText) => {
-                const wrapper = document.createElement('div');
-                wrapper.classList.add('d-flex', 'justify-start', 'items-center', 'gap-sm');
+                const footer = document.createElement('div');
+                footer.classList.add('w-full', 'd-flex', 'justify-start', 'items-center', 'gap-lg', 'bd-top', 'pt-left-md', 'pt-right-md', 'pt-top-md', 'pt-bottom-md', 'flex-wrap');
 
-                const icon = document.createElement('img');
-                icon.src = imgSrc;
-                icon.alt = altText;
-                icon.classList.add('img-size-10');
+                const createInfoItem = (imgSrc, altText, spanText) => {
+                    const wrapper = document.createElement('div');
+                    wrapper.classList.add('d-flex', 'justify-start', 'items-center', 'gap-sm');
 
-                const text = document.createElement('span');
-                text.classList.add('color-primary', 'text-xs');
-                text.textContent = spanText;
+                    const icon = document.createElement('img');
+                    icon.src = imgSrc;
+                    icon.alt = altText;
+                    icon.classList.add('img-size-10');
 
-                wrapper.append(icon, text);
-                return wrapper;
-            };
+                    const text = document.createElement('span');
+                    text.classList.add('color-primary', 'text-xs');
+                    text.textContent = spanText;
 
-            const categoryName = this.categories.find(category => category.id == task.category_id)?.name;
+                    wrapper.append(icon, text);
+                    return wrapper;
+                };
 
-            footer.append(
-                createInfoItem('imgs/clock-gray.svg', 'Iniciar', task.duration || '00:00:00'),
-                createInfoItem('imgs/calendar-week-gray.svg', 'Prazo', this.utils.formatDate(task.deadline, null)),
-                createInfoItem('imgs/tag-gray.svg', 'Categoria', categoryName)
-            );
+                const categoryName = this.categories.find(category => category.id == task.category_id)?.name;
 
-            card.append(topContent, footer);
+                footer.append(
+                    createInfoItem('imgs/clock-gray.svg', 'Iniciar', task.duration || '00:00:00'),
+                    createInfoItem('imgs/calendar-week-gray.svg', 'Prazo', this.utils.formatDate(task.deadline, null)),
+                    createInfoItem('imgs/tag-gray.svg', 'Categoria', categoryName)
+                );
 
-            card.addEventListener('click', (e) => {
-                this.openModal('save', task);
-            });
+                card.append(topContent, footer);
 
-            document.querySelector('#task-section').append(card);
-        })
+                card.addEventListener('click', (e) => {
+                    this.openModal('save', task);
+                });
+
+                document.querySelector('#task-section').append(card);
+            })
+        }else{
+            this.components.containerEmpty.createContainerEmpty('#task-section', 'Nenhuma tarefa encontrada', 'Não há tarefas que correspondam ao filtro aplicado ou você ainda não criou nenhuma. Experimente ajustar o filtro ou adicionar uma nova tarefa.')
+        }
 
         this.utils.addScrollY('#task-section', true);
     }

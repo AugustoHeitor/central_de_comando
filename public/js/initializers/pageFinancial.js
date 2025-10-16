@@ -4,6 +4,29 @@ import Financial from '../classes/Financial.js';
 let categories = [];
 let transactions = [];
 
+const itemsDropdown = [
+    {
+        "type": "inputDate",
+        "label": "Data Inicial",
+        "class": "input-start-date",
+        "storageKey": "start_date"
+    },
+    {
+        "type": "inputDate",
+        "label": "Data Final",
+        "class": "input-end-date",
+        "storageKey": "end_date"
+    },
+    {
+        "type": "select",
+        "label": "Categorias",
+        "class": "select-category",
+        "storageKey": "category",
+        "nameAttribute": "financialCategories",
+        "options": []
+    },
+];
+
 document.addEventListener('DOMContentLoaded', async ()=>{
 
     const messageWarning = 'Ao excluir esta categoria, todas as transações relacionadas a ela também serão permanentemente excluídas. Esta ação não pode ser desfeita.';
@@ -20,7 +43,7 @@ document.addEventListener('DOMContentLoaded', async ()=>{
     const btnCategory = document.querySelector('#btn-category');
 
     if(btnCategory){
-  
+
         btnCategory.addEventListener('click', ()=>{
             category.openModal()
         })
@@ -46,7 +69,13 @@ document.addEventListener('DOMContentLoaded', async ()=>{
 
     if(btnDropdownFilter){
         btnDropdownFilter.addEventListener('click', ()=>{
-            financial.createDropdownFilter('.container-dropdown-filter', 'dropdown-filter');
+            itemsDropdown.forEach((item)=>{
+                if(item.nameAttribute === "financialCategories"){
+                    item.options = financial.createCategoryOptions();
+                }
+            })
+
+            financial.components.dropdown.createDropdownFilter('.container-dropdown-filter', 'dropdown-filter', itemsDropdown);
         })
     }
 
@@ -54,7 +83,7 @@ document.addEventListener('DOMContentLoaded', async ()=>{
 
     if(btnDropdownOrder){
         btnDropdownOrder.addEventListener('click', ()=>{
-           financial.createDropdownOrder('.container-dropdown-order', 'dropdown-order');
+           financial.components.dropdown.createDropdownOrder('.container-dropdown-order', 'dropdown-order');
         })
     }
 
@@ -75,7 +104,7 @@ document.addEventListener('DOMContentLoaded', async ()=>{
     const btnCategoryMobile = document.querySelector('#btn-category-mobile');
 
     if(btnCategoryMobile){
-  
+
         btnCategoryMobile.addEventListener('click', ()=>{
             category.openModal()
         })
@@ -85,7 +114,31 @@ document.addEventListener('DOMContentLoaded', async ()=>{
 
     if(btnFilterMobile){
         btnFilterMobile.addEventListener('click', ()=>{
-            financial.createDropdownFilter('.container-dropdown-filter', 'dropdown-filter');
+
+            itemsDropdown.forEach((item)=>{
+                if(item.nameAttribute === "financialCategories"){
+                    item.options = financial.createCategoryOptions();
+                }
+            })
+
+            const itemsDropdownMobile = itemsDropdown.map(item => ({ ...item }));
+
+            const selectStatus = {
+                "type": "select",
+                "label": "Tipos",
+                "class": "select-type",
+                "storageKey": "type",
+                "nameAttribute": "financialType",
+                "options": [
+                    { value: '', label: 'Todos' },
+                    { value: 'income', label: 'Entrada' },
+                    { value: 'expense', label: 'Saída' }
+                ]
+            }
+
+            itemsDropdownMobile.push(selectStatus);
+
+            financial.components.dropdown.createDropdownFilter('.container-dropdown-filter', 'dropdown-filter', itemsDropdownMobile);
         })
     }
 
@@ -93,7 +146,7 @@ document.addEventListener('DOMContentLoaded', async ()=>{
 
     if(btnOrderMobile){
         btnOrderMobile.addEventListener('click', ()=>{
-            financial.createDropdownOrder('.container-dropdown-order', 'dropdown-order');
+            financial.components.dropdown.createDropdownOrder('.container-dropdown-order', 'dropdown-order');
         })
     }
 })

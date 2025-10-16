@@ -1,6 +1,8 @@
-import Modal  from './Modal.js';
+import Modal  from './components/Modal.js';
 import Utils from './Utils.js';
 import Master from './Master.js';
+import Dropdown  from './components/Dropdown.js';
+import ContainerEmpty  from './components/ContainerEmpty.js';
 
 class Financial extends Master {
     constructor(endpoint, transactions, categories) {
@@ -12,7 +14,6 @@ class Financial extends Master {
         this.localStorageName = "financial_transactions";
         this.url = this.baseUrl + endpoint;
         this.utils = new Utils();
-        this.modal = new Modal();
 
         this.paramKeysFilter = [
             'type',
@@ -27,6 +28,13 @@ class Financial extends Master {
             { name: "Menor Valor", value: "lowest_value" },
             { name: "Data da Transação", value: "transaction_date" },
         ];
+
+
+        this.components = {
+            'modal': new Modal(),
+            'dropdown': new Dropdown(this.localStorageName, this.paramKeysFilter, this.filterTransactions.bind(this), this.paramKeysOrder, this.createCardTransaction.bind(this)),
+            'containerEmpty': new ContainerEmpty()
+        };
     }
 
     init() {
@@ -261,107 +269,125 @@ class Financial extends Master {
 
         let orderedTransactions = this.sortTransactions(this.transactions, parameter.order);
 
+        if(Array.from(orderedTransactions) && orderedTransactions.length > 0){
 
-        orderedTransactions?.forEach((transaction) => {
-            const card = document.createElement("div");
+            orderedTransactions?.forEach((transaction) => {
+                const card = document.createElement("div");
 
-            card.classList.add(
-                "overflow-hidden", "h-mn-157", "hover-bg-primary", "radius-lg", "pointer", "d-flex",
-                "flex-column", "justify-between", "items-start", "gap-md", "w-full",
-                "bg-secondary", "bd-shadow-primary", "radius-sm"
-            );
+                card.classList.add(
+                    "overflow-hidden", "h-mn-157", "hover-bg-primary", "radius-lg", "pointer", "d-flex",
+                    "flex-column", "justify-between", "items-start", "gap-md", "w-full",
+                    "bg-secondary", "bd-shadow-primary"
+                );
 
-            const contentTop = document.createElement("div");
-            contentTop.classList.add("d-flex", "flex-column", "justify-start", "items-start", "gap-md", "w-full");
+                const contentTop = document.createElement("div");
+                contentTop.classList.add("d-flex", "flex-column", "justify-start", "items-start", "gap-md", "w-full");
 
-            const header = document.createElement("div");
-            header.classList.add("w-full", "d-flex", "justify-between", "items-center", "gap-md", "pt-top-md", "pt-left-md", "pt-right-md");
+                const header = document.createElement("div");
+                header.classList.add("w-full", "d-flex", "justify-between", "items-center", "gap-md", "pt-top-md", "pt-left-md", "pt-right-md");
 
-            const leftSide = document.createElement("div");
-            leftSide.classList.add("d-flex", "justify-center", "items-center", "gap-sm");
+                const leftSide = document.createElement("div");
+                leftSide.classList.add("d-flex", "justify-center", "items-center", "gap-sm");
 
-            const imgIcon = document.createElement("img");
-            imgIcon.src = transaction.type === "income" ? "imgs/piggy-bank-gray.svg" : "imgs/money-bill-wave-gray.svg";
-            imgIcon.alt = "Entrada";
-            imgIcon.classList.add("img-size-15");
+                const imgIcon = document.createElement("img");
+                imgIcon.src = transaction.type === "income" ? "imgs/piggy-bank-gray.svg" : "imgs/money-bill-wave-gray.svg";
+                imgIcon.alt = "Entrada";
+                imgIcon.classList.add("img-size-15");
 
-            const title = document.createElement("h3");
-            title.textContent = transaction.title;
-            title.classList.add("color-primary", "fw-m", "text-sm", "txt-1-line-mobile");
+                const title = document.createElement("h3");
+                title.textContent = transaction.title;
+                title.classList.add("color-primary", "fw-m", "text-sm", "txt-1-line-mobile");
 
-            leftSide.append(imgIcon, title);
+                leftSide.append(imgIcon, title);
 
-            const rightSide = document.createElement("div");
-            rightSide.classList.add("d-flex", "justify-center", "items-end", "gap-sm", "flex-column");
+                const rightSide = document.createElement("div");
+                rightSide.classList.add("d-flex", "justify-center", "items-end", "gap-sm", "flex-column");
 
-            const value = document.createElement("span");
+                const value = document.createElement("span");
 
-            value.textContent = transaction?.amount.toLocaleString("pt-BR", {
-                style: "currency",
-                currency: "BRL"
+                value.textContent = transaction?.amount.toLocaleString("pt-BR", {
+                    style: "currency",
+                    currency: "BRL"
+                });
+
+                if(transaction.type === "income"){
+                    value.classList.add("text-x1", "fw-sb", "color-primary");
+                }else{
+                    value.classList.add("text-x1", "fw-sb", "color-primary");
+                }
+
+                const date = document.createElement("span");
+
+                date.textContent = this.utils.formatDate(transaction?.transaction_date);
+                date.classList.add("text-sm", "fw-m", "color-primary", "txt-align-end");
+
+                rightSide.append(value, date);
+                header.append(leftSide, rightSide);
+                contentTop.append(header);
+
+                const contentBottom = document.createElement("div");
+                contentBottom.classList.add(
+                    "w-full", "d-flex", "justify-start", "items-center", "gap-lg",
+                    "bd-top", "pt-left-md", "pt-right-md", "pt-top-md",
+                    "pt-bottom-md", "flex-wrap"
+                );
+
+                const typeTag = document.createElement("p");
+                typeTag.textContent = transaction.type === "income" ? "Entrada" : "Saída";
+
+
+                if(transaction.type === "income"){
+                    typeTag.classList.add("d-flex", "justify-center", "items-center", "bg-income", "color-income", "radius-lg", "text-xs", "pt-top-sm", "pt-bottom-sm", "pt-left-md", "pt-right-md");
+                }else{
+                    typeTag.classList.add("d-flex", "justify-center", "items-center", "bg-expense", "color-expense", "radius-lg", "text-xs", "pt-top-sm", "pt-bottom-sm", "pt-left-md", "pt-right-md");
+                }
+
+                const category = document.createElement("div");
+                category.classList.add("d-flex", "justify-start", "items-center", "gap-sm");
+
+                const tagIcon = document.createElement("img");
+                tagIcon.src = "imgs/tag-gray.svg";
+                tagIcon.alt = "Categoria";
+                tagIcon.classList.add("img-size-10");
+
+
+                const categoryName = this.categories.find(category => category.id == transaction.category_id)?.name;
+
+                const categoryText = document.createElement("span");
+                categoryText.textContent = categoryName;
+                categoryText.classList.add("color-primary", "text-xs", "fw-m");
+
+                category.append(tagIcon, categoryText);
+
+                contentBottom.append(typeTag, category);
+
+                card.append(contentTop, contentBottom);
+
+                card.addEventListener('click', (e) => {
+                    this.openModal('save', transaction);
+                });
+
+                document.querySelector("#financial-section").append(card);
             });
-
-            if(transaction.type === "income"){
-                value.classList.add("text-x1", "fw-sb", "color-primary");
-            }else{
-                value.classList.add("text-x1", "fw-sb", "color-primary");
-            }
-
-            const date = document.createElement("span");
-
-            date.textContent = this.utils.formatDate(transaction?.transaction_date);
-            date.classList.add("text-sm", "fw-m", "color-primary", "txt-align-end");
-
-            rightSide.append(value, date);
-            header.append(leftSide, rightSide);
-            contentTop.append(header);
-
-            const contentBottom = document.createElement("div");
-            contentBottom.classList.add(
-                "w-full", "d-flex", "justify-start", "items-center", "gap-lg",
-                "bd-top", "pt-left-md", "pt-right-md", "pt-top-md",
-                "pt-bottom-md", "flex-wrap"
-            );
-
-            const typeTag = document.createElement("p");
-            typeTag.textContent = transaction.type === "income" ? "Entrada" : "Saída";
-
-
-            if(transaction.type === "income"){
-                typeTag.classList.add("d-flex", "justify-center", "items-center", "bg-income", "color-income", "radius-lg", "text-xs", "pt-top-sm", "pt-bottom-sm", "pt-left-md", "pt-right-md");
-            }else{
-                typeTag.classList.add("d-flex", "justify-center", "items-center", "bg-expense", "color-expense", "radius-lg", "text-xs", "pt-top-sm", "pt-bottom-sm", "pt-left-md", "pt-right-md");
-            }
-
-            const category = document.createElement("div");
-            category.classList.add("d-flex", "justify-start", "items-center", "gap-sm");
-
-            const tagIcon = document.createElement("img");
-            tagIcon.src = "imgs/tag-gray.svg";
-            tagIcon.alt = "Categoria";
-            tagIcon.classList.add("img-size-10");
-
-
-            const categoryName = this.categories.find(category => category.id == transaction.category_id)?.name;
-
-            const categoryText = document.createElement("span");
-            categoryText.textContent = categoryName;
-            categoryText.classList.add("color-primary", "text-xs", "fw-m");
-
-            category.append(tagIcon, categoryText);
-
-            contentBottom.append(typeTag, category);
-
-            card.append(contentTop, contentBottom);
-
-            card.addEventListener('click', (e) => {
-                this.openModal('save', transaction);
-            });
-
-            document.querySelector("#financial-section").append(card);
-        });
+        }else{
+            this.components.containerEmpty.createContainerEmpty('#financial-section', 'Nenhuma transação encontrada', 'Não há transações que correspondam ao filtro aplicado ou você ainda não criou nenhuma. Experimente ajustar o filtro ou adicionar uma nova transação.');
+        }
 
         this.utils.addScrollY('#financial-section');
+    }
+
+    createCategoryOptions(){
+        const categoryOptions = this.categories.map((category) => ({
+            value: category.id,
+            label: category.name
+        }));
+
+        categoryOptions.unshift({
+            value: "",
+            label: "Todas"
+        });
+
+        return categoryOptions;
     }
 
     openModal(type, transaction = null){
@@ -385,7 +411,7 @@ class Financial extends Master {
                 },
             ];
 
-            const buttons = this.modal.createButtons(buttonsConfig);
+            const buttons = this.components.modal.createButtons(buttonsConfig);
 
             const modalConfig = {
                 title: "Criar Transação",
@@ -409,7 +435,7 @@ class Financial extends Master {
 
             const content = this.createContentModal();
 
-            this.modal.createModal(modalConfig, content, buttons);
+            this.components.modal.createModal(modalConfig, content, buttons);
         }else if(type === "save"){
 
             const buttonsConfig = [
@@ -444,7 +470,7 @@ class Financial extends Master {
                             }
                         ];
 
-                        this.modal.createContainerDelete(configContainer, buttonsConfig);
+                        this.components.modal.createContainerDelete(configContainer, buttonsConfig);
                     }
                 },
                 {
@@ -453,7 +479,7 @@ class Financial extends Master {
                 },
             ];
 
-            const buttons = this.modal.createButtons(buttonsConfig);
+            const buttons = this.components.modal.createButtons(buttonsConfig);
 
             const modalConfig = {
                 title: "Editar Transação",
@@ -478,14 +504,13 @@ class Financial extends Master {
 
             const content = this.createContentModal(transaction);
 
-            this.modal.createModal(modalConfig, content, buttons);
+            this.components.modal.createModal(modalConfig, content, buttons);
         }
     }
 
     async getAllTransactions(params){
         try {
 
-            console.log(params)
             const response = await axios.get(this.url, {
                 params: params,
                 timeout: 5000
@@ -681,421 +706,6 @@ class Financial extends Master {
         return orderedTransactions;
 
     }
-
-    createDropdownFilter(selectorContainer, selectorDropdown) {
-
-        const widthWindow = window.screen.width
-
-        if(widthWindow <= 800){
-
-            const containerDropdown = document.querySelector("body");
-            const screen = document.createElement("div");
-            screen.classList.add("screen-modal");
-
-            screen.addEventListener("click", (event)=>{
-                if (event.target === screen) {
-                    screen.remove();
-                }
-            })
-
-            if (!containerDropdown.querySelector('screen-modal')) {
-
-                const categories = this.categories.map((category) => ({
-                    value: category.id,
-                    label: category.name
-                }));
-
-                categories.unshift({
-                    value: "",
-                    label: "Todas"
-                });
-
-                const dropdown = document.createElement("div");
-
-                const header = document.createElement("div");
-                header.classList.add("w-full", "d-flex", "items-start", "justify-start");
-
-                const buttonClose = document.createElement("button");
-                const imgClose = document.createElement("img");
-
-                const title = document.createElement("h3");
-                const imgTitle = document.createElement("img");
-
-                const containerTitle = document.createElement("div");
-
-                const ul = document.createElement('ul');
-                ul.id = selectorDropdown;
-                ul.classList.add(
-                    'w-full',
-                    'd-flex', 'align-start', 'justify-start',
-                    'flex-column', 'gap-md',
-                );
-
-                buttonClose.classList.add("d-flex", "items-center", "justify-center", "soft-shake");
-                imgClose.src = "/imgs/xmark-light.svg";
-                imgClose.classList.add("img-size-15");
-
-                dropdown.classList.add('w-full', 'bg-secondary',  'dropdown', 'pt-md', 'd-flex', 'align-start', 'justify-start', 'flex-column', 'gap-md', 'fixed', 'left-0', 'bottom-0')
-
-                containerTitle.classList.add("d-flex", "align-center", "justify-start", "gap-sm");
-                title.classList.add("color-light", "text-xl", "fw-m");
-
-                imgTitle.src="/imgs/filter-light.svg";
-                imgTitle.classList.add("img-size-20");
-
-                title.innerText = "Filtros"
-
-                header.classList.add("w-full", "d-dlex", "align-center", "justify-between", "gap-md")
-
-                ul.append(
-                    this.createDateDropdown('Data Inicial', 'input-start-date', 'start_date'),
-                    this.createDateDropdown('Data Final', 'input-end-date', 'end_date'),
-                    this.createSelectDropdown('Categorias', 'taskCategories', 'select-category', categories, 'category'),
-                );
-
-
-                buttonClose.addEventListener("click", ()=>{
-                    screen.remove();
-                })
-
-                buttonClose.append(imgClose);
-                containerTitle.append(imgTitle, title);
-                header.append(containerTitle, buttonClose);
-                dropdown.append(header, ul);
-                screen.append(dropdown);
-                containerDropdown.append(screen);
-            } else {
-                containerDropdown.querySelector('ul').remove();
-            }
-        }else{
-
-            const containerDropdown = document.querySelector(selectorContainer);
-
-            if (!containerDropdown.querySelector('ul')) {
-
-                this.utils.removeElements(".dropdown");
-
-                const categories = this.categories.map((category) => ({
-                    value: category.id,
-                    label: category.name
-                }));
-
-                categories.unshift({
-                    value: "",
-                    label: "Todas"
-                });
-
-                const ul = document.createElement('ul');
-                ul.id = selectorDropdown;
-                ul.classList.add(
-                    'dropdown', 'bd-primary', 'z-index-dropdown', 'bg-secondary',
-                    'pt-md', 'd-flex', 'align-start', 'justify-start',
-                    'flex-column', 'gap-md', 'radius-lg', 'position-absolute', 'mt-top-sm'
-                );
-
-                ul.append(
-                    this.createDateDropdown('Data Inicial', 'input-start-date', 'start_date'),
-                    this.createDateDropdown('Data Final', 'input-end-date', 'end_date'),
-                    this.createSelectDropdown('Categorias', 'taskCategories', 'select-category', categories, 'category'),
-                );
-
-                containerDropdown.append(ul);
-            } else {
-                this.utils.removeElements(".dropdown");
-            }
-        }
-    }
-
-
-    createDropdownOrder(selectorContainer, selectorDropdown) {
-
-        const widthWindow = window.screen.width
-
-        if(widthWindow <= 800){
-
-            const containerDropdown = document.querySelector("body");
-
-            const screen = document.createElement("div");
-            screen.classList.add("screen-modal");
-
-            screen.addEventListener("click", (event)=>{
-                if (event.target === screen) {
-                    screen.remove();
-                }
-            })
-
-            if(!containerDropdown.querySelector('screen-modal')){
-
-                const dropdown = document.createElement("div");
-
-                const header = document.createElement("div");
-                header.classList.add("w-full", "d-flex", "items-start", "justify-start");
-
-                const buttonClose = document.createElement("button");
-                const imgClose = document.createElement("img");
-
-                const title = document.createElement("h3");
-                const imgTitle = document.createElement("img");
-
-                const containerTitle = document.createElement("div");
-
-                const ul = document.createElement('ul');
-
-                ul.id = selectorDropdown;
-                ul.classList.add(
-                    'w-full',
-                    'd-flex', 'align-start', 'justify-start',
-                    'flex-column', 'gap-md',
-                );
-
-                const markItem = (ul, button, value)=>{
-
-                    const buttons = Array.from(ul.querySelectorAll('li > button'));
-
-                    if (buttons.length > 0) {
-                        buttons.forEach((btn) => {
-                            if (btn.classList.contains('marked-order')) {
-                                btn.classList.remove('marked-order');
-                            }
-                        });
-                    }
-
-                    if(button.dataset.value === value){
-                        button.classList.add('marked-order');
-                    }
-                }
-
-                const createListItem = (value, text, hasBorder = true)=> {
-                    const li = document.createElement('li');
-                    li.classList.add('w-full');
-                    if (hasBorder) li.classList.add('bd-bottom');
-
-                    const button = document.createElement('button');
-                    button.dataset.value = value;
-                    button.textContent = text;
-                    button.classList.add(
-                        'd-flex', 'justify-start', 'items-center', 'w-full', 'pt-md',
-                        'text-sm', 'color-primary', 'fw-nm', 'text-align-start'
-                    );
-
-                    li.append(button);
-
-                    li.addEventListener('click', ()=>{
-                        const value = button.dataset.value || null;
-                        this.utils.setLocalStroageParam(this.localStorageName, 'order', value);
-                        this.createCardTransaction();
-                        markItem(ul, button, value);
-                    })
-
-                    const parameter = this.utils.getParams(this.localStorageName, ['order']);
-
-                    if(button.dataset.value === parameter.order){
-                        button.classList.add('marked-order');
-                    }
-
-                    return li;
-                }
-
-                this.paramKeysOrder.forEach((order) => {
-                    ul.append(createListItem(order.value, order.name));
-                });
-
-                buttonClose.classList.add("d-flex", "items-center", "justify-center", "soft-shake");
-                imgClose.src = "/imgs/xmark-light.svg";
-                imgClose.classList.add("img-size-15");
-
-                dropdown.classList.add('w-full', 'bg-secondary',  'dropdown', 'pt-md', 'd-flex', 'align-start', 'justify-start', 'flex-column', 'gap-md', 'fixed', 'left-0', 'bottom-0')
-
-                containerTitle.classList.add("d-flex", "align-center", "justify-start", "gap-sm");
-                title.classList.add("color-light", "text-xl", "fw-m");
-
-                imgTitle.src="/imgs/sort-light.svg";
-                imgTitle.classList.add("img-size-15");
-
-                title.innerText = "Ordem"
-
-                header.classList.add("w-full", "d-dlex", "align-center", "justify-between", "gap-md")
-
-                buttonClose.addEventListener("click", ()=>{
-                    screen.remove();
-                })
-
-                buttonClose.append(imgClose);
-                containerTitle.append(imgTitle, title);
-                header.append(containerTitle, buttonClose);
-                dropdown.append(header, ul);
-                screen.append(dropdown);
-                containerDropdown.append(screen);
-
-            }else{
-                containerDropdown.querySelector('ul').remove();
-            }
-
-        }else{
-            const containerDropdown = document.querySelector(selectorContainer);
-
-            if(!containerDropdown.querySelector('ul')){
-
-                this.utils.removeElements(".dropdown");
-                const ul = document.createElement('ul');
-
-                ul.id = selectorDropdown;
-                ul.classList.add(
-                'overflow-hidden', 'w-160', 'dropdown', 'bd-primary', 'z-index-dropdown',
-                'bg-secondary', 'align-start', 'justify-start', 'flex-column',
-                'radius-lg', 'position-absolute', 'mt-top-sm'
-                );
-
-                const markItem = (ul, button, value)=>{
-
-                    const buttons = Array.from(ul.querySelectorAll('li > button'));
-
-                    if (buttons.length > 0) {
-                        buttons.forEach((btn) => {
-                            if (btn.classList.contains('marked-order')) {
-                                btn.classList.remove('marked-order');
-                            }
-                        });
-                    }
-
-                    if(button.dataset.value === value){
-                        button.classList.add('marked-order');
-                    }
-                }
-
-                const createListItem = (value, text, hasBorder = true)=> {
-                    const li = document.createElement('li');
-                    li.classList.add('w-full');
-                    if (hasBorder) li.classList.add('bd-bottom');
-
-                    const button = document.createElement('button');
-                    button.dataset.value = value;
-                    button.textContent = text;
-                    button.classList.add(
-                        'd-flex', 'justify-start', 'items-center', 'w-full', 'pt-md',
-                        'text-sm', 'color-primary', 'fw-nm', 'text-align-start'
-                    );
-
-                    li.append(button);
-
-                    li.addEventListener('click', ()=>{
-                        const value = button.dataset.value || null;
-                        this.utils.setLocalStroageParam(this.localStorageName, 'order', value);
-                        this.createCardTransaction();
-                        markItem(ul, button, value);
-                    })
-
-                    const parameter = this.utils.getParams(this.localStorageName, ['order']);
-
-                    if(button.dataset.value === parameter.order){
-                        button.classList.add('marked-order');
-                    }
-
-                    return li;
-                }
-
-                this.paramKeysOrder.forEach((order) => {
-                    ul.append(createListItem(order.value, order.name));
-                });
-
-                document.querySelector(selectorContainer).append(ul);
-
-            }else{
-                this.utils.removeElements(".dropdown");
-            }
-        }
-
-    }
-
-    createDateDropdown(labelText, inputClass, storageKey) {
-
-        const params = this.utils.getParams(this.localStorageName, this.paramKeysFilter);
-
-        const li = document.createElement('li');
-
-        const container = document.createElement('div');
-        container.classList.add('w-full', 'd-flex', 'flex-column', 'justify-start', 'items-start', 'gap-sm', 'cnt-input-w');
-
-        const label = document.createElement('label');
-        label.classList.add('text-sm', 'color-primary', 'fw-m');
-        label.textContent = labelText;
-        label.setAttribute('for', storageKey);
-
-        const divInput = document.createElement('div');
-        divInput.classList.add('w-full', 'bg-secondary', 'radius-lg', 'bd-primary');
-
-        const input = document.createElement('input');
-        input.type = 'date';
-        input.name = storageKey;
-        input.classList.add('pt-input-primary', inputClass, 'w-full', 'text-sm', 'color-primary');
-
-        input.addEventListener('blur', () => {
-            const value = input.value || null;
-            this.utils.setLocalStroageParam(this.localStorageName, storageKey, value);
-            this.filterTransactions();
-        });
-
-        if (params[storageKey] != null) {
-            input.value = params[storageKey];
-        }
-
-        divInput.append(input);
-        container.append(label, divInput);
-        li.append(container);
-
-        return li;
-    }
-
-    createSelectDropdown(labelText, name, selectClass, options, storageKey) {
-        const params = this.utils.getParams(this.localStorageName, this.paramKeysFilter);
-
-        const li = document.createElement('li');
-
-        const container = document.createElement('div');
-        container.classList.add('w-full', 'd-flex', 'flex-column', 'justify-start', 'items-start', 'gap-sm', 'cnt-input-w');
-
-        const label = document.createElement('label');
-        label.classList.add('text-sm', 'color-primary', 'fw-m');
-        label.textContent = labelText;
-        label.setAttribute('for', name);
-
-        const divSelect = document.createElement('div');
-        divSelect.classList.add('pt-input-primary', 'w-full', 'bg-secondary', 'radius-lg', 'bd-primary');
-
-        const select = document.createElement('select');
-        select.name = name;
-        select.classList.add(selectClass, 'w-full', 'text-sm', 'color-primary');
-
-        options.forEach(opt => {
-            const option = document.createElement('option');
-            option.value = opt.value;
-            option.textContent = opt.label;
-            option.classList.add("color-dark");
-
-            if (params[storageKey] == option.value) {
-                option.selected = true;
-            }else if(params[storageKey] == null){
-                if(opt.value === ""){
-                    option.selected = true;
-                }
-            }
-
-            select.append(option);
-        });
-
-        select.addEventListener('change', () => {
-            const value = select.value || null;
-            this.utils.setLocalStroageParam(this.localStorageName, storageKey, value);
-            this.filterTasks();
-        });
-
-        divSelect.append(select);
-        container.append(label, divSelect);
-        li.append(container);
-
-        return li;
-    }
-
 }
 
 export default Financial;

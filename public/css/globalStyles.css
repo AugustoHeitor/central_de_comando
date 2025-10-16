@@ -512,6 +512,10 @@ Outros
     width: 60px;
 }
 
+.img-size-100{
+    width: 100px;
+}
+
 .w-mx-400{
     max-width: 400px;
 }
@@ -815,6 +819,10 @@ Outros
     overflow-y: auto;
 }
 
+.text-wrap{
+    word-wrap: break-word;
+}
+
 @keyframes fadeIn {
   from {
     transform: translateY(-100%);
@@ -828,6 +836,25 @@ Outros
 
 .fade-in {
   animation: fadeIn 1s ease-in-out;
+}
+
+.search-animation {
+  animation: search 4s infinite linear;
+  transform-origin: center center;
+}
+
+@keyframes search {
+  0%   { transform: rotate(0deg) translateX(10px) rotate(0deg); }
+  10%  { transform: rotate(36deg) translateX(10px) rotate(-36deg); }
+  20%  { transform: rotate(72deg) translateX(10px) rotate(-72deg); }
+  30%  { transform: rotate(108deg) translateX(10px) rotate(-108deg); }
+  40%  { transform: rotate(144deg) translateX(10px) rotate(-144deg); }
+  50%  { transform: rotate(180deg) translateX(10px) rotate(-180deg); }
+  60%  { transform: rotate(216deg) translateX(10px) rotate(-216deg); }
+  70%  { transform: rotate(252deg) translateX(10px) rotate(-252deg); }
+  80%  { transform: rotate(288deg) translateX(10px) rotate(-288deg); }
+  90%  { transform: rotate(324deg) translateX(10px) rotate(-324deg); }
+  100% { transform: rotate(360deg) translateX(10px) rotate(-360deg); }
 }
 
 @media screen and (max-width: 800px) {

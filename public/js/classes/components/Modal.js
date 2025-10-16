@@ -3,48 +3,48 @@ class Modal {
     createModal(config, contentHTML, buttonsHTML) {
 
         const screen = document.createElement('div');
-        screen.classList.add('screen-modal');
-
         const modal = document.createElement('form');
+        const topSection = document.createElement('section');
+        const topLeft = document.createElement('div');
+        const icon = document.createElement('img');
+        const title = document.createElement('h2');
+        const contentSection = document.createElement('section');
+        const closeBtn = document.createElement('button');
+        const bottomSection = document.createElement('section');
+        const closeIcon = document.createElement('img');
 
-        if(config?.event){
-            modal.addEventListener('submit', config.event);
-        }
-
+        screen.classList.add('screen-modal');
         modal.classList.add(
             'bd-primary', 'd-flex',
             'align-start', 'justify-between', 'flex-column',
             'gap-md', 'bg-secondary', 'radius-lg', ...config?.class
         );
+        closeBtn.classList.add('d-flex', 'items-center', 'justify-center', 'soft-shake');
+        topSection.classList.add('pt-md', 'bd-bottom', 'pt-bottom-md', 'w-full', 'd-flex', 'items-center', 'justify-between', 'gap-md', 'section-top-modal');
+        topLeft.classList.add('d-flex', 'justify-start', 'items-center', 'gap-sm');
+        icon.classList.add('img-size-20');
+        title.classList.add('color-light', 'text-xl', 'fw-m');
+        closeIcon.classList.add('img-size-15');
+        contentSection.classList.add('pt-md', 'w-full', 'h-full', 'pt-right-md', 'overflow-hidden', 'section-content-modal');
+        bottomSection.classList.add('pt-md', 'bd-top', 'pt-top-md', 'w-full', 'd-flex', 'align-start', 'justify-end', 'gap-md', 'section-bottom-modal');
+
+        if(config?.event){
+            modal.addEventListener('submit', config.event);
+        }
 
         modal.id = "form-modal";
 
-        const topSection = document.createElement('section');
-        topSection.classList.add('pt-md', 'bd-bottom', 'pt-bottom-md', 'w-full', 'd-flex', 'items-center', 'justify-between', 'gap-md', 'section-top-modal');
-
-        const topLeft = document.createElement('div');
-        topLeft.classList.add('d-flex', 'justify-start', 'items-center', 'gap-sm');
-
-        const icon = document.createElement('img');
-        icon.src = config.img;
-        icon.classList.add('img-size-20');
-
-        const title = document.createElement('h2');
-        title.classList.add('color-light', 'text-xl', 'fw-m');
         title.textContent = config.title;
+        icon.src = config.img;
 
         topLeft.append(icon);
         topLeft.append(title);
 
-        const closeBtn = document.createElement('button');
-        closeBtn.classList.add('d-flex', 'items-center', 'justify-center', 'soft-shake');
         closeBtn.setAttribute('aria-label', 'Fechar modal');
         closeBtn.type = "button";
 
-        const closeIcon = document.createElement('img');
         closeIcon.src = '/imgs/xmark-light.svg';
         closeIcon.alt = 'Fechar';
-        closeIcon.classList.add('img-size-15');
 
         closeBtn.append(closeIcon);
         closeBtn.addEventListener('click', () => {
@@ -59,13 +59,6 @@ class Modal {
 
         topSection.append(topLeft);
         topSection.append(closeBtn);
-
-        const contentSection = document.createElement('section');
-        contentSection.classList.add('pt-md', 'w-full', 'h-full', 'pt-right-md', 'overflow-hidden', 'section-content-modal');
-
-        const bottomSection = document.createElement('section');
-        bottomSection.classList.add('pt-md', 'bd-top', 'pt-top-md', 'w-full', 'd-flex', 'align-start', 'justify-end', 'gap-md', 'section-bottom-modal');
-
         contentSection.append(contentHTML);
         bottomSection.append(...buttonsHTML);
         modal.append(topSection);
@@ -153,6 +146,8 @@ class Modal {
 
     createContainerDelete(config, buttonsConfig){
 
+        const widthWindow = window.screen.width
+
         const modal = document.querySelector('#form-modal');
 
         if (modal.classList.contains('h-full')) {
@@ -166,45 +161,47 @@ class Modal {
         }
 
         const titleModal = document.querySelector('.section-top-modal>div>h2');
-        titleModal.innerHTML = `Deletar ${config.title}`;
-
         const modalContent = document.querySelector('.section-content-modal');
-        modalContent.innerHTML = "";
-
         const modalButtons = document.querySelector('.section-bottom-modal');
-        modalButtons.innerHTML = "";
 
         const wrapper = document.createElement('div');
-        wrapper.classList.add('d-flex', 'flex-column', 'justify-center', 'items-center', 'gap-sm', 'w-full', 'h-full', 'pt-md', ...config.class);
-
         const warningContainer = document.createElement('div');
-        warningContainer.classList.add('d-flex', 'justify-start', 'items-center', 'gap-md', 'w-full', 'radius-lg', 'pt-md', 'w-mx-600');
-
         const warningIcon = document.createElement('img');
-        warningIcon.src = '/imgs/circle-exclamation-red.svg';
-        warningIcon.alt = 'Aviso';
-        warningIcon.classList.add('img-size-20');
-
         const warningTextContainer = document.createElement('div');
-        warningTextContainer.classList.add('d-flex', 'justify-start', 'items-start');
-
         const warningText = document.createElement('p');
-        warningText.classList.add('text-sm', 'color-primary', 'fw-n');
+        const messageText = document.createElement('p');
+
+        modalContent.innerHTML = "";
+        modalButtons.innerHTML = "";
         warningText.innerHTML = `<strong class="text-sm color-primary fw-b">Atenção! </strong>${config.messageWarning}`;
 
-        warningTextContainer.append(warningText);
-        warningContainer.append(warningIcon);
-        warningContainer.append(warningTextContainer);
-
-        const messageText = document.createElement('p');
-        messageText.classList.add('text-base', 'color-light', 'fw-n', 'pt-md', 'w-full', 'w-mx-600');
+        titleModal.textContent = `Deletar ${config.title}`;
         messageText.textContent = config.message;
 
+        wrapper.classList.add('d-flex', 'flex-column', 'justify-center', 'items-center', 'gap-sm', 'w-full', 'h-full', ...config.class);
+        warningContainer.classList.add('d-flex', 'justify-start', 'items-center', 'gap-md', 'w-full', 'radius-lg', 'pt-md');
+        warningIcon.classList.add('img-size-20');
+        warningTextContainer.classList.add('d-flex', 'justify-start', 'items-start');
+        warningText.classList.add('text-sm', 'color-primary', 'fw-n');
+        messageText.classList.add('text-base', 'color-light', 'fw-n', 'pt-md', 'w-full');
+
+        if(widthWindow <= 800){
+            warningContainer.classList.add("flex-column")
+        }else{
+            messageText.classList.add('w-mx-600');
+            warningContainer.classList.add('w-mx-600');
+            wrapper.classList.add("pt-md");
+            warningContainer.append(warningIcon);
+        }
+
+        warningIcon.src = '/imgs/circle-exclamation-red.svg';
+        warningIcon.alt = 'Aviso';
+
+        warningTextContainer.append(warningText);
+        warningContainer.append(warningTextContainer);
         wrapper.append(warningContainer);
         wrapper.append(messageText);
-
         modalContent.append(wrapper);
-
         const buttons = this.createButtons(buttonsConfig);
         modalButtons.append(...buttons);
     }

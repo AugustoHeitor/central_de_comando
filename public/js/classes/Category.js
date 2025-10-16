@@ -1,4 +1,4 @@
-import Modal  from './Modal.js';
+import Modal  from './components/Modal.js';
 import Master from './Master.js';
 import Utils from './Utils.js';
 
@@ -249,7 +249,6 @@ class Category extends Master {
                 'w-full',
                 'bg-secondary',
                 'bd-primary',
-                'radius-sm',
                 'pt-left-md',
                 'pt-right-md',
                 'pt-top-sm',
