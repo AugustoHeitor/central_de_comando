@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Requests\Task\StoreTaskRequest;
 use App\Http\Requests\Task\UpdateTaskRequest;
 use App\Http\Requests\Task\IndexTaskRequest;
@@ -14,7 +13,7 @@ use App\Models\Task;
 
 class TaskController extends Controller
 {
-    
+
     public function store(StoreTaskRequest $request){
         try{
             $data = $request->validated();
@@ -43,7 +42,7 @@ class TaskController extends Controller
             $task->status = $data['status'];
             $task->priority = $data['priority'];
             $task->category_id = $data['category_id'];
-            $task->user_id = auth()->id(); 
+            $task->user_id = auth()->id();
             $task->deadline = $data['deadline'];
 
             if($data['status'] === 'done'){
@@ -62,7 +61,7 @@ class TaskController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage(),
-                'data' => [], 
+                'data' => [],
             ], 500);
         }
     }
@@ -90,7 +89,7 @@ class TaskController extends Controller
             }
 
             if(isset($data['category_id'])){
-                $category = TaskCategory::find($data['category_id']);   
+                $category = TaskCategory::find($data['category_id']);
 
                 if (!$category) {
                     return response()->json([
@@ -135,7 +134,7 @@ class TaskController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage(),
-                'data' => [], 
+                'data' => [],
             ], 500);
         }
     }
@@ -147,7 +146,7 @@ class TaskController extends Controller
 
             $user_id = auth()->id();
 
-            $query = Task::where('user_id', $user_id);
+            $query = Task::where('user_id', $user_id)->with('timeLogs');
 
             if (!empty($params['status'])) {
                 $query->where('status', $params['status']);
@@ -179,12 +178,12 @@ class TaskController extends Controller
                 'message' => 'Tarefas listadas com sucesso!',
                 'data' => TaskResource::collection($tasks)
             ], 200);
-            
+
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage(),
-                'data' => [], 
+                'data' => [],
             ], 500);
         }
     }

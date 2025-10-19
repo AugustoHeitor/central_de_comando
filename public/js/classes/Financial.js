@@ -304,11 +304,9 @@ class Financial extends Master {
                 rightSide.classList.add("d-flex", "justify-center", "items-end", "gap-sm", "flex-column");
 
                 const value = document.createElement("span");
+                const amount =  this.utils.centsToReais(transaction?.amount);
 
-                value.textContent = transaction?.amount.toLocaleString("pt-BR", {
-                    style: "currency",
-                    currency: "BRL"
-                });
+                value.textContent = this.utils.formatToBRLCurrency(amount);
 
                 if(transaction.type === "income"){
                     value.classList.add("text-x1", "fw-sb", "color-primary");
@@ -428,7 +426,8 @@ class Financial extends Master {
                     const buttonSubmit = e.submitter;
 
                     const formData = this.utils.getFormValues(formModal);
-
+                    const amount = formData.get('amount');
+                    formData.set("amount", this.utils.reaisToCents(amount));
                     this.createTransaction(formData, buttonSubmit);
                 }
             };

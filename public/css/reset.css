@@ -48,9 +48,9 @@ input{
 }
 
 input:-webkit-autofill {
-  -webkit-box-shadow: 0 0 0px 1000px rgba(255, 255, 255, 0) inset !important; 
+  -webkit-box-shadow: 0 0 0px 1000px rgba(255, 255, 255, 0) inset !important;
   transition: background-color 5000s ease-in-out 0s !important;
-  -webkit-text-fill-color: var(--color-light); 
+  -webkit-text-fill-color: var(--color-light);
 }
 
 textarea:focus,
@@ -87,3 +87,6 @@ input::-webkit-calendar-picker-indicator {
   color: var(--color-primary);
 }
 
+input[type="datetime-local"]{
+    width: 180px;
+}

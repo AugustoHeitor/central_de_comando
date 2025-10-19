@@ -9,6 +9,7 @@ use App\Http\Controllers\TaskCategoryController;
 use App\Http\Controllers\FinancialCategoryController;
 use App\Http\Controllers\FinancialTransactionController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TaskTimeLogController;
 use App\Http\Controllers\DashboardController;
 
 // Rotas públicas (sem autenticação)
@@ -76,6 +77,14 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [TaskController::class, 'store'])->name('tasks.store');
         Route::patch('/{id}', [TaskController::class, 'update'])->name('tasks.update');
         Route::delete('/{id}', [TaskController::class, 'destroy'])->name('tasks.destroy');
+    });
+
+    // Rotas API para registro de tempo das tarefas
+    Route::prefix('api/task-time-logs')->group(function () {
+        Route::post('/start/{task_id}', [TaskTimeLogController::class, 'startTimeLog'])->name('task-time-logs.start.startTimeLog');
+        Route::patch('/stop/{task_id}', [TaskTimeLogController::class, 'stopTimeLog'])->name('task-time-logs.stop.stopTimeLog');
+        Route::delete('/{time_log_id}', [TaskTimeLogController::class, 'destroy'])->name('task-time-logs.destroy');
+        Route::patch('/{time_log_id}', [TaskTimeLogController::class, 'update'])->name('task-time-logs.update');
     });
 
     // Rotas API para Transações

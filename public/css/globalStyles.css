@@ -58,6 +58,8 @@
     --bg-income: #00800082;
     --bg-expense: #ff000069;
 
+    --color-active: #008000ff;
+
     --color-dark: #1a1a1a;
     --color-light: #F8F9FE;
     --color-primary: #BCBDC2;
@@ -220,6 +222,9 @@ TEXT ALIGN
 .color-primary { color: var(--color-primary); }
 .color-secondary { color: var(--color-secondary); }
 .color-tertiary {color: var(--color-tertiary);}
+.color-active {
+    color: var(--color-active);
+}
 
 .color-light { color: var(--color-light); }
 .color-dark { color: var(--color-dark); }
@@ -843,6 +848,16 @@ Outros
   transform-origin: center center;
 }
 
+.remove-datetime-icon::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+}
+
+.remove-datetime-icon {
+  padding-right: 0;
+  text-align: center;
+}
+
 @keyframes search {
   0%   { transform: rotate(0deg) translateX(10px) rotate(0deg); }
   10%  { transform: rotate(36deg) translateX(10px) rotate(-36deg); }
@@ -855,6 +870,44 @@ Outros
   80%  { transform: rotate(288deg) translateX(10px) rotate(-288deg); }
   90%  { transform: rotate(324deg) translateX(10px) rotate(-324deg); }
   100% { transform: rotate(360deg) translateX(10px) rotate(-360deg); }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  10% {
+    transform: scale(1.2);
+  }
+  20% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.2);
+  }
+  40% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  60% {
+    transform: scale(1);
+  }
+  70% {
+    transform: scale(1.2);
+  }
+  80% {
+    transform: scale(1);
+  }
+  90% {
+    transform: scale(1.2);
+  }
+}
+
+.pulse-animation {
+  animation: pulse 8s cubic-bezier(0.6, 0, 0.4, 1) infinite;
+  transform-origin: center;
 }
 
 @media screen and (max-width: 800px) {
@@ -874,3 +927,5 @@ Outros
         padding-right: 0px;
     }
 }
+
+

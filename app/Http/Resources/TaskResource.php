@@ -11,14 +11,15 @@ class TaskResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'description' => $this->description, 
+            'description' => $this->description,
             'status' => $this->status,
             'priority' => $this->priority,
             'category_id' => $this->category_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'completed_at' => $this->completed_at ? $this->completed_at : null,
-            'deadline' => $this->deadline
+            'deadline' => $this->deadline,
+            'time_logs' => TaskTimeLogResource::collection($this->whenLoaded('timeLogs')),
         ];
     }
 }

@@ -20,7 +20,7 @@
 @endsection
 
 @section('content')
-    <main class="fade-in h-full w-full d-flex justify-start items-center flex-column gap-md w-mx-1200">
+    <main class="fade-in h-full w-full d-flex justify-start items-center flex-column gap-md w-mx-1200 scroll-y-mobile">
         @php
 
             $content = '
@@ -39,7 +39,7 @@
             'content' => $content
         ])
 
-        <form action="#" class="scroll-y-mobile w-full d-flex flex-column align-start justify-start gap-md h-full">
+        <form action="#" class="w-full d-flex flex-column align-start justify-start gap-md h-full">
 
             <div class="w-full d-flex flex-column align-start justify-start gap-md">
                 <div class="w-full pt-md radius-lg bd-shadow-primary bg-secondary d-flex flex-column items-center justify-center gap-lg">

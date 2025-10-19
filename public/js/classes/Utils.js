@@ -183,6 +183,73 @@ class Utils {
             currency: "BRL"
         })
     }
+
+    reaisToCents(valueInReais) {
+        return Math.round(Number(valueInReais) * 100);
+    }
+
+    centsToReais(valueInCents) {
+        return (Number(valueInCents) / 100);
+    }
+
+    calculateTimeDifference(startDate, endDate = null) {
+        if (!startDate) return '00:00:00';
+
+        const start = new Date(startDate);
+        const end = endDate ? new Date(endDate) : new Date();
+
+        let diffMs = end - start;
+
+        if (diffMs < 0) diffMs = 0;
+
+        const hours = String(Math.floor(diffMs / (1000 * 60 * 60))).padStart(2, '0');
+        const minutes = String(Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+        const seconds = String(Math.floor((diffMs % (1000 * 60)) / 1000)).padStart(2, '0');
+
+        return `${hours}:${minutes}:${seconds}`;
+    }
+
+    calculateTotalTime(dataArray) {
+        let totalSeconds = 0;
+
+        dataArray.forEach(item => {
+            const start = new Date(item.started_at);
+            const end = item.stopped_at ? new Date(item.stopped_at) : new Date();
+
+            if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+                console.error('Data inválida:', item.started_at, item.stopped_at);
+                return;
+            }
+
+            let diffMs = end - start;
+            if (diffMs < 0) diffMs = 0;
+
+            totalSeconds += Math.floor(diffMs / 1000);
+        });
+
+        const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+        const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+        const seconds = String(totalSeconds % 60).padStart(2, '0');
+
+        return `${hours}:${minutes}:${seconds}`;
+    }
+
+    formatForDatetimeLocal(dateString) {
+
+        if (dateString){
+            const date = new Date(dateString);
+            const yyyy = date.getFullYear();
+            const mm = String(date.getMonth() + 1).padStart(2, '0');
+            const dd = String(date.getDate()).padStart(2, '0');
+            const hh = String(date.getHours()).padStart(2, '0');
+            const min = String(date.getMinutes()).padStart(2, '0');
+            return `${yyyy}-${mm}-${dd}T${hh}:${min}`;
+        }else{
+            return "";
+        }
+
+    }
+
 }
 
 export default Utils

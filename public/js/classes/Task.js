@@ -10,6 +10,7 @@ class Task extends Master {
         this.categories = categories;
         this.tasks = tasks;
         this.baseUrl = '/api/';
+        this.intervalTimeLogUpdate = null;
         this.endpoint = endpoint;
         this.localStorageName = "tasks";
         this.url = this.baseUrl + endpoint;
@@ -21,6 +22,7 @@ class Task extends Master {
             'start_deadline',
             'end_deadline',
         ];
+
         this.paramKeysOrder = [
             { name: "Sem Ordenação", value: "none" },
             { name: "Prazo", value: "deadline" },
@@ -88,6 +90,226 @@ class Task extends Master {
         } catch (error) {
 
             let message = 'Erro ao criar tarefa!';
+
+            if (error.response?.data?.message) {
+                message = error.response.data.message;
+            }
+
+            console.log(error)
+
+            toastr.error(message, 'Tarefa', { timeOut: 2000 });
+
+            setTimeout(() => {
+                button.disabled = false;
+            }, 2000);
+
+        }
+    }
+
+    async startTimeLog(id, button, timeCounter){
+
+        button.disabled = true;
+
+        try {
+            const response = await axios.post(`${this.baseUrl}task-time-logs/start/${id}`, {
+                timeout: 5000
+            });
+
+            if (response.status === 201 && response.data.status === 'success') {
+
+                toastr.success(response.data.message, 'Tarefa', { timeOut: 2000 });
+
+                button.querySelector("img").src = "imgs/pause-light.svg";
+                button.setAttribute("data-status", "started");
+
+                this.intervalTimeLogUpdate = setInterval(()=>{
+                    this.updateTimeCounter(timeCounter, response.data.data.started_at);
+                }, 500);
+
+                const data = response.data.data;
+
+                this.tasks?.forEach((task)=>{
+                    if(task.id == id){
+                        task.time_logs.push(data);
+                        this.createTimeLogs('.container-time-logs', task.time_logs, id);
+                    }
+                })
+
+                this.createCardTask();
+
+                setTimeout(() => {
+                    button.disabled = false;
+                }, 2000);
+
+            }
+        } catch (error) {
+
+            let message = 'Erro ao iniciar o registro de tempo da tarefa!';
+
+            if (error.response?.data?.message) {
+                message = error.response.data.message;
+            }
+
+            console.log(error)
+
+            toastr.error(message, 'Tarefa', { timeOut: 2000 });
+
+            setTimeout(() => {
+                button.disabled = false;
+            }, 2000);
+
+        }
+    }
+
+    async stopTimeLog(id, button, timeCounter){
+
+        button.disabled = true;
+
+        try {
+            const response = await axios.patch(`${this.baseUrl}task-time-logs/stop/${id}`, {
+                timeout: 5000
+            });
+
+            if (response.status === 200 && response.data.status === 'success') {
+
+                toastr.success(response.data.message, 'Tarefa', { timeOut: 2000 });
+
+                button.querySelector("img").src = "imgs/play-light.svg";
+                timeCounter.innerText = "00:00:00";
+                button.setAttribute("data-status", "stopped");
+
+                clearInterval(this.intervalTimeLogUpdate);
+
+                const data = response.data.data;
+
+                this.tasks?.forEach((task)=>{
+                    if(task.id == id){
+                        task.time_logs.forEach((log)=>{
+                            if(data.id == log.id){
+                                log.stopped_at = data.stopped_at;
+
+                                this.createTimeLogs('.container-time-logs', task.time_logs, id);
+                            }
+                        })
+                    }
+                })
+
+                this.createCardTask();
+
+                setTimeout(() => {
+                    button.disabled = false;
+                }, 2000);
+
+            }
+        } catch (error) {
+
+            let message = 'Erro ao parar o registro de tempo da tarefa!';
+
+            if (error.response?.data?.message) {
+                message = error.response.data.message;
+            }
+
+            console.log(error)
+
+            toastr.error(message, 'Tarefa', { timeOut: 2000 });
+
+            setTimeout(() => {
+                button.disabled = false;
+            }, 2000);
+
+        }
+    }
+
+    async updateTimeLog(taskId, timeLogId, input, formData){
+
+        input.disabled = true;
+
+        try {
+            const response = await axios.patch(`${this.baseUrl}task-time-logs/${timeLogId}`, formData, {
+                timeout: 5000,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.status === 200 && response.data.status === 'success') {
+
+                toastr.success(response.data.message, 'Tarefa', { timeOut: 2000 });
+
+                const data = response.data.data;
+
+                this.tasks?.forEach((task)=>{
+                    if(task.id == taskId){
+                        task.time_logs.forEach((log)=>{
+                            if(data.id == log.id){
+                                log.started_at = data.started_at;
+                                log.stopped_at = data.stopped_at;
+
+                                this.createTimeLogs('.container-time-logs', task.time_logs, taskId);
+                            }
+                        })
+                    }
+                })
+
+                this.createCardTask();
+
+                setTimeout(() => {
+                    input.disabled = false;
+                }, 2000);
+
+            }
+        } catch (error) {
+
+            let message = 'Erro ao atualizar o registro de tempo da tarefa!';
+
+            if (error.response?.data?.message) {
+                message = error.response.data.message;
+            }
+
+            console.log(error)
+
+            toastr.error(message, 'Tarefa', { timeOut: 2000 });
+
+            setTimeout(() => {
+                input.disabled = false;
+            }, 2000);
+
+        }
+    }
+
+    async deleteTimeLog(taskId, logId, button){
+
+        button.disabled = true;
+
+        try {
+            const response = await axios.delete(`${this.baseUrl}task-time-logs/${logId}`, {
+                timeout: 5000
+            });
+
+            if (response.status === 200 && response.data.status === 'success') {
+
+                toastr.success(response.data.message, 'Tarefa', { timeOut: 2000 });
+
+                this.tasks?.forEach((task) => {
+                    if (task.id == taskId) {
+                        const index = task.time_logs.findIndex(log => log.id === logId);
+                        if (index !== -1) {
+                            task.time_logs.splice(index, 1);
+                            this.createTimeLogs('.container-time-logs', task.time_logs, taskId);
+                        }
+                    }
+                });
+
+                this.createCardTask();
+
+                setTimeout(() => {
+                    button.disabled = false;
+                }, 2000);
+
+            }
+        } catch (error) {
+
+            let message = 'Erro ao deletar o registro de tempo da tarefa!';
 
             if (error.response?.data?.message) {
                 message = error.response.data.message;
@@ -297,7 +519,7 @@ class Task extends Master {
                 const footer = document.createElement('div');
                 footer.classList.add('w-full', 'd-flex', 'justify-start', 'items-center', 'gap-lg', 'bd-top', 'pt-left-md', 'pt-right-md', 'pt-top-md', 'pt-bottom-md', 'flex-wrap');
 
-                const createInfoItem = (imgSrc, altText, spanText) => {
+                const createInfoItem = (imgSrc, altText, spanText, highlight = false) => {
                     const wrapper = document.createElement('div');
                     wrapper.classList.add('d-flex', 'justify-start', 'items-center', 'gap-sm');
 
@@ -307,20 +529,38 @@ class Task extends Master {
                     icon.classList.add('img-size-10');
 
                     const text = document.createElement('span');
-                    text.classList.add('color-primary', 'text-xs');
                     text.textContent = spanText;
 
+                    if(highlight == true){
+                        wrapper.classList.add('pulse-animation');
+                        text.classList.add('color-active', 'text-xs', 'fw-sb');
+                    }else{
+                        text.classList.add('color-primary', 'text-xs');
+                    }
+
+                    wrapper.title = altText;
                     wrapper.append(icon, text);
                     return wrapper;
                 };
 
                 const categoryName = this.categories.find(category => category.id == task.category_id)?.name;
+                const timeLogs = task.time_logs.filter(log => log.stopped_at != null);
+                const statusTimeLog = task.time_logs.findIndex(log => log.stopped_at == null);
+
+                if(statusTimeLog != -1){
+                    footer.append(
+                        createInfoItem('imgs/clock-green.svg', 'Tempo de Execução', this.utils.calculateTotalTime(timeLogs), true),
+                    );
+                }else{
+                    footer.append(
+                        createInfoItem('imgs/clock-gray.svg', 'Tempo de Execução', this.utils.calculateTotalTime(timeLogs)),
+                    );
+                }
 
                 footer.append(
-                    createInfoItem('imgs/clock-gray.svg', 'Iniciar', task.duration || '00:00:00'),
-                    createInfoItem('imgs/calendar-week-gray.svg', 'Prazo', this.utils.formatDate(task.deadline, null)),
+                    createInfoItem('imgs/calendar-week-gray.svg', 'Prazo de Entrega', this.utils.formatDate(task.deadline, null)),
                     createInfoItem('imgs/tag-gray.svg', 'Categoria', categoryName)
-                );
+                )
 
                 card.append(topContent, footer);
 
@@ -676,9 +916,248 @@ class Task extends Master {
             };
 
             const content = this.createContentModal(task);
+            const lastLog = task?.time_logs[task.time_logs.length - 1];
+            let statusLog = null;
+
+            if(task?.time_logs[task.time_logs.length - 1] && lastLog?.stopped_at === null){
+                statusLog = "started";
+            }else{
+                statusLog = "stopped";
+            }
+
+            const timeContainer = this.createTimeControl(task.id, statusLog, lastLog?.started_at);
+
+            const containerTimeLogs = document.createElement("div");
+            containerTimeLogs.classList.add(
+                'w-full',
+                'd-flex',
+                'justify-start',
+                'items-start',
+                'gap-sm',
+                'flex-column',
+                'container-time-logs'
+            );
+
+            content.append(timeContainer, containerTimeLogs);
 
             this.components.modal.createModal(modalConfig, content, buttons);
+            this.createTimeLogs('.container-time-logs', task.time_logs, task.id);
+
         }
+    }
+
+    createTimeControl(id, status, startDate = null) {
+
+        const container = document.createElement('div');
+        const containerButton = document.createElement('div');
+
+        container.classList.add(
+            'w-full',
+            'd-flex',
+            'justify-start',
+            'items-start',
+            'gap-sm',
+            'flex-column'
+        );
+
+        containerButton.classList.add(
+            'w-full',
+            'd-flex',
+            'justify-between',
+            'items-center',
+            'gap-sm',
+            'radius-lg',
+            'pt-input-primary',
+            'bd-shadow-secondary',
+            'bd-primary'
+        );
+
+        const leftDiv = document.createElement('div');
+        leftDiv.classList.add('d-flex', 'justify-start', 'items-center', 'gap-sm');
+
+        const containerLabel = document.createElement('div');
+        containerLabel.classList.add('d-flex', 'justify-start', 'items-center', 'gap-sm');
+
+        const clockImg = document.createElement('img');
+        clockImg.src = "imgs/clock-light.svg";
+        clockImg.alt = "Tempo";
+        clockImg.classList.add('img-size-15');
+
+        const label = document.createElement('label');
+        label.classList.add('color-light', 'text-base', 'fw-m');
+        label.setAttribute('for', 'time');
+        label.textContent = 'Controle de Tempo';
+
+        containerLabel.append(clockImg, label);
+
+        const timeSpan = document.createElement('span');
+        timeSpan.classList.add("text-base", "color-primary");
+        timeSpan.textContent = '00:00:00';
+
+        leftDiv.append(timeSpan);
+
+        const button = document.createElement('button');
+        button.classList.add('d-flex', 'justify-center', 'items-center', 'radius-lg');
+        button.type = "button";
+        button.setAttribute("data-status", status);
+
+        const playImg = document.createElement('img');
+        playImg.alt = "Tempo";
+        playImg.classList.add('img-size-15');
+
+        if(status === "started"){
+            playImg.src = "imgs/pause-light.svg";
+            this.intervalTimeLogUpdate = setInterval(()=>{
+                this.updateTimeCounter(timeSpan, startDate);
+            }, 500);
+        }else if(status === "stopped"){
+            timeSpan.textContent = '00:00:00';
+            playImg.src = "imgs/play-light.svg";
+        }
+
+        button.append(playImg);
+
+        button.addEventListener("click", ()=>{
+            const status = button.dataset.status;
+
+            if(status === "started"){
+                this.stopTimeLog(id, button, timeSpan);
+            }else if(status === "stopped"){
+                this.startTimeLog(id, button, timeSpan);
+            }
+
+        });
+
+        containerButton.append(leftDiv, button);
+        container.append(containerLabel, containerButton)
+
+        return container;
+    }
+
+    createTimeLogs(containerSelector, data, taskId) {
+
+        const container = document.querySelector(containerSelector);
+        container.innerHTML = "";
+
+        if(Array.isArray(data) && data.length > 0){
+
+            const timeLogs = data.filter(log => log.stopped_at != null);
+
+            if(timeLogs.length == 0){
+                return;
+            }
+
+            const containerPrimary = document.createElement('div');
+            const containerSecondary = document.createElement('div');
+            const containerTertiary = document.createElement('div');
+            const textTotalTime = document.createElement('p');
+            const valueTotalTime = document.createElement('p');
+
+            containerPrimary.classList.add('d-flex', 'justify-start', 'items-center', 'gap-sm');
+
+            containerSecondary.classList.add(
+                'w-full',
+                'd-flex',
+                'justify-start',
+                'items-start',
+                'gap-sm',
+                'flex-column'
+            );
+
+            containerTertiary.classList.add('d-flex', 'justify-between', 'items-center', 'gap-sm', 'bd-top', 'pt-sm', 'w-full');
+
+            const img = document.createElement('img');
+            img.src = "imgs/time-logs-light.svg";
+            img.alt = "Tempo";
+            img.classList.add('img-size-20');
+
+            const label = document.createElement('label');
+            label.classList.add('color-light', 'text-base', 'fw-m');
+
+            label.textContent = 'Registros de Tempo';
+
+            containerPrimary.append(img, label);
+
+
+            timeLogs.forEach((log) => {
+
+                    const containerTime = document.createElement("div");
+                    const containerLog = document.createElement("div");
+                    const containerInputs = document.createElement("div");
+                    const inputDateStart = document.createElement("input");
+                    const inputDateEnd = document.createElement("input");
+                    const textTime = document.createElement("p");
+                    const btnDelete = document.createElement("button");
+                    const imgDelete = document.createElement("img");
+
+                    btnDelete.classList.add("hover-scale", "d-flex", 'justify-center', 'items-center');
+                    containerTime.classList.add("d-flex", 'justify-start', 'items-center', 'gap-md');
+                    containerLog.classList.add("d-flex", 'justify-between', 'items-center', 'gap-sm', 'w-full',"bg-secondary", "radius-lg", "bd-primary", "pt-input-primary");
+                    containerInputs.classList.add("d-flex", 'justify-start', 'items-center', 'gap-md', 'flex-direction-mobile');
+                    textTime.classList.add("color-primary", "text-base", "flex-desktop");
+                    inputDateStart.classList.add("color-primary", "text-base", "w-full", "h-21");
+                    inputDateEnd.classList.add("color-primary", "text-base", "w-full", "h-21");
+                    imgDelete.classList.add("img-size-15");
+
+                    inputDateStart.value = this.utils.formatForDatetimeLocal(log.started_at);
+                    inputDateEnd.value = this.utils.formatForDatetimeLocal(log.stopped_at);
+
+                    inputDateStart.type = "datetime-local";
+                    inputDateEnd.type = "datetime-local";
+                    btnDelete.type = "button";
+
+                    inputDateStart.addEventListener("input", ()=>{
+
+                        const formData = new FormData();
+                        formData.append("started_at", inputDateStart.value);
+                        formData.append("stopped_at", inputDateEnd.value);
+
+                        this.updateTimeLog(taskId, log.id, inputDateStart, formData);
+                    })
+
+                    inputDateEnd.addEventListener("input", ()=>{
+
+                        const formData = new FormData();
+                        formData.append("started_at", inputDateStart.value);
+                        formData.append("stopped_at", inputDateEnd.value);
+
+                        this.updateTimeLog(taskId, log.id, inputDateEnd, formData);
+                    })
+
+                    imgDelete.src = "/imgs/trash-light.svg";
+                    imgDelete.alt = "Deletar";
+
+                    btnDelete.appendChild(imgDelete);
+
+                    btnDelete.addEventListener("click", ()=>{
+                        this.deleteTimeLog(taskId, log.id, btnDelete);
+                    })
+
+                    textTime.innerText = this.utils.calculateTimeDifference(log.started_at, log.stopped_at);
+
+                    containerInputs.append(inputDateStart, inputDateEnd);
+                    containerTime.append(textTime, btnDelete);
+                    containerLog.append(containerInputs, containerTime);
+                    containerSecondary.append(containerLog);
+
+            });
+
+
+            textTotalTime.classList.add("color-primary", "text-base");
+            valueTotalTime.classList.add("color-primary", "text-base");
+
+            textTotalTime.innerText = "Tempo Total:";
+            valueTotalTime.innerText = this.utils.calculateTotalTime(timeLogs);
+
+            containerTertiary.append(textTotalTime, valueTotalTime);
+            container.append(containerPrimary, containerSecondary, containerTertiary);
+
+        }
+
+    }
+
+    updateTimeCounter(timeCounter, startDate){
+        timeCounter.innerText = this.utils.calculateTimeDifference(startDate);
     }
 }
 
