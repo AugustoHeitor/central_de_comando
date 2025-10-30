@@ -1,3 +1,7 @@
+#container-time-distribution,
+#container-flow-financial{
+    height: 300px;
+}
 
 @media screen and (max-width: 800px) {
 
@@ -11,11 +15,6 @@
 
     #page-header>div:nth-child(2){
         display: none;
-    }  
-
-    .scroll-y-mobile{
-        overflow-y: auto;
-        padding-bottom: var(--space-lg);
     }
 
 }

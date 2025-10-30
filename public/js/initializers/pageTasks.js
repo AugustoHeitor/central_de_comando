@@ -52,8 +52,6 @@ document.addEventListener('DOMContentLoaded', async ()=>{
     const task = new Task('tasks', tasks, categories);
     task.init();
 
-    task.createCardTask();
-
     const btnCategory = document.querySelector('#btn-category');
 
     if(btnCategory){

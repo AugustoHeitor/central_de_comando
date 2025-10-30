@@ -38,7 +38,6 @@ document.addEventListener('DOMContentLoaded', async ()=>{
     const financial = new Financial('financial-transactions', transactions, categories);
 
     financial.init();
-    financial.createCardTransaction();
 
     const btnCategory = document.querySelector('#btn-category');
 

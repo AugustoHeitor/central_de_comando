@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-
+use App\Services\PdfService;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TaskCategoryController;
@@ -11,6 +11,7 @@ use App\Http\Controllers\FinancialTransactionController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskTimeLogController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ReportController;
 
 // Rotas públicas (sem autenticação)
 Route::get('/', function () {
@@ -48,6 +49,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/tasks', function () {
         return view('tasks');
     })->name('tasks');
+
+    Route::get('/reports', function () {
+        return view('reports');
+    })->name('reports');
 
     // Logout
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -99,5 +104,23 @@ Route::middleware('auth')->group(function () {
     Route::prefix('api/dashboard')->group(function () {
         Route::get('/tasks', [DashboardController::class, 'indexTasks'])->name('dashboard.indexTasks');
         Route::get('/financial-transactions', [DashboardController::class, 'indexFinancialTransactions'])->name('dashboard.indexFinancialTransactions');
+        Route::get('/time-distribution', [DashboardController::class, 'indexTimeDistribution'])->name('dashboard.indexTimeDistribution');
+    });
+
+    // Rotas API para Relátorio
+    Route::prefix('api/report')->group(function () {
+        Route::get('/time-allocation-category', [ReportController::class, 'indexTimeAllocationCategory'])->name('report.indexTimeAllocationCategory');
+        Route::get('/incomes-category', [ReportController::class, 'indexIncomesCategory'])->name('report.indexIncomesCategory');
+        Route::get('/expenses-category', [ReportController::class, 'indexExpensesCategory'])->name('report.indexExpensesCategory');
+        Route::get('/income-and-expenses', [ReportController::class, 'indexIncomeAndExpenses'])->name('report.indexIncomeAndExpenses');
+
+        Route::get('/time-allocation-category/export', [ReportController::class, 'exportTimeAllocationCategoryPdf'])->name('report.exportTimeAllocationCategoryPdf');
+
+        Route::get('/incomes-category/export', [ReportController::class, 'exportIncomesCategoryPdf'])->name('report.exportIncomesCategoryPdf');
+        Route::get('/expenses-category/export', [ReportController::class, 'exportExpensesCategoryPdf'])->name('report.exportExpensesCategoryPdf');
+        Route::get('/income-and-expenses/export', [ReportController::class, 'exportIncomeAndExpensesPdf'])->name('report.exportIncomeAndExpensesPdf');
+
     });
 });
+
+

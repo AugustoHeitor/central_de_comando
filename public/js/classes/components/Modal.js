@@ -171,8 +171,8 @@ class Modal {
         const warningText = document.createElement('p');
         const messageText = document.createElement('p');
 
-        modalContent.innerHTML = "";
-        modalButtons.innerHTML = "";
+        modalContent.replaceChildren();
+        modalButtons.replaceChildren();
         warningText.innerHTML = `<strong class="text-sm color-primary fw-b">Atenção! </strong>${config.messageWarning}`;
 
         titleModal.textContent = `Deletar ${config.title}`;

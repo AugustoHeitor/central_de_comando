@@ -16,7 +16,7 @@ class Setting extends Master {
     }
 
     init(){
-        this.utils.addScrollY('form');
+        this.utils.addScrollY('form', true);
     }
 
     async updateUser(formData, button, screenModal) {

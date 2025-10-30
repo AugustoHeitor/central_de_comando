@@ -50,6 +50,7 @@ class TaskController extends Controller
             }
 
             $task->save();
+            $task->load('timeLogs');
 
             return response()->json([
                 'status' => 'success',
@@ -124,6 +125,7 @@ class TaskController extends Controller
             if (isset($data['deadline'])) $task->deadline = $data['deadline'];
 
             $task->save();
+            $task->load('timeLogs');
 
             return response()->json([
                 'status' => 'success',

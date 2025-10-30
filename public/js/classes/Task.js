@@ -109,10 +109,20 @@ class Task extends Master {
     async startTimeLog(id, button, timeCounter){
 
         button.disabled = true;
+        const formData = new FormData();
+        const formattedDate = this.utils.localDateTimeGenerator();
+
+        const csrfToken = document.querySelector('input[name="_token"]').value;
+        formData.append('_token', csrfToken);
+
+        formData.append('started_at', formattedDate);
 
         try {
-            const response = await axios.post(`${this.baseUrl}task-time-logs/start/${id}`, {
-                timeout: 5000
+            const response = await axios.post(`${this.baseUrl}task-time-logs/start/${id}`, formData, {
+                timeout: 5000,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             });
 
             if (response.status === 201 && response.data.status === 'success') {
@@ -164,10 +174,20 @@ class Task extends Master {
     async stopTimeLog(id, button, timeCounter){
 
         button.disabled = true;
+        const formData = new FormData();
+        const formattedDate = this.utils.localDateTimeGenerator();
+
+        const csrfToken = document.querySelector('input[name="_token"]').value;
+        formData.append('_token', csrfToken);
+
+        formData.append('stopped_at', formattedDate);
 
         try {
-            const response = await axios.patch(`${this.baseUrl}task-time-logs/stop/${id}`, {
-                timeout: 5000
+            const response = await axios.patch(`${this.baseUrl}task-time-logs/stop/${id}`, formData, {
+                timeout: 5000,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             });
 
             if (response.status === 200 && response.data.status === 'success') {
@@ -221,6 +241,9 @@ class Task extends Master {
     }
 
     async updateTimeLog(taskId, timeLogId, input, formData){
+
+        const csrfToken = document.querySelector('input[name="_token"]').value;
+        formData.append('_token', csrfToken);
 
         input.disabled = true;
 
@@ -466,7 +489,7 @@ class Task extends Master {
 
     createCardTask() {
 
-        document.querySelector('#task-section').innerHTML = "";
+        document.querySelector('#task-section').replaceChildren();
 
         const parameter = this.utils.getParams(this.localStorageName, ['order']);
 
@@ -544,8 +567,8 @@ class Task extends Master {
                 };
 
                 const categoryName = this.categories.find(category => category.id == task.category_id)?.name;
-                const timeLogs = task.time_logs.filter(log => log.stopped_at != null);
-                const statusTimeLog = task.time_logs.findIndex(log => log.stopped_at == null);
+                const timeLogs = task?.time_logs?.filter(log => log.stopped_at != null);
+                const statusTimeLog = task?.time_logs?.findIndex(log => log.stopped_at == null);
 
                 if(statusTimeLog != -1){
                     footer.append(
@@ -574,7 +597,7 @@ class Task extends Master {
             this.components.containerEmpty.createContainerEmpty('#task-section', 'Nenhuma tarefa encontrada', 'Não há tarefas que correspondam ao filtro aplicado ou você ainda não criou nenhuma. Experimente ajustar o filtro ou adicionar uma nova tarefa.')
         }
 
-        this.utils.addScrollY('#task-section', true);
+        this.utils.addScrollY('#task-section', false);
     }
 
     createCategoryOptions(){
@@ -1037,7 +1060,7 @@ class Task extends Master {
     createTimeLogs(containerSelector, data, taskId) {
 
         const container = document.querySelector(containerSelector);
-        container.innerHTML = "";
+        container.replaceChildren();
 
         if(Array.isArray(data) && data.length > 0){
 
@@ -1099,11 +1122,13 @@ class Task extends Master {
                     inputDateEnd.classList.add("color-primary", "text-base", "w-full", "h-21");
                     imgDelete.classList.add("img-size-15");
 
-                    inputDateStart.value = this.utils.formatForDatetimeLocal(log.started_at);
-                    inputDateEnd.value = this.utils.formatForDatetimeLocal(log.stopped_at);
+                    inputDateStart.value = this.utils.formatForDatetime(log.started_at);
+                    inputDateEnd.value = this.utils.formatForDatetime(log.stopped_at);
 
                     inputDateStart.type = "datetime-local";
+                    inputDateStart.step = 1;
                     inputDateEnd.type = "datetime-local";
+                    inputDateEnd.step = 1;
                     btnDelete.type = "button";
 
                     inputDateStart.addEventListener("input", ()=>{

@@ -4,7 +4,7 @@ class ContainerEmpty {
 
     }
 
-    createContainerEmpty(selectorContainer, title, text) {
+    createContainerEmpty(selectorContainer, title, text, heightVh = true) {
 
         const selector = document.querySelector(selectorContainer);
 
@@ -14,7 +14,12 @@ class ContainerEmpty {
         const p = document.createElement("p");
         const containerText = document.createElement("div");
 
-        containerEmpty.classList.add('d-flex', 'flex-column', 'justify-center', 'items-center', 'gap-lg', 'w-full', 'h-100vh', 'pt-md');
+        containerEmpty.classList.add('d-flex', 'flex-column', 'justify-center', 'items-center', 'gap-lg', 'w-full', 'pt-md');
+
+        if(heightVh){
+            containerEmpty.classList.add("h-100vh");
+        }
+
         containerText.classList.add('d-flex', 'flex-column', 'justify-center', 'items-center', 'gap-sm');
         h3.classList.add("text-xl", "fw-sb", "color-light")
         p.classList.add("color-primary", "fw-m", "text-sm", "w-full", "w-mx-400", "text-center")

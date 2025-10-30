@@ -1,7 +1,8 @@
 import Dashboard from '../classes/Dashboard.js';
 
-let tasks = {};
-let transactions = {};
+let tasks = [];
+let transactions = [];
+let timeDistribution = [];
 
 const itemsDropdown = [
     {
@@ -18,9 +19,22 @@ const itemsDropdown = [
     }
 ];
 
+const chartSettings = [
+    {
+        "type": "bar",
+        "selector": "#container-time-distribution",
+        "labels": ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
+        "label": 'Horas',
+        "data": [0, 0, 0, 0, 0, 0, 0],
+        "text": "Horas",
+        "converter": "hours",
+        "color": "#364dcd"
+    }
+]
+
 document.addEventListener('DOMContentLoaded', async ()=>{
 
-    const dashboard = new Dashboard('dashboard', tasks, transactions);
+    const dashboard = new Dashboard('dashboard', tasks, transactions, timeDistribution, chartSettings);
     dashboard.init();
 
     const btnDropdownFilter = document.querySelector('.btn-dropdown-filter');

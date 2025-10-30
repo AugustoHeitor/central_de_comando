@@ -379,7 +379,7 @@ class Category extends Master {
     updateCardsCategory(){
 
         const container = document.querySelector('#category-cards-section');
-        container.innerHTML = '';
+        container.replaceChildren();
 
         if(this.categories.length > 0){
             document.querySelector('.category-count').innerText = this.categories.length > 1 ? `${this.categories.length} Categorias` : this.categories.length == 1 ? `${this.categories.length} Categoria` : "";

@@ -1,4 +1,6 @@
 import Utils from '../Utils.js';
+import Input from './Input.js';
+import Select from './Select.js';
 
 class Dropdown{
 
@@ -9,96 +11,53 @@ class Dropdown{
         this.filterItems = filterItems;
         this.paramKeysOrder = paramKeysOrder;
         this.reorderItems = reorderItems;
+
+        this.components = {
+            'input': new Input(),
+            'select': new Select()
+        };
+
     }
 
     createDateDropdown(labelText, inputClass, storageKey) {
 
         const params = this.utils.getParams(this.localStorageName, this.paramKeysFilter);
+        let inputValue = null;
 
         const li = document.createElement('li');
-        const container = document.createElement('div');
-        const label = document.createElement('label');
-        const containerInput = document.createElement('div');
-        const input = document.createElement('input');
 
-        container.classList.add('w-full', 'd-flex', 'flex-column', 'justify-start', 'items-start', 'gap-sm', 'cnt-input-w');
-        label.classList.add('text-sm', 'color-primary', 'fw-m');
-        containerInput.classList.add('w-full', 'bg-secondary', 'radius-lg', 'bd-primary');
-        input.classList.add('pt-input-primary', inputClass, 'w-full', 'text-sm', 'color-primary');
-
-        label.textContent = labelText;
-        input.name = storageKey;
-
-        label.addEventListener("click", ()=>{
-            input.focus();
-        });
-
-        input.type = 'date';
-
-        input.addEventListener('input', () => {
-            const value = input.value || null;
+        const functionCallback = (value)=>{
             this.utils.setLocalStroageParam(this.localStorageName, storageKey, value);
             this.filterItems();
-        });
-
-        if (params[storageKey] != null) {
-            input.value = params[storageKey];
         }
 
-        containerInput.append(input);
-        container.append(label, containerInput);
+        if (params[storageKey] != null) {
+            inputValue = params[storageKey];
+        }
+
+        const container = this.components.input.createInputDate(labelText, inputClass, storageKey, inputValue, functionCallback)
         li.append(container);
 
         return li;
     }
 
-    createSelectDropdown(labelText, name, selectClass, options, storageKey) {
+    createSelectDropdown(labelText, selectName, selectClass, options, storageKey) {
 
         const params = this.utils.getParams(this.localStorageName, this.paramKeysFilter);
+        let optionValue = null;
+
+        if (params[storageKey] != null) {
+            optionValue = params[storageKey];
+        }
 
         const li = document.createElement('li');
-        const container = document.createElement('div');
-        const label = document.createElement('label');
-        const divSelect = document.createElement('div');
-        const select = document.createElement('select');
 
-        container.classList.add('w-full', 'd-flex', 'flex-column', 'justify-start', 'items-start', 'gap-sm', 'cnt-input-w');
-        label.classList.add('text-sm', 'color-primary', 'fw-m');
-        divSelect.classList.add('pt-input-primary', 'w-full', 'bg-secondary', 'radius-lg', 'bd-primary');
-        select.classList.add(selectClass, 'w-full', 'text-sm', 'color-primary');
-
-        label.textContent = labelText;
-        select.name = name;
-
-        label.addEventListener('click', () => {
-            select.focus();
-        });
-
-        options.forEach(opt => {
-            const option = document.createElement('option');
-            option.value = opt.value;
-            option.textContent = opt.label;
-            option.classList.add("color-dark");
-
-            if (params[storageKey] == option.value) {
-                option.selected = true;
-            }else if(params[storageKey] == null){
-                if(opt.value === ""){
-                    option.selected = true;
-                }
-            }
-
-            select.append(option);
-        });
-
-        select.addEventListener('change', () => {
-            const value = select.value || null;
+        const functionCallback = (value)=>{
             this.utils.setLocalStroageParam(this.localStorageName, storageKey, value);
             this.filterItems();
-        });
+        }
 
-        divSelect.append(select);
-        container.append(label, divSelect);
+        const container = this.components.select.createSelect(labelText, selectName, optionValue, selectClass, options, functionCallback);
         li.append(container);
 
         return li;

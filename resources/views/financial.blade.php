@@ -21,7 +21,7 @@
 
 @section('content')
 
-    <main class="fade-in h-full w-full d-flex justify-start items-center flex-column gap-md w-mx-1200">
+    <main class="fade-in h-full w-full d-flex justify-start items-center flex-column gap-md w-mx-1200 scroll-y-mobile">
 
         @php
 

@@ -15,7 +15,7 @@ class Utils {
             clientHeight = mainElement.clientHeight;
         }
 
-        const isOverflowing = scrollHeight >= clientHeight;
+        const isOverflowing = scrollHeight > clientHeight;
 
         if (isOverflowing) {
             if (!container.classList.contains("scroll-auto")) {
@@ -192,41 +192,24 @@ class Utils {
         return (Number(valueInCents) / 100);
     }
 
-    calculateTimeDifference(startDate, endDate = null) {
-        if (!startDate) return '00:00:00';
+    parseDate(dateString) {
+        if (!dateString) return null;
 
-        const start = new Date(startDate);
-        const end = endDate ? new Date(endDate) : new Date();
+        let cleaned = dateString.split('.')[0].replace('Z', '');
+        const [datePart, timePart] = cleaned.split('T');
 
-        let diffMs = end - start;
+        if (!timePart) return null;
 
-        if (diffMs < 0) diffMs = 0;
+        const [year, month, day] = datePart.split('-').map(Number);
+        const [hour, min, sec = 0] = timePart.split(':').map(Number);
 
-        const hours = String(Math.floor(diffMs / (1000 * 60 * 60))).padStart(2, '0');
-        const minutes = String(Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-        const seconds = String(Math.floor((diffMs % (1000 * 60)) / 1000)).padStart(2, '0');
-
-        return `${hours}:${minutes}:${seconds}`;
+        return new Date(year, month - 1, day, hour, min, sec);
     }
 
-    calculateTotalTime(dataArray) {
-        let totalSeconds = 0;
+    formatTimeDifference(diffMs) {
+        if (diffMs < 0) diffMs = 0;
 
-        dataArray.forEach(item => {
-            const start = new Date(item.started_at);
-            const end = item.stopped_at ? new Date(item.stopped_at) : new Date();
-
-            if (isNaN(start.getTime()) || isNaN(end.getTime())) {
-                console.error('Data inválida:', item.started_at, item.stopped_at);
-                return;
-            }
-
-            let diffMs = end - start;
-            if (diffMs < 0) diffMs = 0;
-
-            totalSeconds += Math.floor(diffMs / 1000);
-        });
-
+        const totalSeconds = Math.floor(diffMs / 1000);
         const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
         const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
         const seconds = String(totalSeconds % 60).padStart(2, '0');
@@ -234,22 +217,69 @@ class Utils {
         return `${hours}:${minutes}:${seconds}`;
     }
 
-    formatForDatetimeLocal(dateString) {
+    calculateTimeDifference(startDate, endDate = null) {
+        if (!startDate){
+            return '00:00:00';
+        };
 
-        if (dateString){
-            const date = new Date(dateString);
-            const yyyy = date.getFullYear();
-            const mm = String(date.getMonth() + 1).padStart(2, '0');
-            const dd = String(date.getDate()).padStart(2, '0');
-            const hh = String(date.getHours()).padStart(2, '0');
-            const min = String(date.getMinutes()).padStart(2, '0');
-            return `${yyyy}-${mm}-${dd}T${hh}:${min}`;
-        }else{
-            return "";
-        }
+        const start = this.parseDate(startDate);
+        const end = endDate ? this.parseDate(endDate) : this.parseDate(this.localDateTimeGenerator());
 
+        if (!start || !end){
+            return '00:00:00';
+        };
+
+        return this.formatTimeDifference(end - start);
     }
 
+    calculateTotalTime(dataArray) {
+        if (!Array.isArray(dataArray) || dataArray.length === 0) {
+            return '00:00:00';
+        }
+
+        let totalMs = 0;
+
+        dataArray.forEach(item => {
+            const start = this.parseDate(item.started_at);
+            const end = item.stopped_at ? this.parseDate(item.stopped_at) : new Date();
+
+            if (!start || isNaN(end.getTime())) {
+                console.error('Data inválida:', item.started_at, item.stopped_at);
+                return;
+            }
+
+            const diffMs = Math.max(0, end - start);
+            totalMs += diffMs;
+        });
+
+        return this.formatTimeDifference(totalMs);
+    }
+
+    formatForDatetime(dateString) {
+        if (!dateString || typeof dateString !== "string") return "";
+
+        let cleaned = dateString.split('.')[0].replace('Z', '');
+        const [datePart, timePart] = cleaned.split('T');
+
+        if (!timePart) return "";
+
+        const [hh, min, sec] = timePart.split(':');
+        return `${datePart}T${hh}:${min}:${sec || '00'}`;
+    }
+
+    localDateTimeGenerator() {
+        const now = new Date();
+        const pad = (num) => num.toString().padStart(2, '0');
+
+        return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}` +
+            `T${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+    }
+
+    printPdf(data) {
+        const pdfUrl = window.URL.createObjectURL(new Blob([data], { type: 'application/pdf' }));
+        window.open(pdfUrl, '_blank');
+        window.URL.revokeObjectURL(pdfUrl);
+    }
 }
 
 export default Utils

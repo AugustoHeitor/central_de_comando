@@ -36,6 +36,7 @@
     --gap-sm: 0.5rem;
     --gap-md: 1rem;
     --gap-lg: 2rem;
+    --gap-lg2: 3rem;
 
     /* Colors */
     --color-bg-primary: linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
@@ -212,7 +213,7 @@ TEXT ALIGN
 .gap-sm { gap: var(--gap-sm); }
 .gap-md { gap: var(--gap-md); }
 .gap-lg { gap: var(--gap-lg); }
-
+.gap-lg2 { gap: var(--gap-lg2); }
 /*
 
 🌈 CORES DE FUNDO E TEXTO
@@ -501,6 +502,10 @@ Outros
     width: 20px;
 }
 
+.img-size-25{
+    width: 25px;
+}
+
 .img-size-30{
     width: 30px;
 }
@@ -525,6 +530,10 @@ Outros
     max-width: 400px;
 }
 
+.w-mx-50{
+    max-width: 50px;
+}
+
 .none{
     display: none;
 }
@@ -542,6 +551,10 @@ Outros
 
 .w-mx-200{
  max-width: 200px;
+}
+
+.w-mx-120{
+    max-width: 120px;
 }
 
 .w-full {
@@ -590,6 +603,22 @@ Outros
 
 .w-70{
     width: 70px;
+}
+
+.h-400{
+    height: 400px;
+}
+
+.h-300{
+    height: 300px;
+}
+
+.h-200{
+    height: 200px;
+}
+
+.h-240{
+    height: 240px;
 }
 
 .w-mx-1200{
@@ -926,6 +955,31 @@ Outros
     .scroll-auto{
         padding-right: 0px;
     }
+
+    .scroll-y-mobile{
+        overflow-y: auto;
+        padding-bottom: var(--space-lg);
+    }
+
+    .w-full-mobile{
+        width: 100%;
+    }
 }
 
 
+.overflow-x-hidden{
+    overflow-x: hidden;
+}
+
+.overflow-y-hidden{
+    overflow-y: hidden;
+}
+
+.object-cover{
+    object-fit: cover;
+}
+
+
+.object-position-bottom{
+    object-position: center;
+}

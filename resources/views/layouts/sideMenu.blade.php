@@ -17,6 +17,10 @@
                 <img src="{{ asset('imgs/wallet-gray.svg') }}" alt="Financeiro" class="img-size-20">
                 Financeiro
             </a>
+            <a class="link-page pt-md txt-decoration-none text-base text-link color-primary w-full d-flex justify-start items-center gap-md" href="/reports">
+                <img src="{{ asset('imgs/report-gray.svg') }}" alt="Relatórios" class="img-size-20">
+                Relatórios
+            </a>
             <a class="link-page pt-md txt-decoration-none text-base text-link color-primary w-full d-flex justify-start items-center gap-md" href="/settings">
                 <img src="{{ asset('imgs/config-gray.svg') }}" alt="Configurações" class="img-size-20">
                 Configurações

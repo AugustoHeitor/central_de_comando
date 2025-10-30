@@ -131,7 +131,7 @@ class Financial extends Master {
         amountInput.step = '0.01';
 
         if(transaction?.amount){
-            amountInput.value = transaction.amount;
+            amountInput.value = this.utils.centsToReais(transaction.amount);
         } else {
             amountInput.value = '';
         }
@@ -263,7 +263,7 @@ class Financial extends Master {
 
     createCardTransaction() {
 
-        document.querySelector('#financial-section').innerHTML = "";
+        document.querySelector('#financial-section').replaceChildren();
 
         const parameter = this.utils.getParams(this.localStorageName, ['order']);
 
@@ -495,7 +495,8 @@ class Financial extends Master {
                     const buttonSubmit = e.submitter;
 
                     const formData = this.utils.getFormValues(formModal);
-
+                    const amount = formData.get('amount');
+                    formData.set("amount", this.utils.reaisToCents(amount));
                     this.updateTransaction(formData, buttonSubmit, transaction?.id);
 
                 }

@@ -1,0 +1,13 @@
+#cards-section {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+#cards-section > div {
+    height: 300px;
+}
+
+@media (max-width: 800px) {
+  #cards-section {
+    grid-template-columns: 1fr;
+  }
+}
