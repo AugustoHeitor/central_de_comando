@@ -85,7 +85,7 @@ class ReportRepository
 
     public function getIncomeAndExpenses($userId, Carbon $start, Carbon $end)
     {
-        return FinancialTransaction::select([
+        $transactions = FinancialTransaction::select([
             'financial_transactions.amount',
             'financial_transactions.type',
             'financial_transactions.transaction_date',
@@ -95,5 +95,10 @@ class ReportRepository
         ->whereDate('financial_transactions.transaction_date', '>=', $start)
         ->whereDate('financial_transactions.transaction_date', '<=', $end)
         ->get();
+
+        return $transactions->map(function ($transaction) {
+            $transaction->type = $transaction->type === 'income' ? 'entrada' : 'saida';
+            return $transaction;
+        });
     }
 }
