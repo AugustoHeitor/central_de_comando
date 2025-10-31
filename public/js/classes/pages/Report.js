@@ -1,8 +1,8 @@
-import Utils from './Utils.js';
-import Master from './Master.js';
-import Input from './components/Input.js';
-import MyChart from './components/MyChart.js';
-import ContainerEmpty  from './components/ContainerEmpty.js';
+import Utils from '../Utils.js';
+import Master from '../Master.js';
+import Input from '../components/Input.js';
+import MyChart from '../components/MyChart.js';
+import ContainerEmpty  from '../components/ContainerEmpty.js';
 
 class Report extends Master {
 

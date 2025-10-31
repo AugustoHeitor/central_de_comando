@@ -1,14 +1,14 @@
-import Utils from './Utils.js';
-import PageLoading from './PageLoading.js';
+import Utils from '../Utils.js';
+import PageLoading from '../PageLoading.js';
 
 class Login {
 
     constructor() {
-        this.utils = new Utils(); 
+        this.utils = new Utils();
         this.pageLoading = new PageLoading();
     }
 
-    
+
     submitForm(form){
 
         const buttonSubmit = form.querySelector('button[type="submit"]');
@@ -35,7 +35,7 @@ class Login {
                 document.querySelector("body > div:nth-child(1)").remove();
 
                 this.pageLoading.init();
-                
+
                 setTimeout(()=>{
                     this.pageLoading.removePageLoading();
                     setTimeout(()=>{
@@ -51,7 +51,7 @@ class Login {
             if (error.response?.data?.message) {
                 message = error.response.data.message;
             }
-            
+
             toastr.error(message, 'Login', { timeOut: 2000 });
 
             setTimeout(() => {

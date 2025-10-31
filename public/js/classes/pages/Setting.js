@@ -1,6 +1,6 @@
-import Modal from './components/Modal.js';
-import Master from './Master.js';
-import Utils from './Utils.js';
+import Modal from '../components/Modal.js';
+import Master from '../Master.js';
+import Utils from '../Utils.js';
 
 class Setting extends Master {
 

@@ -2,14 +2,13 @@
 
 @section('title', 'Tarefas')
 
-
 @section('metas')
     <meta name="csrf-token" content="{{ csrf_token() }}">
 @endsection
 
 @section('links')
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="{{asset('css/tasks.css')}}">
+    <link rel="stylesheet" href="{{asset('css/pages/tasks.css')}}">
     <link rel="stylesheet" href="{{asset('css/layouts/modal.css')}}">
 @endsection
 

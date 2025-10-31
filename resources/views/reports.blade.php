@@ -3,7 +3,7 @@
 @section('title', 'Relatórios')
 
 @section('links')
-    <link rel="stylesheet" href="{{asset('css/reports.css')}}">
+    <link rel="stylesheet" href="{{asset('css/pages/reports.css')}}">
     <link rel="stylesheet" href="{{asset('css/layouts/modal.css')}}">
 @endsection
 
@@ -36,11 +36,11 @@
             'content' => $content
         ])
 
-        <section id="cards-section" class="overflow-x-hidden w-full d-grid gap-md justify-start align-start">
+        <section id="cards-section" class="overflow-x-hidden w-full d-grid gap-md justify-start">
 
         </section>
 
-        <section id="report-section" class="overflow-x-hidden w-full h-full none gap-md justify-start align-start flex-column">
+        <section id="report-section" class="overflow-x-hidden w-full h-full none gap-md justify-start flex-column">
 
         </section>
 

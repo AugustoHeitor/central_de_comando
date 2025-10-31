@@ -16,4 +16,12 @@ class ReportRequest extends FormRequest
             'end_deadline'   => 'nullable|date',
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'start_deadline.date' => 'A data inicial deve estar em um formato de data válido (ex: YYYY-MM-DD).',
+            'end_deadline.date'   => 'A data final deve estar em um formato de data válido (ex: YYYY-MM-DD).',
+        ];
+    }
 }

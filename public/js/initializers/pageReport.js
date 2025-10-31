@@ -1,4 +1,4 @@
-import Report from '../classes/Report.js';
+import Report from '../classes/pages/Report.js';
 
 
 const now = new Date();

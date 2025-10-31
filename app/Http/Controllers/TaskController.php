@@ -8,7 +8,6 @@ use App\Http\Requests\Task\IndexTaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\TaskCategory;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Task;
 
 class TaskController extends Controller

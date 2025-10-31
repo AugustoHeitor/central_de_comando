@@ -8,7 +8,7 @@
 
 @section('links')
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="{{asset('css/financial.css')}}">
+    <link rel="stylesheet" href="{{asset('css/pages/financial.css')}}">
     <link rel="stylesheet" href="{{asset('css/layouts/modal.css')}}">
 @endsection
 

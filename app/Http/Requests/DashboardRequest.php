@@ -18,4 +18,12 @@ class DashboardRequest extends FormRequest
             'end_date'   => 'nullable|date',
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'start_date.date' => 'A data inicial deve estar em um formato de data válido (ex: YYYY-MM-DD).',
+            'end_date.date'   => 'A data final deve estar em um formato de data válido (ex: YYYY-MM-DD).'
+        ];
+    }
 }

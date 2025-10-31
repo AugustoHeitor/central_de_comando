@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('links')
-    <link rel="stylesheet" href="{{asset('css/dashboard.css')}}">
+    <link rel="stylesheet" href="{{asset('css/pages/dashboard.css')}}">
     <link rel="stylesheet" href="{{asset('css/layouts/modal.css')}}">
 @endsection
 
@@ -17,25 +17,24 @@
 
     <main class="fade-in h-full w-full d-flex justify-start items-center flex-column gap-md w-mx-1200 scroll-y-mobile">
 
+        @php
 
-         @php
-
-            $content = '
-
-                <div class="d-flex justify-start items-start gap-md">
-                    <div class="d-flex justify-center items-center flex-column">
+            $content =
+                '
+                    <div class="d-flex justify-start gap-md">
                         <div class="d-flex justify-center items-center flex-column">
-                            <button class="bg-tertiary bd-shadow-secondary d-flex justify-start items-center gap-sm pt-btn-primary radius-lg color-light text-sm fw-sb h-36 btn-dropdown-filter">
-                                <img src="' . asset('imgs/filter-light.svg') . '" alt="Filtros" class="img-size-15">
-                                Filtros
-                            </button>
-                            <div class="position-relative d-flex items-start justify-end w-full container-dropdown-filter">
+                            <div class="d-flex justify-center items-center flex-column">
+                                <button class="bg-tertiary bd-shadow-secondary d-flex justify-start items-center gap-sm pt-btn-primary radius-lg color-light text-sm fw-sb h-36 btn-dropdown-filter">
+                                    <img src="' . asset('imgs/filter-light.svg') . '" alt="Filtros" class="img-size-15">
+                                    Filtros
+                                </button>
+                                <div class="position-relative d-flex justify-end w-full container-dropdown-filter">
 
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            ';
+                ';
 
             $imgPageHeader = 'imgs/chart-light.svg';
 
@@ -47,13 +46,13 @@
             'content' => $content
         ])
 
-        <div id="dashboard-section" class="overflow-x-hidden w-full h-full d-flex flex-column justify-start align-start gap-md">
-            <section class="w-full pt-top-md pt-bottom-md d-flex flex-column justify-start align-start gap-md radius-lg">
+        <div id="dashboard-section" class="overflow-x-hidden w-full h-full d-flex flex-column justify-start gap-md">
+            <section class="w-full d-flex flex-column justify-start gap-md radius-lg">
                 <div class="overflow-hidden d-flex justify-start items-center gap-sm">
                     <img src="{{ asset('imgs/list-check-gray.svg') }}" alt="Tarefas" class="img-size-15">
                     <h3 class="text-base fw-sb color-primary">Tarefas</h3>
                 </div>
-                <div class="d-grid grid-tmp-columns-3 grid-tmp-columns-1-mobile grid-tmp-rows-auto-mobile flex-column-mobile justify-start align-start gap-md">
+                <div class="d-grid grid-tmp-columns-3 grid-tmp-columns-1-mobile grid-tmp-rows-auto-mobile flex-column-mobile justify-start gap-md">
                     <div class="bg-secondary w-full pt-md d-flex justify-between items-center gap-md radius-lg bd-shadow-primary">
                         <div class="w-full d-flex justify-start items-center gap-sm">
                             <img src="{{ asset('imgs/circle-gray.svg') }}" alt="A Fazer" class="img-size-15">
@@ -78,27 +77,27 @@
                 </div>
             </section>
 
-            <section class="w-full pt-top-md pt-bottom-md d-flex flex-column justify-start align-start gap-md radius-lg">
+            <section class="w-full d-flex flex-column justify-start gap-md radius-lg">
                 <div class="overflow-hidden d-flex justify-start items-center gap-sm">
                     <img src="{{ asset('imgs/wallet-gray.svg') }}" alt="Financeiro" class="img-size-15">
                     <h3 class="text-base fw-sb color-primary">Financeiro</h3>
                 </div>
-                <div class="d-grid grid-tmp-columns-3 grid-tmp-columns-1-mobile grid-tmp-rows-auto-mobile justify-start align-start gap-md">
-                    <div class="w-full pt-md d-flex flex-column justify-start align-start gap-md radius-lg bd-shadow-primary bg-secondary">
+                <div class="d-grid grid-tmp-columns-3 grid-tmp-columns-1-mobile grid-tmp-rows-auto-mobile justify-start gap-md">
+                    <div class="w-full pt-md d-flex flex-column justify-start gap-md radius-lg bd-shadow-primary bg-secondary">
                         <div class="w-full d-flex justify-start items-center gap-sm">
                             <img src="{{ asset('imgs/piggy-bank-gray.svg') }}" alt="Entrada" class="img-size-15">
                             <h4 class="text-base fw-sb color-primary">Total de Entrada</h4>
                         </div>
                         <span class="text-xl fw-b color-primary" id="value-income">0</span>
                     </div>
-                    <div class="w-full pt-md d-flex flex-column justify-start align-start gap-md radius-lg bd-shadow-primary bg-secondary">
+                    <div class="w-full pt-md d-flex flex-column justify-start gap-md radius-lg bd-shadow-primary bg-secondary">
                         <div class="w-full d-flex justify-start items-center gap-sm">
                             <img src="{{ asset('imgs/money-bill-wave-gray.svg') }}" alt="Saída" class="img-size-15">
                             <h4 class="text-base fw-sb color-primary">Total de Saída</h4>
                         </div>
                         <span class="text-xl fw-b color-primary" id="value-expense">0</span>
                     </div>
-                    <div class="w-full pt-md d-flex flex-column justify-start align-start gap-md radius-lg bd-shadow-primary bg-secondary">
+                    <div class="w-full pt-md d-flex flex-column justify-start gap-md radius-lg bd-shadow-primary bg-secondary">
                         <div class="w-full d-flex justify-start items-center gap-sm">
                             <img src="{{ asset('imgs/wallet-gray.svg') }}" alt="Todas" class="img-size-15">
                             <h4 class="text-base fw-sb color-primary">Saldo</h4>
@@ -108,12 +107,12 @@
                 </div>
             </section>
 
-            <section class="w-full pt-top-md pt-bottom-md d-flex flex-column justify-start align-start gap-md radius-lg">
+            <section class="w-full d-flex flex-column justify-start gap-md radius-lg">
                 <div class="d-flex justify-start items-center gap-sm">
                     <img src="{{ asset('imgs/clock-gray.svg') }}" alt="Distribuição do Tempo" class="img-size-15">
                     <h3 class="text-base fw-sb color-primary">Distribuição do Tempo</h3>
                 </div>
-                <div class="overflow-hidden w-full d-flex flex-column justify-start align-start gap-md">
+                <div class="overflow-hidden w-full d-flex flex-column justify-start gap-md">
                     <canvas height="300" class="bg-secondary pt-md d-flex justify-between items-center gap-md radius-lg bd-shadow-primary" id="container-time-distribution"></canvas>
                 </div>
             </section>

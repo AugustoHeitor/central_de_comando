@@ -1,4 +1,4 @@
-import Setting from '../classes/Setting.js';
+import Setting from '../classes/pages/Setting.js';
 
 document.addEventListener('DOMContentLoaded', ()=>{
 

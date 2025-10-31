@@ -20,4 +20,14 @@ class IndexFinancialTransactionRequest extends FormRequest
             'end_date'   => 'nullable|date',
         ];
     }
+
+    public function messages()
+{
+    return [
+        'type.in' => 'O tipo informado é inválido. Os valores permitidos são: income ou expense.',
+        'category.string' => 'A categoria deve ser um texto válido.',
+        'start_date.date' => 'A data inicial deve estar em um formato de data válido (ex: YYYY-MM-DD).',
+        'end_date.date' => 'A data final deve estar em um formato de data válido (ex: YYYY-MM-DD).'
+    ];
+}
 }

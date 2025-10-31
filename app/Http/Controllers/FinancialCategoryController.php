@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\FinancialCategory;
-use Illuminate\Http\Request;
 use App\Http\Requests\FinancialCategoryRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\FinancialCategoryResource;
@@ -27,7 +26,7 @@ class FinancialCategoryController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage(),
-                'data' => [], 
+                'data' => [],
             ], 500);
         }
     }
@@ -38,7 +37,7 @@ class FinancialCategoryController extends Controller
 
             $category = FinancialCategory::create([
                 'name' => $request->name,
-                'user_id' => Auth::id(),  
+                'user_id' => Auth::id(),
             ]);
 
             return response()->json([
@@ -51,7 +50,7 @@ class FinancialCategoryController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage(),
-                'data' => [], 
+                'data' => [],
             ], 500);
         }
     }
@@ -90,7 +89,7 @@ class FinancialCategoryController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage(),
-                'data' => [], 
+                'data' => [],
             ], 500);
         }
     }
@@ -117,7 +116,7 @@ class FinancialCategoryController extends Controller
             }
 
             $category->delete();
-                
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Categoria deletada com sucesso!',
@@ -128,7 +127,7 @@ class FinancialCategoryController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage(),
-                'data' => [], 
+                'data' => [],
             ], 500);
         }
     }

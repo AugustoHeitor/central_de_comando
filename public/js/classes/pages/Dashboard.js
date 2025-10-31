@@ -1,7 +1,7 @@
-import Utils from './Utils.js';
-import Master from './Master.js';
-import Dropdown from './components/Dropdown.js';
-import MyChart from './components/MyChart.js';
+import Utils from '../Utils.js';
+import Master from '../Master.js';
+import Dropdown from '../components/Dropdown.js';
+import MyChart from '../components/MyChart.js';
 
 class Dashboard extends Master {
 
@@ -133,9 +133,9 @@ class Dashboard extends Master {
         const textExpense = document.querySelector('#value-expense');
         const textIncome = document.querySelector('#value-income');
 
-        const valueTotal = this.transactions.total || 0;
-        const valueExpense = this.transactions.expense || 0;
-        const valueIncome = this.transactions.income || 0;
+        const valueTotal = this.utils.centsToReais(this.transactions.total) || 0;
+        const valueExpense = this.utils.centsToReais(this.transactions.expense) || 0;
+        const valueIncome = this.utils.centsToReais(this.transactions.income) || 0;
 
         textTotal.innerText = this.utils.formatToBRLCurrency(valueTotal);
         textExpense.innerText = this.utils.formatToBRLCurrency(valueExpense);

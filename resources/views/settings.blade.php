@@ -8,7 +8,7 @@
 
 @section('links')
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="{{asset('css/settings.css')}}">
+    <link rel="stylesheet" href="{{asset('css/pages/settings.css')}}">
     <link rel="stylesheet" href="{{asset('css/layouts/modal.css')}}">
 @endsection
 
@@ -39,9 +39,9 @@
             'content' => $content
         ])
 
-        <form action="#" class="w-full d-flex flex-column align-start justify-start gap-md h-full">
+        <form action="#" class="w-full d-flex flex-column justify-start gap-md h-full">
 
-            <div class="w-full d-flex flex-column align-start justify-start gap-md">
+            <div class="w-full d-flex flex-column justify-start gap-md">
                 <div class="w-full pt-md radius-lg bd-shadow-primary bg-secondary d-flex flex-column items-center justify-center gap-lg">
                     <h3 class="color-light text-xl fw-m">Foto do Perfil</h3>
                     <div class="w-full d-flex flex-column items-center justify-center gap-md">

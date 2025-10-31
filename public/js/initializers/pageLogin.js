@@ -1,4 +1,4 @@
-import Login from '../classes/Login.js';
+import Login from '../classes/pages/Login.js';
 
 document.addEventListener('DOMContentLoaded', ()=>{
 

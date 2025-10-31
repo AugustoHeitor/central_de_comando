@@ -1,8 +1,8 @@
-import Modal  from './components/Modal.js';
-import Dropdown  from './components/Dropdown.js';
-import ContainerEmpty  from './components/ContainerEmpty.js';
-import Utils from './Utils.js';
-import Master from './Master.js';
+import Modal  from '../components/Modal.js';
+import Dropdown  from '../components/Dropdown.js';
+import ContainerEmpty  from '../components/ContainerEmpty.js';
+import Utils from '../Utils.js';
+import Master from '../Master.js';
 
 class Task extends Master {
     constructor(endpoint, tasks, categories) {

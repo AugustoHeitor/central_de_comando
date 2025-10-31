@@ -4,7 +4,7 @@
 
 @section('links')
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="{{asset('css/login.css')}}">
+    <link rel="stylesheet" href="{{asset('css/pages/login.css')}}">
     <link rel="stylesheet" href="{{asset('css/pageLoading.css')}}">
 @endsection
 

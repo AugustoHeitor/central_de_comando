@@ -1,4 +1,4 @@
-import Dashboard from '../classes/Dashboard.js';
+import Dashboard from '../classes/pages/Dashboard.js';
 
 let tasks = [];
 let transactions = [];

@@ -1,8 +1,8 @@
-import Modal  from './components/Modal.js';
-import Utils from './Utils.js';
-import Master from './Master.js';
-import Dropdown  from './components/Dropdown.js';
-import ContainerEmpty  from './components/ContainerEmpty.js';
+import Modal  from '../components/Modal.js';
+import Utils from '../Utils.js';
+import Master from '../Master.js';
+import Dropdown  from '../components/Dropdown.js';
+import ContainerEmpty  from '../components/ContainerEmpty.js';
 
 class Financial extends Master {
     constructor(endpoint, transactions, categories) {
@@ -39,6 +39,187 @@ class Financial extends Master {
 
     init() {
         this.filterTransactions();
+    }
+
+    async getAllTransactions(params){
+        try {
+
+            const response = await axios.get(this.url, {
+                params: params,
+                timeout: 5000
+            });
+
+            if (response.status === 200 && response.data.status === 'success') {
+
+                return response.data.data;
+
+            }
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async createTransaction(formData, button){
+
+        button.disabled = true;
+
+        try {
+            const response = await axios.post(this.url, formData, {
+                timeout: 5000
+            });
+
+            if (response.status === 201 && response.data.status === 'success') {
+
+                this.transactions.push(response.data.data);
+                this.createCardTransaction();
+
+                if(response?.data?.data){
+                    const screenModal = document.querySelector('.screen-modal');
+                    if(screenModal){
+                        screenModal.remove();
+                    }
+                }
+
+                toastr.success(response.data.message, 'Transação', { timeOut: 2000 });
+
+                setTimeout(() => {
+                    button.disabled = false;
+                }, 2000);
+
+            }
+        } catch (error) {
+
+            let message = 'Erro ao criar transação!';
+
+            if (error.response?.data?.message) {
+                message = error.response.data.message;
+            }
+
+            console.log(error)
+
+            toastr.error(message, 'Transação', { timeOut: 2000 });
+
+            setTimeout(() => {
+                button.disabled = false;
+            }, 2000);
+
+        }
+    }
+
+    async updateTransaction(formData, button, id){
+
+        button.disabled = true;
+
+        try {
+            const response = await axios.patch(`${this.url}/${id}`, formData, {
+                timeout: 5000,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.status === 200 && response.data.status === 'success') {
+
+                this.transactions?.splice(0, this.transactions.length,
+                    ...this.transactions.filter((transaction) => transaction.id !== id)
+                );
+
+                this.transactions.push(response.data.data)
+
+                this.createCardTransaction();
+
+                if(response?.data?.data){
+                    const screenModal = document.querySelector('.screen-modal');
+                    if(screenModal){
+                        screenModal.remove();
+                    }
+                }
+
+                toastr.success(response.data.message, 'Transação', { timeOut: 2000 });
+
+                setTimeout(() => {
+                    button.disabled = false;
+                }, 2000);
+
+            }
+        } catch (error) {
+
+            let message = 'Erro ao atualizar transação!';
+
+            if (error.response?.data?.message) {
+                message = error.response.data.message;
+            }
+
+            console.log(error)
+
+            toastr.error(message, 'Transação', { timeOut: 2000 });
+
+            setTimeout(() => {
+                button.disabled = false;
+            }, 2000);
+
+        }
+    }
+
+    async deleteTransaction(button, csrfToken, id){
+
+        button.disabled = true;
+
+        const formData = new FormData();
+        formData.append('_token', csrfToken);
+
+        try {
+            const response = await axios.delete(`${this.url}/${id}`, {
+                timeout: 5000
+            });
+
+            if (response.status === 200 && response.data.status === 'success') {
+
+                if(document.querySelector('.screen-modal')){
+                    document.querySelector('.screen-modal').remove();
+                }
+
+                this.transactions?.splice(0, this.transactions.length,
+                    ...this.transactions.filter((transaction) => transaction.id !== id)
+                );
+
+                this.createCardTransaction();
+
+                toastr.success(response.data.message, 'Tarefa', { timeOut: 2000 });
+
+            }
+        } catch (error) {
+
+            let message = 'Erro ao deletar tarefa!';
+
+            if (error.response?.data?.message) {
+                message = error.response.data.message;
+            }
+
+            console.log(error)
+
+            toastr.error(message, 'Tarefa', { timeOut: 2000 });
+
+            setTimeout(() => {
+                button.disabled = false;
+            }, 2000);
+
+        }
+
+    }
+
+    async filterTransactions() {
+
+        const params = this.utils.getParams(this.localStorageName, this.paramKeysFilter);
+
+        const result = await this.getAllTransactions(params);
+
+        this.transactions?.splice(0, this.transactions.length,
+            ...result
+        );
+
+        this.createCardTransaction();
     }
 
     createContentModal(transaction = null) {
@@ -506,187 +687,6 @@ class Financial extends Master {
 
             this.components.modal.createModal(modalConfig, content, buttons);
         }
-    }
-
-    async getAllTransactions(params){
-        try {
-
-            const response = await axios.get(this.url, {
-                params: params,
-                timeout: 5000
-            });
-
-            if (response.status === 200 && response.data.status === 'success') {
-
-                return response.data.data;
-
-            }
-
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    async createTransaction(formData, button){
-
-        button.disabled = true;
-
-        try {
-            const response = await axios.post(this.url, formData, {
-                timeout: 5000
-            });
-
-            if (response.status === 201 && response.data.status === 'success') {
-
-                this.transactions.push(response.data.data);
-                this.createCardTransaction();
-
-                if(response?.data?.data){
-                    const screenModal = document.querySelector('.screen-modal');
-                    if(screenModal){
-                        screenModal.remove();
-                    }
-                }
-
-                toastr.success(response.data.message, 'Transação', { timeOut: 2000 });
-
-                setTimeout(() => {
-                    button.disabled = false;
-                }, 2000);
-
-            }
-        } catch (error) {
-
-            let message = 'Erro ao criar transação!';
-
-            if (error.response?.data?.message) {
-                message = error.response.data.message;
-            }
-
-            console.log(error)
-
-            toastr.error(message, 'Transação', { timeOut: 2000 });
-
-            setTimeout(() => {
-                button.disabled = false;
-            }, 2000);
-
-        }
-    }
-
-    async updateTransaction(formData, button, id){
-
-        button.disabled = true;
-
-        try {
-            const response = await axios.patch(`${this.url}/${id}`, formData, {
-                timeout: 5000,
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            if (response.status === 200 && response.data.status === 'success') {
-
-                this.transactions?.splice(0, this.transactions.length,
-                    ...this.transactions.filter((transaction) => transaction.id !== id)
-                );
-
-                this.transactions.push(response.data.data)
-
-                this.createCardTransaction();
-
-                if(response?.data?.data){
-                    const screenModal = document.querySelector('.screen-modal');
-                    if(screenModal){
-                        screenModal.remove();
-                    }
-                }
-
-                toastr.success(response.data.message, 'Transação', { timeOut: 2000 });
-
-                setTimeout(() => {
-                    button.disabled = false;
-                }, 2000);
-
-            }
-        } catch (error) {
-
-            let message = 'Erro ao atualizar transação!';
-
-            if (error.response?.data?.message) {
-                message = error.response.data.message;
-            }
-
-            console.log(error)
-
-            toastr.error(message, 'Transação', { timeOut: 2000 });
-
-            setTimeout(() => {
-                button.disabled = false;
-            }, 2000);
-
-        }
-    }
-
-    async deleteTransaction(button, csrfToken, id){
-
-        button.disabled = true;
-
-        const formData = new FormData();
-        formData.append('_token', csrfToken);
-
-        try {
-            const response = await axios.delete(`${this.url}/${id}`, {
-                timeout: 5000
-            });
-
-            if (response.status === 200 && response.data.status === 'success') {
-
-                if(document.querySelector('.screen-modal')){
-                    document.querySelector('.screen-modal').remove();
-                }
-
-                this.transactions?.splice(0, this.transactions.length,
-                    ...this.transactions.filter((transaction) => transaction.id !== id)
-                );
-
-                this.createCardTransaction();
-
-                toastr.success(response.data.message, 'Tarefa', { timeOut: 2000 });
-
-            }
-        } catch (error) {
-
-            let message = 'Erro ao deletar tarefa!';
-
-            if (error.response?.data?.message) {
-                message = error.response.data.message;
-            }
-
-            console.log(error)
-
-            toastr.error(message, 'Tarefa', { timeOut: 2000 });
-
-            setTimeout(() => {
-                button.disabled = false;
-            }, 2000);
-
-        }
-
-    }
-
-    async filterTransactions() {
-
-        const params = this.utils.getParams(this.localStorageName, this.paramKeysFilter);
-
-        const result = await this.getAllTransactions(params);
-
-        this.transactions?.splice(0, this.transactions.length,
-            ...result
-        );
-
-        this.createCardTransaction();
     }
 
     sortTransactions(transactions, order) {

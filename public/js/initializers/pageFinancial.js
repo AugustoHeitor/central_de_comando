@@ -1,5 +1,5 @@
 import Category from '../classes/Category.js';
-import Financial from '../classes/Financial.js';
+import Financial from '../classes/pages/Financial.js';
 
 let categories = [];
 let transactions = [];

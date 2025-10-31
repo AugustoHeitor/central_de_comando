@@ -2,19 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Requests\FinancialTransaction\StoreFinancialTransactionRequest;
 use App\Http\Requests\FinancialTransaction\UpdateFinancialTransactionRequest;
 use App\Http\Requests\FinancialTransaction\IndexFinancialTransactionRequest;
 use App\Http\Resources\FinancialTransactionResource;
 use App\Models\FinancialCategory;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 use App\Models\FinancialTransaction;
 
 class FinancialTransactionController extends Controller
 {
-    
+
     public function store(StoreFinancialTransactionRequest $request){
         try{
             $data = $request->validated();
@@ -44,8 +41,8 @@ class FinancialTransactionController extends Controller
             $transaction->amount = $data['amount'];
             $transaction->transaction_date = $data['transaction_date'];
             $transaction->category_id = $data['category_id'];
-            $transaction->user_id = auth()->id(); 
-        
+            $transaction->user_id = auth()->id();
+
             $transaction->save();
 
             return response()->json([
@@ -58,7 +55,7 @@ class FinancialTransactionController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage(),
-                'data' => [], 
+                'data' => [],
             ], 500);
         }
     }
@@ -86,7 +83,7 @@ class FinancialTransactionController extends Controller
             }
 
             if(isset($data['category_id'])){
-                $category = FinancialCategory::find($data['category_id']);   
+                $category = FinancialCategory::find($data['category_id']);
 
                 if (!$category) {
                     return response()->json([
@@ -104,7 +101,7 @@ class FinancialTransactionController extends Controller
                     ], 403);
                 }
             }
-  
+
             if (isset($data['title'])) $transaction->title = $data['title'];
             if (isset($data['type'])) $transaction->type = $data['type'];
             if (isset($data['amount'])) $transaction->amount = $data['amount'];
@@ -122,7 +119,7 @@ class FinancialTransactionController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage(),
-                'data' => [], 
+                'data' => [],
             ], 500);
         }
     }
@@ -149,8 +146,8 @@ class FinancialTransactionController extends Controller
                     $params['start_date'],
                     $params['end_date']
                 ]);
-            } 
-           
+            }
+
             $transactions = $query->orderBy('id')->get();
 
             return response()->json([
@@ -158,12 +155,12 @@ class FinancialTransactionController extends Controller
                 'message' => 'Transações listadas com sucesso!',
                 'data' => FinancialTransactionResource::collection($transactions)
             ], 200);
-            
+
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage(),
-                'data' => [], 
+                'data' => [],
             ], 500);
         }
     }

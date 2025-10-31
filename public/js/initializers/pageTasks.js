@@ -1,5 +1,5 @@
 import Category from '../classes/Category.js';
-import Task from '../classes/Task.js';
+import Task from '../classes/pages/Task.js';
 
 let categories = [];
 let tasks = [];
