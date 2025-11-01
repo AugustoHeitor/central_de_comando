@@ -83,7 +83,7 @@ class ReportRepository
         })->values();
     }
 
-    public function getIncomeAndExpenses($userId, Carbon $start, Carbon $end)
+    public function getIncomeAndExpenses($userId, Carbon $start, Carbon $end, $translate = false)
     {
         $transactions = FinancialTransaction::select([
             'financial_transactions.amount',
@@ -96,9 +96,13 @@ class ReportRepository
         ->whereDate('financial_transactions.transaction_date', '<=', $end)
         ->get();
 
-        return $transactions->map(function ($transaction) {
-            $transaction->type = $transaction->type === 'income' ? 'entrada' : 'saida';
-            return $transaction;
-        });
+        if($translate){
+            return $transactions->map(function ($transaction) {
+                $transaction->type = $transaction->type === 'income' ? 'entrada' : 'saida';
+                return $transaction;
+            });
+        }else{
+            return $transactions;
+        }
     }
 }

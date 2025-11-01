@@ -3,6 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('/imgs/icon-180.png') }}">
+
+    <!-- PWA -->
+    <link rel="manifest" href="{{ asset('/manifest.json') }}">
+    <meta name="theme-color" content="#1a1a1a">
+
+
     @yield('metas')
 
     <title>{{ config('app.name') }} | @yield('title')</title>

@@ -1,0 +1,20 @@
+{
+  "name": "Central de Comando",
+  "short_name": "Central",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#1a1a1a",
+  "background_color": "#0f0f0f",
+  "icons": [
+    {
+      "src": "/imgs/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/imgs/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}
