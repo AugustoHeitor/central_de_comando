@@ -1,4 +1,4 @@
-<aside id="side-menu-desktop" class="bg-secondary bd-shadow-tertiary h-full w-full w-mx-280 flex-desktop flex-column justify-start items-start radius-lg overflow-hidden">
+<aside id="side-menu-desktop" class="bg-secondary bd-shadow-tertiary h-full w-full w-mx-280 flex-desktop flex-column justify-start items-start radius-sm overflow-hidden">
     <section class="min-max-65 w-full pt-md bd-bottom d-flex justify-start items-center gap-sm">
         <img src="{{ asset('imgs/satellite-light.svg') }}" alt="Logo" class="img-size-30">
         <span class="text-xl fw-sb color-light">{{ config('app.name') }}</span>

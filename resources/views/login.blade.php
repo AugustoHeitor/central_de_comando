@@ -33,20 +33,20 @@
                         <div class="w-full d-flex flex-column justify-start items-start gap-md">
                             <div class="w-full d-flex flex-column justify-start items-start gap-sm">
                                 <label class="color-light text-base" for="email">E-mail</label>
-                                <div class="container-focus-scale d-flex justify-start items-center gap-sm bg-transparent w-full radius-lg pt-md bd-primary">
+                                <div class="container-focus-scale d-flex justify-start items-center gap-sm bg-transparent w-full radius-sm pt-md bd-primary">
                                     <img src="{{ asset('imgs/email-light.svg') }}" alt="Email" class="img-size-20">
                                     <input type="email" name="email" class="w-full text-base color-primary" required>
                                 </div>
                             </div>
                             <div class="w-full d-flex flex-column justify-start items-start gap-sm">
                                 <label class="color-light text-base" for="password">Senha</label>
-                                <div class="container-focus-scale d-flex justify-start items-center gap-sm bg-transparent w-full radius-lg pt-md bd-primary">
+                                <div class="container-focus-scale d-flex justify-start items-center gap-sm bg-transparent w-full radius-sm pt-md bd-primary">
                                     <img src="{{ asset('imgs/lock-light.svg') }}" alt="Senha" class="img-size-20">
                                     <input type="password" name="password" class="w-full text-base color-primary" required>
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="bg-tertiary bd-shadow-secondary bg-btn-save hover-scale w-full d-flex justify-center items-center gap-sm w-full color-light text-sm pt-md radius-lg fw-sb">
+                        <button type="submit" class="bg-tertiary bd-shadow-secondary bg-btn-save hover-scale w-full d-flex justify-center items-center gap-sm w-full color-light text-sm pt-md radius-sm fw-sb">
                             <img src="{{ asset('imgs/right-bracket.svg') }}" alt="Login" class="img-size-20">
                             Acessar Sistema
                         </button>

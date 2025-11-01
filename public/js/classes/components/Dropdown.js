@@ -152,7 +152,7 @@ class Dropdown{
                 ul.classList.add(
                     'dropdown', 'bd-primary', 'z-index-dropdown', 'bg-secondary',
                     'pt-md', 'd-flex', 'align-start', 'justify-start',
-                    'flex-column', 'gap-md', 'radius-lg', 'position-absolute', 'mt-top-sm'
+                    'flex-column', 'gap-md', 'radius-sm', 'position-absolute', 'mt-top-sm'
                 );
 
                 items.forEach((item)=>{
@@ -303,7 +303,7 @@ class Dropdown{
                 ul.classList.add(
                 'overflow-hidden', 'w-160', 'dropdown', 'bd-primary', 'z-index-dropdown',
                 'bg-secondary', 'align-start', 'justify-start', 'flex-column',
-                'radius-lg', 'position-absolute', 'mt-top-sm'
+                'radius-sm', 'position-absolute', 'mt-top-sm'
                 );
 
                 ul.id = selectorDropdown;

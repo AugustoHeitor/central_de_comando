@@ -25,7 +25,7 @@ class Input{
         const containerInput = document.createElement('div');
         const input = document.createElement('input');
 
-        containerInput.classList.add('w-full', 'bg-secondary', 'radius-lg', 'bd-primary');
+        containerInput.classList.add('w-full', 'bg-secondary', 'radius-sm', 'bd-primary');
         input.classList.add('pt-input-primary', inputClass, 'w-full', 'text-sm', 'color-primary');
 
         input.name = inputName;

@@ -501,7 +501,7 @@ class Task extends Master {
                 const card = document.createElement('div');
 
                 card.classList.add(
-                    'overflow-hidden', 'hover-bg-primary', 'h-mn-157', 'radius-lg', 'pointer',
+                    'overflow-hidden', 'hover-bg-primary', 'h-mn-157', 'radius-sm', 'pointer',
                     'd-flex', 'flex-column', 'justify-start', 'items-start',
                     'gap-md', 'w-full', 'bg-secondary', 'bd-shadow-primary'
                 );
@@ -517,7 +517,7 @@ class Task extends Master {
                 title.textContent = task.title;
 
                 const priorityBadge = document.createElement('span');
-                priorityBadge.classList.add('d-flex', 'justify-center', 'items-center', 'w-70', 'radius-lg', 'text-xs', 'pt-xs');
+                priorityBadge.classList.add('d-flex', 'justify-center', 'items-center', 'w-70', 'radius-sm', 'text-xs', 'pt-xs');
 
                 const priorities = [
                     { value: 'low', label: 'Baixa', class: "badge-low" },
@@ -645,7 +645,7 @@ class Task extends Master {
             labelWrapper.append(label);
 
             const inputWrapper = document.createElement('div');
-            inputWrapper.classList.add('d-flex', 'items-center', 'justify-between', 'w-full', 'bg-secondary', 'pt-input-primary', 'bd-primary', 'radius-lg');
+            inputWrapper.classList.add('d-flex', 'items-center', 'justify-between', 'w-full', 'bg-secondary', 'pt-input-primary', 'bd-primary', 'radius-sm');
             inputWrapper.append(inputElement);
 
             group.append(labelWrapper);
@@ -688,7 +688,7 @@ class Task extends Master {
         descLabelWrapper.append(descLabel);
 
         const descWrapper = document.createElement('div');
-        descWrapper.classList.add('w-full', 'h-mn-300', 'bg-secondary', 'pt-right-sm', 'bd-primary', 'radius-lg');
+        descWrapper.classList.add('w-full', 'h-mn-300', 'bg-secondary', 'pt-right-sm', 'bd-primary', 'radius-sm');
 
         const descTextarea = document.createElement('textarea');
         descTextarea.value = task?.description ? task.description : "";
@@ -753,7 +753,7 @@ class Task extends Master {
             labelWrapper.append(label);
 
             const selectWrapper = document.createElement('div');
-            selectWrapper.classList.add('w-full', 'bg-secondary', 'radius-lg', 'bd-primary', 'pt-input-primary');
+            selectWrapper.classList.add('w-full', 'bg-secondary', 'radius-sm', 'bd-primary', 'pt-input-primary');
 
             const select = document.createElement('select');
             select.name = field.name;
@@ -801,7 +801,7 @@ class Task extends Master {
         deadlineLabelWrapper.append(deadlineLabel);
 
         const deadlineWrapper = document.createElement('div');
-        deadlineWrapper.classList.add('w-full', 'bg-secondary', 'radius-lg', 'bd-primary', 'pt-input-primary');
+        deadlineWrapper.classList.add('w-full', 'bg-secondary', 'radius-sm', 'bd-primary', 'pt-input-primary');
 
         const deadlineInput = document.createElement('input');
         deadlineInput.required = true;
@@ -989,7 +989,7 @@ class Task extends Master {
             'justify-between',
             'items-center',
             'gap-sm',
-            'radius-lg',
+            'radius-sm',
             'pt-input-primary',
             'bd-shadow-secondary',
             'bd-primary'
@@ -1020,7 +1020,7 @@ class Task extends Master {
         leftDiv.append(timeSpan);
 
         const button = document.createElement('button');
-        button.classList.add('d-flex', 'justify-center', 'items-center', 'radius-lg');
+        button.classList.add('d-flex', 'justify-center', 'items-center', 'radius-sm');
         button.type = "button";
         button.setAttribute("data-status", status);
 
@@ -1115,7 +1115,7 @@ class Task extends Master {
 
                     btnDelete.classList.add("hover-scale", "d-flex", 'justify-center', 'items-center');
                     containerTime.classList.add("d-flex", 'justify-start', 'items-center', 'gap-md');
-                    containerLog.classList.add("d-flex", 'justify-between', 'items-center', 'gap-sm', 'w-full',"bg-secondary", "radius-lg", "bd-primary", "pt-input-primary");
+                    containerLog.classList.add("d-flex", 'justify-between', 'items-center', 'gap-sm', 'w-full',"bg-secondary", "radius-sm", "bd-primary", "pt-input-primary");
                     containerInputs.classList.add("d-flex", 'justify-start', 'items-center', 'gap-md', 'flex-direction-mobile');
                     textTime.classList.add("color-primary", "text-base", "flex-desktop");
                     inputDateStart.classList.add("color-primary", "text-base", "w-full", "h-21");

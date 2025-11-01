@@ -17,7 +17,7 @@ class Modal {
         modal.classList.add(
             'bd-primary', 'd-flex',
             'align-start', 'justify-between', 'flex-column',
-            'gap-md', 'bg-secondary', 'radius-lg', ...config?.class
+            'gap-md', 'bg-secondary', 'radius-sm', ...config?.class
         );
         closeBtn.classList.add('d-flex', 'items-center', 'justify-center', 'soft-shake');
         topSection.classList.add('pt-md', 'bd-bottom', 'pt-bottom-md', 'w-full', 'd-flex', 'items-center', 'justify-between', 'gap-md', 'section-top-modal');
@@ -92,7 +92,7 @@ class Modal {
 
             if (config.type === 'delete') {
 
-                btn.className = 'w-full d-flex justify-center items-center gap-sm color-light text-sm pt-btn-primary radius-lg fw-m bd-shadow-secondary w-mx-280 bg-btn-delete hover-scale';
+                btn.className = 'w-full d-flex justify-center items-center gap-sm color-light text-sm pt-btn-primary radius-sm fw-m bd-shadow-secondary w-mx-280 bg-btn-delete hover-scale';
                 const img = document.createElement('img');
                 img.src = '/imgs/trash-light.svg';
                 img.alt = 'Deletar';
@@ -102,7 +102,7 @@ class Modal {
 
             } else if (config.type === 'save') {
 
-                btn.className = 'hover-scale w-full d-flex justify-center items-center gap-sm color-light text-sm pt-btn-primary radius-lg fw-m bg-btn-save bd-shadow-secondary w-mx-280';
+                btn.className = 'hover-scale w-full d-flex justify-center items-center gap-sm color-light text-sm pt-btn-primary radius-sm fw-m bg-btn-save bd-shadow-secondary w-mx-280';
                 const img = document.createElement('img');
                 img.src = '/imgs/save-light.svg';
                 img.alt = 'Salvar';
@@ -112,7 +112,7 @@ class Modal {
 
             } else if (config.type === 'add') {
 
-                btn.className = 'hover-scale w-full d-flex justify-center items-center gap-sm color-light text-sm pt-btn-primary radius-lg fw-m bg-btn-create bd-shadow-secondary w-mx-280';
+                btn.className = 'hover-scale w-full d-flex justify-center items-center gap-sm color-light text-sm pt-btn-primary radius-sm fw-m bg-btn-create bd-shadow-secondary w-mx-280';
                 const img = document.createElement('img');
                 img.src = '/imgs/create-light.svg';
                 img.alt = 'Adicionar';
@@ -122,7 +122,7 @@ class Modal {
 
             }else if (config.type === 'cancel'){
 
-                btn.className = 'hover-scale w-full d-flex justify-center items-center gap-sm w-full color-primary text-sm pt-btn-primary radius-lg fw-m bg-secondary bd-shadow-secondary w-mx-280';
+                btn.className = 'hover-scale w-full d-flex justify-center items-center gap-sm w-full color-primary text-sm pt-btn-primary radius-sm fw-m bg-secondary bd-shadow-secondary w-mx-280';
                 const img = document.createElement('img');
                 img.src = '/imgs/xmark-light.svg';
                 img.alt = 'Cancelar';
@@ -179,7 +179,7 @@ class Modal {
         messageText.textContent = config.message;
 
         wrapper.classList.add('d-flex', 'flex-column', 'justify-center', 'items-center', 'gap-sm', 'w-full', 'h-full', ...config.class);
-        warningContainer.classList.add('d-flex', 'justify-start', 'items-center', 'gap-md', 'w-full', 'radius-lg', 'pt-md');
+        warningContainer.classList.add('d-flex', 'justify-start', 'items-center', 'gap-md', 'w-full', 'radius-sm', 'pt-md');
         warningIcon.classList.add('img-size-20');
         warningTextContainer.classList.add('d-flex', 'justify-start', 'items-start');
         warningText.classList.add('text-sm', 'color-primary', 'fw-n');

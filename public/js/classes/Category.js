@@ -52,7 +52,7 @@ class Category extends Master {
         wrapper.classList.add('d-flex', 'flex-column', 'justify-start', 'items-start', 'gap-sm', 'w-full', ...config.class);
 
         const warningContainer = document.createElement('div');
-        warningContainer.classList.add('d-flex', 'justify-start', 'items-center', 'gap-md', 'w-full', 'radius-lg', 'pt-md');
+        warningContainer.classList.add('d-flex', 'justify-start', 'items-center', 'gap-md', 'w-full', 'radius-sm', 'pt-md');
 
         const warningIcon = document.createElement('img');
         warningIcon.src = '/imgs/circle-exclamation-red.svg';
@@ -116,7 +116,7 @@ class Category extends Master {
             'bg-secondary',
             'pt-input-primary',
             'bd-primary',
-            'radius-lg',
+            'radius-sm',
         );
 
         input.classList.add(
@@ -159,7 +159,7 @@ class Category extends Master {
         containerCreateCategory.classList.add("d-flex", "items-center", "justify-between", "w-full", "gap-md");
 
         const inputBox = document.createElement("div");
-        inputBox.classList.add("d-flex", "items-center", "justify-between", "w-full", "bg-secondary", "pt-input-primary", "bd-primary", "radius-lg");
+        inputBox.classList.add("d-flex", "items-center", "justify-between", "w-full", "bg-secondary", "pt-input-primary", "bd-primary", "radius-sm");
 
         const input = document.createElement("input");
         input.setAttribute("type", "text");
@@ -171,7 +171,7 @@ class Category extends Master {
 
         const button = document.createElement("button");
         button.setAttribute("type", "submit");
-        button.classList.add("bg-btn-create", 'hover-scale', "bd-shadow-secondary", "d-flex", "justify-start", "items-center", "gap-sm", "pt-btn-primary", "radius-lg", "h-36");
+        button.classList.add("bg-btn-create", 'hover-scale', "bd-shadow-secondary", "d-flex", "justify-start", "items-center", "gap-sm", "pt-btn-primary", "radius-sm", "h-36");
 
         const img = document.createElement("img");
         img.setAttribute("src", "imgs/create-light.svg");
@@ -240,7 +240,7 @@ class Category extends Master {
             card.classList.add(
                 'h-mn-55',
                 'overflow-hidden',
-                'radius-lg',
+                'radius-sm',
                 'd-flex',
                 'flex-column',
                 'justify-start',
@@ -264,7 +264,7 @@ class Category extends Master {
             actionWrapper.classList.add('d-flex', 'justify-start', 'items-center', 'gap-sm');
 
             const editBtn = document.createElement('button');
-            editBtn.classList.add('radius-lg', 'bd-shadow-secondary', 'pt-md', 'bg-tertiary', 'h-36', 'pt-btn-primary', 'hover-scale');
+            editBtn.classList.add('radius-sm', 'bd-shadow-secondary', 'pt-md', 'bg-tertiary', 'h-36', 'pt-btn-primary', 'hover-scale');
 
             const editImg = document.createElement('img');
             editImg.src = '/imgs/pencil-light.svg';
@@ -316,7 +316,7 @@ class Category extends Master {
             })
 
             const deleteBtn = document.createElement('button');
-            deleteBtn.classList.add('radius-lg', 'bd-shadow-secondary', 'pt-md', 'bg-tertiary', 'h-36', 'pt-btn-primary', 'hover-scale');
+            deleteBtn.classList.add('radius-sm', 'bd-shadow-secondary', 'pt-md', 'bg-tertiary', 'h-36', 'pt-btn-primary', 'hover-scale');
 
             const deleteImg = document.createElement('img');
             deleteImg.src = '/imgs/trash-light.svg';

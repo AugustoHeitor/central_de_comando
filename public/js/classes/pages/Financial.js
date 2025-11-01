@@ -257,7 +257,7 @@ class Financial extends Master {
             labelWrapper.append(label);
 
             const inputWrapper = document.createElement('div');
-            inputWrapper.classList.add('d-flex', 'items-center', 'justify-between', 'w-full', 'bg-secondary', 'pt-input-primary', 'bd-primary', 'radius-lg');
+            inputWrapper.classList.add('d-flex', 'items-center', 'justify-between', 'w-full', 'bg-secondary', 'pt-input-primary', 'bd-primary', 'radius-sm');
             inputWrapper.append(inputElement);
 
             group.append(labelWrapper);
@@ -302,7 +302,7 @@ class Financial extends Master {
         amountLabelWrapper.append(amountLabel);
 
         const amountWrapper = document.createElement('div');
-        amountWrapper.classList.add("d-flex", "items-center", "justify-between", "w-full", "bg-secondary", "pt-input-primary", "bd-primary", "radius-lg");
+        amountWrapper.classList.add("d-flex", "items-center", "justify-between", "w-full", "bg-secondary", "pt-input-primary", "bd-primary", "radius-sm");
 
         const amountInput = document.createElement('input');
         amountInput.required = true;
@@ -366,7 +366,7 @@ class Financial extends Master {
             labelWrapper.append(label);
 
             const selectWrapper = document.createElement('div');
-            selectWrapper.classList.add('w-full', 'bg-secondary', 'radius-lg', 'bd-primary', 'pt-input-primary');
+            selectWrapper.classList.add('w-full', 'bg-secondary', 'radius-sm', 'bd-primary', 'pt-input-primary');
 
             const select = document.createElement('select');
             select.name = field.name;
@@ -414,7 +414,7 @@ class Financial extends Master {
         dateLabelWrapper.append(dateLabel);
 
         const dateWrapper = document.createElement('div');
-        dateWrapper.classList.add('w-full', 'bg-secondary', 'radius-lg', 'bd-primary', 'pt-input-primary');
+        dateWrapper.classList.add('w-full', 'bg-secondary', 'radius-sm', 'bd-primary', 'pt-input-primary');
 
         const dateInput = document.createElement('input');
         dateInput.required = true;
@@ -456,7 +456,7 @@ class Financial extends Master {
                 const card = document.createElement("div");
 
                 card.classList.add(
-                    "overflow-hidden", "h-mn-157", "hover-bg-primary", "radius-lg", "pointer", "d-flex",
+                    "overflow-hidden", "h-mn-157", "hover-bg-primary", "radius-sm", "pointer", "d-flex",
                     "flex-column", "justify-between", "items-start", "gap-md", "w-full",
                     "bg-secondary", "bd-shadow-primary"
                 );
@@ -516,9 +516,9 @@ class Financial extends Master {
 
 
                 if(transaction.type === "income"){
-                    typeTag.classList.add("d-flex", "justify-center", "items-center", "bg-income", "color-income", "radius-lg", "text-xs", "pt-top-sm", "pt-bottom-sm", "pt-left-md", "pt-right-md");
+                    typeTag.classList.add("d-flex", "justify-center", "items-center", "bg-income", "color-income", "radius-sm", "text-xs", "pt-top-sm", "pt-bottom-sm", "pt-left-md", "pt-right-md");
                 }else{
-                    typeTag.classList.add("d-flex", "justify-center", "items-center", "bg-expense", "color-expense", "radius-lg", "text-xs", "pt-top-sm", "pt-bottom-sm", "pt-left-md", "pt-right-md");
+                    typeTag.classList.add("d-flex", "justify-center", "items-center", "bg-expense", "color-expense", "radius-sm", "text-xs", "pt-top-sm", "pt-bottom-sm", "pt-left-md", "pt-right-md");
                 }
 
                 const category = document.createElement("div");

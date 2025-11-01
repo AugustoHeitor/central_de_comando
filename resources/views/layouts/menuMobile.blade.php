@@ -1,4 +1,4 @@
-<div class="bg-secondary w-full flex-mobile justify-between items-center gap-md pt-md bd-shadow-primary radius-lg">
+<div class="bg-secondary w-full flex-mobile justify-between items-center gap-md pt-md bd-shadow-primary radius-sm">
      <div class="d-flex justify-start items-center gap-sm">
         <img src="{{ asset('imgs/satellite-light.svg') }}" alt="Logo" class="img-size-30">
         <span class="text-xl fw-sb color-light">{{ config('app.name') }}</span>

@@ -141,7 +141,7 @@ class Setting extends Master {
             'bg-secondary',
             'pt-input-primary',
             'bd-primary',
-            'radius-lg'
+            'radius-sm'
         );
 
         label.classList.add(

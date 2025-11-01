@@ -23,7 +23,7 @@ class Select{
         const containerSelect = document.createElement('div');
         const select = document.createElement('select');
 
-        containerSelect.classList.add('pt-input-primary', 'w-full', 'bg-secondary', 'radius-lg', 'bd-primary');
+        containerSelect.classList.add('pt-input-primary', 'w-full', 'bg-secondary', 'radius-sm', 'bd-primary');
         select.classList.add(selectClass, 'w-full', 'text-sm', 'color-primary');
 
         select.name = selectName;
