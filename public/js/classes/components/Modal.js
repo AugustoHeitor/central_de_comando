@@ -26,7 +26,7 @@ class Modal {
         title.classList.add('color-light', 'text-xl', 'fw-m');
         closeIcon.classList.add('img-size-15');
         contentSection.classList.add('pt-md', 'w-full', 'h-full', 'pt-right-md', 'overflow-hidden', 'section-content-modal');
-        bottomSection.classList.add('pt-md', 'bd-top', 'pt-top-md', 'w-full', 'd-flex', 'align-start', 'justify-end', 'gap-md', 'section-bottom-modal', 'h-70');
+        bottomSection.classList.add('pt-md', 'bd-top', 'pt-top-md', 'w-full', 'd-flex', 'align-start', 'justify-end', 'gap-md', 'section-bottom-modal');
 
         if(config?.event){
             modal.addEventListener('submit', config.event);
