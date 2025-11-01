@@ -144,7 +144,7 @@ class ReportController extends Controller
         $start = $request->start_date ? Carbon::parse($request->start_date)->startOfDay() : Carbon::now()->startOfMonth();
         $end = $request->end_date ? Carbon::parse($request->end_date)->endOfDay() : Carbon::now()->endOfMonth();
 
-        $data = $this->reports->getIncomeAndExpenses($userId, $start, $end);
+        $data = $this->reports->getIncomeAndExpenses($userId, $start, $end, true);
 
         $columns = ['Tipo', 'Valor', 'Data'];
         $rows = $data->map(fn($item) => [
