@@ -47,7 +47,7 @@ class Dashboard extends Master {
 
             const response = await axios.get(`${this.url}/tasks/`, {
                 params: params,
-                timeout: 5000
+                timeout: 30000
             });
 
             if (response.status === 200 && response.data.status === 'success') {
@@ -66,7 +66,7 @@ class Dashboard extends Master {
 
             const response = await axios.get(`${this.url}/financial-transactions/`, {
                 params: params,
-                timeout: 5000
+                timeout: 30000
             });
 
             if (response.status === 200 && response.data.status === 'success') {
@@ -85,7 +85,7 @@ class Dashboard extends Master {
 
             const response = await axios.get(`${this.url}/time-distribution/`, {
                 params: params,
-                timeout: 5000
+                timeout: 30000
             });
 
             if (response.status === 200 && response.data.status === 'success') {

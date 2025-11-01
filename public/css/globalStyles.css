@@ -168,6 +168,10 @@ TEXT ALIGN
     margin-top: var(--space-sm);
 }
 
+.mt-top-lg{
+    margin-top: var(--space-lg);
+}
+
 .pt-bottom-md {
     padding-bottom: var(--space-md);
 }
@@ -958,12 +962,12 @@ Outros
 
     .scroll-y-mobile{
         overflow-y: auto;
-        padding-bottom: var(--space-lg);
     }
 
     .w-full-mobile{
         width: 100%;
     }
+
 }
 
 

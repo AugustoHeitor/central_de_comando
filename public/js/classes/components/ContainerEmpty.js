@@ -4,7 +4,7 @@ class ContainerEmpty {
 
     }
 
-    createContainerEmpty(selectorContainer, title, text, heightVh = true) {
+    createContainerEmpty(selectorContainer, title, text, height100 = true) {
 
         const selector = document.querySelector(selectorContainer);
 
@@ -16,8 +16,12 @@ class ContainerEmpty {
 
         containerEmpty.classList.add('d-flex', 'flex-column', 'justify-center', 'items-center', 'gap-lg', 'w-full', 'pt-md');
 
-        if(heightVh){
-            containerEmpty.classList.add("h-100vh");
+        const widthWindow = window.screen.width
+
+        if(height100 && widthWindow > 800){
+            containerEmpty.classList.add("h-full");
+        }else if(widthWindow <= 800){
+            containerEmpty.classList.add("mt-top-lg")
         }
 
         containerText.classList.add('d-flex', 'flex-column', 'justify-center', 'items-center', 'gap-sm');

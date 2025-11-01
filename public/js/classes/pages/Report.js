@@ -38,7 +38,7 @@ class Report extends Master {
 
             const response = await axios.get(`${this.url}/time-allocation-category/`, {
                 params: params,
-                timeout: 5000
+                timeout: 30000
             });
 
             if (response.status === 200 && response.data.status === 'success') {
@@ -164,7 +164,7 @@ class Report extends Master {
 
             const response = await axios.get(`${this.url}/incomes-category/`, {
                 params: params,
-                timeout: 5000
+                timeout: 30000
             });
 
             if (response.status === 200 && response.data.status === 'success') {
@@ -194,7 +194,7 @@ class Report extends Master {
 
             const response = await axios.get(`${this.url}/expenses-category/`, {
                 params: params,
-                timeout: 5000
+                timeout: 30000
             });
 
             if (response.status === 200 && response.data.status === 'success') {
@@ -224,7 +224,7 @@ class Report extends Master {
 
             const response = await axios.get(`${this.url}/income-and-expenses/`, {
                 params: params,
-                timeout: 5000
+                timeout: 30000
             });
 
             if (response.status === 200 && response.data.status === 'success') {
@@ -280,7 +280,7 @@ class Report extends Master {
                 card.classList.add(
                     'overflow-hidden', 'w-full', 'd-flex', 'flex-column', 'report-card',
                     'items-start', 'justify-start', 'bg-secondary',
-                    'radius-lg', 'bd-shadow-primary'
+                    'radius-sm', 'bd-shadow-primary'
                 );
 
                 divImg.classList.add('w-full', 'd-flex', 'items-center', 'justify-center', 'pt-md', 'h-200');
@@ -388,9 +388,9 @@ class Report extends Master {
 
         imgFilter.classList.add("img-size-15");
         imgGenerateReport.classList.add("img-size-15");
-        containerFilter.classList.add("bg-secondary", "bd-shadow-primary", "radius-lg", "pt-md", "w-full", "d-flex", "items-start", "justify-start", "gap-lg", "flex-column");
+        containerFilter.classList.add("bg-secondary", "bd-shadow-primary", "radius-sm", "pt-md", "w-full", "d-flex", "items-start", "justify-start", "gap-lg", "flex-column");
         labelFilter.classList.add("text-base", "fw-sb", "color-light");
-        buttonGenerateReport.classList.add('hover-scale','bg-tertiary','bd-shadow-secondary','d-flex','justify-start','items-center','gap-sm','pt-btn-primary','radius-lg','color-light','text-sm','fw-sb','h-36');
+        buttonGenerateReport.classList.add('hover-scale','bg-tertiary','bd-shadow-secondary','d-flex','justify-start','items-center','gap-sm','pt-btn-primary','radius-sm','color-light','text-sm','fw-sb','h-36');
         containerLabelFilter.classList.add('d-flex','justify-start','items-center','gap-sm');
         containerInputs.classList.add('d-flex','justify-start','items-center','gap-md', 'flex-direction-mobile', "w-full-mobile");
         containerPrimary.classList.add("w-full", "d-flex", "items-start", "justify-start", "gap-lg", "flex-column");
@@ -455,13 +455,13 @@ class Report extends Master {
 
             canvas.id = "canvas-chart";
 
-            container.classList.add("w-full", "bg-secondary", "bd-shadow-primary", "radius-lg", "pt-md");
+            container.classList.add("w-full", "bg-secondary", "bd-shadow-primary", "radius-sm", "pt-md");
             imgPrint.classList.add("img-size-15");
             containerPrimary.classList.add("w-full", "d-flex", "items-center", "justify-between", "gap-lg");
             containerSecondary.classList.add("w-full", "d-flex", "items-start", "justify-start", "h-300");
             titleChart.classList.add("text-base", "fw-sb", "color-light");
             containerTitle.classList.add("d-flex", "items-center", "justify-start", "gap-sm");
-            buttonPrint.classList.add('hover-scale','bg-btn-create','bd-shadow-secondary','d-flex','justify-start','items-center','gap-sm','pt-btn-primary','radius-lg','color-light','text-sm','fw-sb','h-36');
+            buttonPrint.classList.add('hover-scale','bg-btn-create','bd-shadow-secondary','d-flex','justify-start','items-center','gap-sm','pt-btn-primary','radius-sm','color-light','text-sm','fw-sb','h-36');
 
             imgPrint.src = "imgs/print-light.svg";
 
