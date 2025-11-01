@@ -59,6 +59,9 @@
     --bg-income: #00800082;
     --bg-expense: #ff000069;
 
+    --bg-toast-success: #008000;
+    --bg-toast-error: #ff0000;
+
     --color-active: #008000ff;
 
     --color-dark: #1a1a1a;
@@ -988,10 +991,10 @@ Outros
     object-position: center;
 }
 
-.h-375{
-    height: 375px;
-}
 
-.h-70{
-    height: 70px;
+.text-ellipsis-145 {
+    width: 145px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

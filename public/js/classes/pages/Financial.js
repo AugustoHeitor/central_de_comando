@@ -81,7 +81,7 @@ class Financial extends Master {
                     }
                 }
 
-                toastr.success(response.data.message, 'Transação', { timeOut: 2000 });
+                toastr.success(response.data.message, { timeOut: 2000 });
 
                 setTimeout(() => {
                     button.disabled = false;
@@ -98,7 +98,7 @@ class Financial extends Master {
 
             console.log(error)
 
-            toastr.error(message, 'Transação', { timeOut: 2000 });
+            toastr.error(message, { timeOut: 2000 });
 
             setTimeout(() => {
                 button.disabled = false;
@@ -136,7 +136,7 @@ class Financial extends Master {
                     }
                 }
 
-                toastr.success(response.data.message, 'Transação', { timeOut: 2000 });
+                toastr.success(response.data.message, { timeOut: 2000 });
 
                 setTimeout(() => {
                     button.disabled = false;
@@ -153,7 +153,7 @@ class Financial extends Master {
 
             console.log(error)
 
-            toastr.error(message, 'Transação', { timeOut: 2000 });
+            toastr.error(message, { timeOut: 2000 });
 
             setTimeout(() => {
                 button.disabled = false;
@@ -186,7 +186,7 @@ class Financial extends Master {
 
                 this.createCardTransaction();
 
-                toastr.success(response.data.message, 'Tarefa', { timeOut: 2000 });
+                toastr.success(response.data.message, { timeOut: 2000 });
 
             }
         } catch (error) {
@@ -199,7 +199,7 @@ class Financial extends Master {
 
             console.log(error)
 
-            toastr.error(message, 'Tarefa', { timeOut: 2000 });
+            toastr.error(message, { timeOut: 2000 });
 
             setTimeout(() => {
                 button.disabled = false;

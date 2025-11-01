@@ -14,8 +14,14 @@ class UpdateTaskTimeLogRequest extends FormRequest
     public function rules()
     {
         return [
-            'started_at' => 'required|date_format:Y-m-d\TH:i:s',
-            'stopped_at' => 'required|date_format:Y-m-d\TH:i:s',
+            'started_at' => [
+                'required',
+                'regex:/^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2})?$/'
+            ],
+            'stopped_at' => [
+                'required',
+                'regex:/^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2})?$/'
+            ],
         ];
     }
 
@@ -23,9 +29,10 @@ class UpdateTaskTimeLogRequest extends FormRequest
     {
         return [
             'started_at.required' => 'O campo de início é obrigatório.',
-            'started_at.date_format' => 'O campo de início deve estar no formato correto (YYYY-MM-DDTHH:MM:SS).',
-            'stopped_at.date_format' => 'O campo de fim deve estar no formato correto (YYYY-MM-DDTHH:MM:SS).',
+            'started_at.regex' => 'A data de início deve estar no formato correto (YYYY-MM-DD HH:MM[:SS] ou YYYY-MM-DDTHH:MM[:SS]).',
+
             'stopped_at.required' => 'O campo de fim é obrigatório.',
+            'stopped_at.regex' => 'A data de fim deve estar no formato correto (YYYY-MM-DD HH:MM[:SS] ou YYYY-MM-DDTHH:MM[:SS]).',
         ];
     }
 }

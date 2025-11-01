@@ -34,7 +34,7 @@ class Setting extends Master {
                     this.updateValues(response.data.data);
                 }
 
-                toastr.success(response.data.message, 'Configurações', { timeOut: 2000 });
+                toastr.success(response.data.message, { timeOut: 2000 });
 
                 screenModal.remove();
 
@@ -49,7 +49,7 @@ class Setting extends Master {
 
             console.log(error)
 
-            toastr.error(message, 'Configurações', { timeOut: 2000 });
+            toastr.error(message, { timeOut: 2000 });
 
             setTimeout(() => {
                 button.disabled = false;

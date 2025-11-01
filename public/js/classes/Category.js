@@ -413,7 +413,7 @@ class Category extends Master {
                     this.updateCardsCategory();
                 }
 
-                toastr.success(response.data.message, 'Categoria', { timeOut: 2000 });
+                toastr.success(response.data.message, { timeOut: 2000 });
 
                 setTimeout(() => {
                     button.disabled = false;
@@ -430,7 +430,7 @@ class Category extends Master {
 
             console.log(error)
 
-            toastr.error(message, 'Categoria', { timeOut: 2000 });
+            toastr.error(message, { timeOut: 2000 });
 
             setTimeout(() => {
                 button.disabled = false;
@@ -463,7 +463,7 @@ class Category extends Master {
 
                 this.updateCardsCategory();
 
-                toastr.success(response.data.message, 'Categoria', { timeOut: 2000 });
+                toastr.success(response.data.message, { timeOut: 2000 });
 
             }
         } catch (error) {
@@ -476,7 +476,7 @@ class Category extends Master {
 
             console.log(error)
 
-            toastr.error(message, 'Categoria', { timeOut: 2000 });
+            toastr.error(message, { timeOut: 2000 });
 
             setTimeout(() => {
                 button.disabled = false;
@@ -514,7 +514,7 @@ class Category extends Master {
 
                 this.updateCardsCategory();
 
-                toastr.success(response.data.message, 'Categoria', { timeOut: 2000 });
+                toastr.success(response.data.message, { timeOut: 2000 });
 
             }
         } catch (error) {
@@ -527,7 +527,7 @@ class Category extends Master {
 
             console.log(error)
 
-            toastr.error(message, 'Categoria', { timeOut: 2000 });
+            toastr.error(message, { timeOut: 2000 });
 
             setTimeout(() => {
                 button.disabled = false;

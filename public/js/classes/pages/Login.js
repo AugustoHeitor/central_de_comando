@@ -52,7 +52,7 @@ class Login {
                 message = error.response.data.message;
             }
 
-            toastr.error(message, 'Login', { timeOut: 2000 });
+            toastr.error(message, { timeOut: 2000 });
 
             setTimeout(() => {
                 button.disabled = false;

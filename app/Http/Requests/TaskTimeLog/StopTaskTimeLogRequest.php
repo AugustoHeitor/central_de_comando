@@ -14,7 +14,10 @@ class StopTaskTimeLogRequest extends FormRequest
     public function rules()
     {
         return [
-            'stopped_at' => 'required|date_format:Y-m-d\TH:i:s',
+            'stopped_at' => [
+                'required',
+                'regex:/^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2})?$/'
+            ],
         ];
     }
 
@@ -22,7 +25,7 @@ class StopTaskTimeLogRequest extends FormRequest
     {
         return [
             'stopped_at.required' => 'O campo de fim é obrigatório.',
-            'stopped_at.date_format' => 'O campo de fim deve estar no formato correto (YYYY-MM-DDTHH:MM:SS).',
+            'stopped_at.regex' => 'A data de fim deve estar no formato correto (YYYY-MM-DD HH:MM[:SS] ou YYYY-MM-DDTHH:MM[:SS]).',
         ];
     }
 }

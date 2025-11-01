@@ -80,7 +80,7 @@ class Task extends Master {
                     }
                 }
 
-                toastr.success(response.data.message, 'Tarefa', { timeOut: 2000 });
+                toastr.success(response.data.message, { timeOut: 2000 });
 
                 setTimeout(() => {
                     button.disabled = false;
@@ -97,7 +97,7 @@ class Task extends Master {
 
             console.log(error)
 
-            toastr.error(message, 'Tarefa', { timeOut: 2000 });
+            toastr.error(message, { timeOut: 2000 });
 
             setTimeout(() => {
                 button.disabled = false;
@@ -127,7 +127,7 @@ class Task extends Master {
 
             if (response.status === 201 && response.data.status === 'success') {
 
-                toastr.success(response.data.message, 'Tarefa', { timeOut: 2000 });
+                toastr.success(response.data.message, { timeOut: 2000 });
 
                 button.querySelector("img").src = "imgs/pause-light.svg";
                 button.setAttribute("data-status", "started");
@@ -162,7 +162,7 @@ class Task extends Master {
 
             console.log(error)
 
-            toastr.error(message, 'Tarefa', { timeOut: 2000 });
+            toastr.error(message, { timeOut: 2000 });
 
             setTimeout(() => {
                 button.disabled = false;
@@ -192,7 +192,7 @@ class Task extends Master {
 
             if (response.status === 200 && response.data.status === 'success') {
 
-                toastr.success(response.data.message, 'Tarefa', { timeOut: 2000 });
+                toastr.success(response.data.message, { timeOut: 2000 });
 
                 button.querySelector("img").src = "imgs/play-light.svg";
                 timeCounter.innerText = "00:00:00";
@@ -231,7 +231,7 @@ class Task extends Master {
 
             console.log(error)
 
-            toastr.error(message, 'Tarefa', { timeOut: 2000 });
+            toastr.error(message, { timeOut: 2000 });
 
             setTimeout(() => {
                 button.disabled = false;
@@ -257,7 +257,7 @@ class Task extends Master {
 
             if (response.status === 200 && response.data.status === 'success') {
 
-                toastr.success(response.data.message, 'Tarefa', { timeOut: 2000 });
+                toastr.success(response.data.message, { timeOut: 2000 });
 
                 const data = response.data.data;
 
@@ -291,7 +291,7 @@ class Task extends Master {
 
             console.log(error)
 
-            toastr.error(message, 'Tarefa', { timeOut: 2000 });
+            toastr.error(message, { timeOut: 2000 });
 
             setTimeout(() => {
                 input.disabled = false;
@@ -311,7 +311,7 @@ class Task extends Master {
 
             if (response.status === 200 && response.data.status === 'success') {
 
-                toastr.success(response.data.message, 'Tarefa', { timeOut: 2000 });
+                toastr.success(response.data.message, { timeOut: 2000 });
 
                 this.tasks?.forEach((task) => {
                     if (task.id == taskId) {
@@ -340,7 +340,7 @@ class Task extends Master {
 
             console.log(error)
 
-            toastr.error(message, 'Tarefa', { timeOut: 2000 });
+            toastr.error(message, { timeOut: 2000 });
 
             setTimeout(() => {
                 button.disabled = false;
@@ -378,7 +378,7 @@ class Task extends Master {
                     }
                 }
 
-                toastr.success(response.data.message, 'Tarefa', { timeOut: 2000 });
+                toastr.success(response.data.message, { timeOut: 2000 });
 
                 setTimeout(() => {
                     button.disabled = false;
@@ -395,7 +395,7 @@ class Task extends Master {
 
             console.log(error)
 
-            toastr.error(message, 'Tarefa', { timeOut: 2000 });
+            toastr.error(message, { timeOut: 2000 });
 
             setTimeout(() => {
                 button.disabled = false;
@@ -428,7 +428,7 @@ class Task extends Master {
 
                 this.createCardTask();
 
-                toastr.success(response.data.message, 'Tarefa', { timeOut: 2000 });
+                toastr.success(response.data.message, { timeOut: 2000 });
 
             }
         } catch (error) {
@@ -441,7 +441,7 @@ class Task extends Master {
 
             console.log(error)
 
-            toastr.error(message, 'Tarefa', { timeOut: 2000 });
+            toastr.error(message, { timeOut: 2000 });
 
             setTimeout(() => {
                 button.disabled = false;

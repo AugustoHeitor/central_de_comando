@@ -11,10 +11,13 @@ class StartTaskTimeLogRequest extends FormRequest
         return true;
     }
 
-    public function rules()
+     public function rules()
     {
         return [
-            'started_at' => 'required|date_format:Y-m-d\TH:i:s',
+            'started_at' => [
+                'required',
+                'regex:/^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(:\d{2})?$/'
+            ],
         ];
     }
 
@@ -22,7 +25,7 @@ class StartTaskTimeLogRequest extends FormRequest
     {
         return [
             'started_at.required' => 'O campo de início é obrigatório.',
-            'started_at.date_format' => 'O campo de início deve estar no formato correto (YYYY-MM-DDTHH:MM:SS).',
+            'started_at.regex' => 'A data de início deve estar no formato correto (YYYY-MM-DD HH:MM[:SS] ou YYYY-MM-DDTHH:MM[:SS]).',
         ];
     }
 }

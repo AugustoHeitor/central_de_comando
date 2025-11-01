@@ -37,7 +37,7 @@
             />
             <div class="w-full d-flex flex-column justify-start items-start gap-xs">
                 <span class="text-sm fw-sb color-primary nickname-menu">{{ Auth::user()->nickname }}</span>
-                <span class="text-sm color-primary">{{ Auth::user()->email }}</span>
+                <span class="text-sm color-primary text-ellipsis-145">{{ Auth::user()->email }}</span>
             </div>
         </div>
         <a href="{{ route('logout') }}">
