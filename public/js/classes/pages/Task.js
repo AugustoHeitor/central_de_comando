@@ -939,10 +939,10 @@ class Task extends Master {
             };
 
             const content = this.createContentModal(task);
-            const lastLog = task?.time_logs[task.time_logs.length - 1];
+            const lastLog = task?.time_logs.findIndex((log)=> log.stopped_at == null);
             let statusLog = null;
 
-            if(task?.time_logs[task.time_logs.length - 1] && lastLog?.stopped_at === null){
+            if(lastLog != -1){
                 statusLog = "started";
             }else{
                 statusLog = "stopped";
