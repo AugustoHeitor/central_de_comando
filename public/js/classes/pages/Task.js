@@ -939,7 +939,7 @@ class Task extends Master {
             };
 
             const content = this.createContentModal(task);
-            const lastLog = task?.time_logs.findIndex((log)=> log.stopped_at == null);
+            const lastLogIndex = task?.time_logs.findIndex((log) => log.stopped_at == null);
             let statusLog = null;
 
             if(lastLog != -1){
@@ -948,7 +948,7 @@ class Task extends Master {
                 statusLog = "stopped";
             }
 
-            const timeContainer = this.createTimeControl(task.id, statusLog, lastLog?.started_at);
+            const timeContainer = this.createTimeControl(task.id, statusLog, task?.timeLogs[lastLogIndex]);
 
             const containerTimeLogs = document.createElement("div");
             containerTimeLogs.classList.add(
