@@ -942,7 +942,7 @@ class Task extends Master {
             const lastLogIndex = task?.time_logs.findIndex((log) => log.stopped_at == null);
             let statusLog = null;
 
-            if(lastLog != -1){
+            if(lastLogIndex != -1){
                 statusLog = "started";
             }else{
                 statusLog = "stopped";
