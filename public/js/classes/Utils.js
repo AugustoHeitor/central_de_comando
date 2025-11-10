@@ -15,7 +15,7 @@ class Utils {
             clientHeight = mainElement.clientHeight;
         }
 
-        const isOverflowing = scrollHeight > clientHeight;
+        const isOverflowing = scrollHeight >= clientHeight;
 
         if (isOverflowing) {
             if (!container.classList.contains("scroll-auto")) {
