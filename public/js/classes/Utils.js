@@ -177,11 +177,19 @@ class Utils {
         localStorage.setItem(`${storagePrefix}_param_${paramKey}`, value);
     }
 
-    formatToBRLCurrency(number){
+    formatToBRLCurrency(number) {
+        if (typeof number !== "number") {
+            number = Number(number);
+        }
+
+        if (isNaN(number)) {
+            number = 0;
+        }
+
         return number.toLocaleString("pt-BR", {
             style: "currency",
             currency: "BRL"
-        })
+        });
     }
 
     reaisToCents(valueInReais) {
@@ -189,7 +197,7 @@ class Utils {
     }
 
     centsToReais(valueInCents) {
-        return (Number(valueInCents) / 100);
+        return (Number(valueInCents) / 100).toFixed(2);
     }
 
     parseDate(dateString) {
