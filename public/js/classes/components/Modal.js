@@ -51,7 +51,7 @@ class Modal {
             screen.remove();
         });
 
-        screen.addEventListener('click', (event) => {
+        screen.addEventListener("mousedown", (event) => {
             if (event.target === screen) {
                 screen.remove();
             }
