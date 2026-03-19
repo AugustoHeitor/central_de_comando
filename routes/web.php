@@ -9,6 +9,7 @@ use App\Http\Controllers\TaskCategoryController;
 use App\Http\Controllers\FinancialCategoryController;
 use App\Http\Controllers\FinancialTransactionController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TagController;
 use App\Http\Controllers\TaskTimeLogController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ReportController;
@@ -49,6 +50,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/tasks', function () {
         return view('tasks');
     })->name('tasks');
+
+    Route::get('/tags', function () {
+        return view('tags');
+    })->name('tags');
+
 
     Route::get('/reports', function () {
         return view('reports');
@@ -119,7 +125,14 @@ Route::middleware('auth')->group(function () {
         Route::get('/incomes-category/export', [ReportController::class, 'exportIncomesCategoryPdf'])->name('report.exportIncomesCategoryPdf');
         Route::get('/expenses-category/export', [ReportController::class, 'exportExpensesCategoryPdf'])->name('report.exportExpensesCategoryPdf');
         Route::get('/income-and-expenses/export', [ReportController::class, 'exportIncomeAndExpensesPdf'])->name('report.exportIncomeAndExpensesPdf');
+    });
 
+    // Rotas API para Tags
+    Route::prefix('api/tags')->group(function () {
+        Route::get('/', [TagController::class, 'index'])->name('tags.index');
+        Route::post('/', [TagController::class, 'store'])->name('tags.store');
+        Route::patch('/{id}', [TagController::class, 'update'])->name('tags.update');
+        Route::delete('/{id}', [TagController::class, 'destroy'])->name('tags.destroy');
     });
 });
 

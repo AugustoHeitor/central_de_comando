@@ -75,23 +75,32 @@ class Utils {
         const fields = form.querySelectorAll('input, textarea, select');
 
         fields.forEach(field => {
-            if (field.name) {
+
+            if (!field.name) return;
+
             if (field.type === 'file') {
+
                 if (field.files[0]) {
-                data[field.name] = field.files[0];
+                    data[field.name] = field.files[0];
                 }
-            } else if (field.value.trim() !== "") {
-                data[field.name] = field.value.trim();
-            }
+
+            } else if (field.type === 'radio') {
+
+                if (field.checked) {
+                    data[field.name] = field.value;
+                }
+
+            } else {
+                if (field.value.trim() !== "") {
+                    data[field.name] = field.value.trim();
+                }
             }
         });
 
         const formData = new FormData();
 
         for (const key in data) {
-            if (data[key]) {
-                formData.append(key, data[key]);
-            }
+            formData.append(key, data[key]);
         }
 
         return formData;
@@ -287,6 +296,20 @@ class Utils {
         const pdfUrl = window.URL.createObjectURL(new Blob([data], { type: 'application/pdf' }));
         window.open(pdfUrl, '_blank');
         window.URL.revokeObjectURL(pdfUrl);
+    }
+
+    toggleVisibility(selector, type = "show"){
+        const selectedElement = document.querySelector(selector);
+
+        if(selectedElement){
+            if(type == "show"){
+                selectedElement.classList.add("d-flex");
+                selectedElement.classList.remove("none");
+            }else if(type == "hide"){
+                selectedElement.classList.remove("d-flex");
+                selectedElement.classList.add("none");
+            }
+        }
     }
 }
 

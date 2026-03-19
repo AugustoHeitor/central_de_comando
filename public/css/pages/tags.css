@@ -1,0 +1,23 @@
+
+
+@media screen and (min-width: 1000px) {
+    .responsive-icon-grid {
+        grid-template-columns: repeat(9, 1fr);
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .responsive-icon-grid {
+        grid-template-columns: repeat(6, 1fr);
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .responsive-wrap{
+        flex-wrap: wrap;
+    }
+
+    .responsive-icon-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

@@ -205,6 +205,244 @@ class Modal {
         const buttons = this.createButtons(buttonsConfig);
         modalButtons.append(...buttons);
     }
+
+    createFieldGroup(config) {
+
+        const group = document.createElement('div');
+
+        if(config.containerGroup.class == null){
+            group.classList.add('w-full', 'd-flex', 'flex-column', 'justify-start', 'items-start', 'gap-sm');
+        }else{
+            group.classList.add(...config.containerGroup.class);
+        }
+
+        const labelWrapper = document.createElement('div');
+        labelWrapper.classList.add('d-flex', 'justify-start', 'items-center', 'gap-sm');
+
+        const icon = document.createElement('img');
+        icon.src = config.icon.src;
+        icon.alt = config.icon.alt;
+        icon.classList.add('img-size-15');
+
+        const label = document.createElement('label');
+        label.classList.add('color-light', 'text-base', 'fw-m');
+        label.setAttribute('for', config.label.for);
+        label.textContent = config.label.text;
+
+        labelWrapper.append(icon);
+        labelWrapper.append(label);
+
+        const fieldWrapper = document.createElement('div');
+
+        if(config.field.type == "text"){
+
+            const field = this.createTextField(config);
+
+            if(config.containerField.class == null){
+                fieldWrapper.classList.add('d-flex', 'items-center', 'justify-between', 'w-full', 'bg-secondary',  'bd-primary', 'radius-sm');
+            }
+
+            fieldWrapper.append(field);
+
+        }else if(config.field.type == "textarea"){
+
+            const field = this.createTextAreaField(config);
+
+            if(config.containerField.class == null){
+                fieldWrapper.classList.add('w-full', 'h-mn-300', 'bg-secondary', 'pt-right-sm', 'bd-primary', 'radius-sm')
+            }
+
+            fieldWrapper.append(field);
+
+        }else if(config.field.type == "color"){
+
+            const field = this.createColorField(config);
+
+            if(config.containerField.class == null){
+                fieldWrapper.classList.add('d-flex', 'items-center', 'justify-between', 'w-full');
+            }
+
+            fieldWrapper.append(field);
+
+        }else if(config.field.type == "icon-select"){
+
+            config.field.value.forEach((icon) => {
+                const field = this.createIconSelectField(config, icon);
+                fieldWrapper.append(field);
+            });
+
+            if(config.containerField.class == null){
+                fieldWrapper.classList.add('d-flex', 'items-start', 'justify-start','w-full', 'gap-md', 'flex-wrap');
+            }
+
+        }else if(config.field.type == "toggle_track"){
+
+            const field = this.createToggleTrackField(config);
+
+            if(config.containerField.class == null){
+                fieldWrapper.classList.add('d-flex', 'items-center', 'justify-between', 'w-full');
+            }
+
+            fieldWrapper.append(field);
+
+        }
+
+        if(config.containerField.class != null){
+            fieldWrapper.classList.add(...config.containerField.class)
+        }
+
+        group.append(labelWrapper);
+        group.append(fieldWrapper);
+
+        return group;
+    }
+
+    createTextField(config) {
+
+        const field = document.createElement('input');
+        field.value = config?.field?.value ? config?.field?.value : "";
+        field.required = config.field.required;
+        field.type = 'text';
+        field.name = config.field.name;
+
+        if(config.field.class == null){
+            field.classList.add('text-base', 'color-primary', 'w-full', 'pt-input-primary', 'h-35');
+        }else{
+            field.classList.add(...config.field.class);
+        }
+
+        return field;
+
+    }
+
+    createTextAreaField(config) {
+
+        const field = document.createElement('textarea');
+        field.value = config?.field?.value ? config?.field?.value : "";
+        field.required = config.field.required;
+        field.name = config.field.name;
+
+        if(config.field.class == null){
+            field.classList.add('w-full', 'h-full', 'text-base', 'color-primary', 'pt-input-primary');
+        }else{
+            field.classList.add(...config.field.class);
+        }
+
+        return field;
+
+    }
+
+    createColorField(config) {
+
+        const field = document.createElement('input');
+        field.value = config?.field?.value ? config?.field?.value : '#2f07bf';
+        field.required = config.field.required;
+        field.type = 'color';
+        field.name = config.field.name;
+
+        if(config.field.class == null){
+            field.classList.add('text-base', 'color-primary', 'w-full', 'h-35');
+        }else{
+            field.classList.add(...config.field.class);
+        }
+
+        return field;
+    }
+
+    createIconSelectField(config, icon) {
+
+        const item = document.createElement("label");
+
+        const field = document.createElement("input");
+        field.type = "radio";
+        field.name = config.field.name;
+        field.value = icon.name;
+        field.checked = icon.checked;
+
+        const img = document.createElement("img");
+        img.src = icon.src;
+        img.classList.add('img-size-20');
+
+        item.append(field, img);
+
+        if (config.field.class != null) {
+            item.classList.add(...config.field.class);
+        }else{
+            item.classList.add('w-full', 'w-mx-100', 'd-flex', 'items-center', 'justify-center', 'radius-sm', "pointer", 'pt-input-primary', 'gap-sm', 'hover-scale', 'bd-shadow-secondary');
+        }
+
+        if(icon.checked){
+            item.classList.add('bg-active', 'bd-active');
+        }else{
+            item.classList.add('bg-secondary', 'bd-primary');
+        }
+
+        field.addEventListener("change", () => {
+
+            const fieldRadios = document.querySelectorAll(`input[name="${field.name}"]`);
+
+            fieldRadios.forEach((radio) => {
+                const label = radio.closest("label");
+
+                label.classList.toggle('bg-active', false);
+                label.classList.toggle('bd-active', false);
+                label.classList.toggle('bg-secondary', true);
+                label.classList.toggle('bd-primary', true);
+            });
+
+            const currentLabel = field.closest("label");
+
+            currentLabel.classList.toggle('bg-active', true);
+            currentLabel.classList.toggle('bd-active', true);
+            currentLabel.classList.toggle('bg-secondary', false);
+            currentLabel.classList.toggle('bd-primary', false);
+        });
+
+        return item;
+
+    }
+
+    createToggleTrackField(config) {
+
+        const wrapper = document.createElement('div');
+        wrapper.classList.add('toggle-wrapper');
+
+        const field = document.createElement('input');
+        field.type = 'checkbox';
+        field.checked = config?.field?.value ?? false;
+        field.required = false;
+        field.name = config.field.name;
+        field.value = config?.field?.value ? '1' : '0';
+
+        field.classList.add('none');
+
+        const track = document.createElement('div');
+        track.classList.add('toggle-track');
+
+        if (field.checked){
+            track.classList.add('active');
+        }
+
+        const thumb = document.createElement('div');
+        thumb.classList.add('toggle-thumb');
+        track.appendChild(thumb);
+
+        track.addEventListener('click', () => {
+            field.checked = !field.checked;
+            field.value = !field.checked ? '0' : '1';
+            track.classList.toggle('active', field.checked);
+            field.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+
+        wrapper.appendChild(track);
+        wrapper.appendChild(field);
+
+        if (config.field.class) {
+            wrapper.classList.add(...config.field.class);
+        }
+
+        return wrapper;
+    }
 }
 
 export default Modal

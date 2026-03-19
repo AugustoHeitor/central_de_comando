@@ -35,14 +35,6 @@
         grid-template-columns: repeat(1, 1fr);
     }
 
-    .txt-1-line-mobile {
-        max-width: 100%;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 1;
-        overflow: hidden;
-    }
-
 }
 
 

@@ -556,7 +556,7 @@ class Task extends Master {
 
                     if(highlight == true){
                         wrapper.classList.add('pulse-animation');
-                        text.classList.add('color-active', 'text-xs', 'fw-sb');
+                        text.classList.add('color-active-primary', 'text-xs', 'fw-sb');
                     }else{
                         text.classList.add('color-primary', 'text-xs');
                     }
