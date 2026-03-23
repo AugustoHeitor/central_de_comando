@@ -620,7 +620,7 @@ class Tag extends Master {
 
             const modalConfig = {
                 title: "Editar Tag",
-                img: "imgs/list-check-light.svg",
+                img: "imgs/hashtag-light.svg",
                 class: ["h-full", "w-full", "w-mx-1000"],
                 visible: {
                     'footer': true,

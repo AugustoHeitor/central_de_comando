@@ -33,7 +33,7 @@
                 </div>
             ';
 
-            $imgPageHeader = 'imgs/hashtag-gray.svg';
+            $imgPageHeader = 'imgs/hashtag-light.svg';
         @endphp
 
         @include('layouts.pageHeader', [

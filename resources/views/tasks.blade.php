@@ -55,7 +55,7 @@
                 </div>
             ';
 
-            $imgPageHeader = 'imgs/list-check-gray.svg';
+            $imgPageHeader = 'imgs/list-check-light.svg';
         @endphp
 
         @include('layouts.pageHeader', [

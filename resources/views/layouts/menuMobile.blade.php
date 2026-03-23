@@ -30,6 +30,10 @@
             <img src="{{ asset('imgs/wallet-gray.svg') }}" alt="Financeiro" class="img-size-20">
             Financeiro
         </a>
+        <a class="link-page pt-md txt-decoration-none text-base text-link color-primary w-full d-flex justify-start items-center gap-md" href="/virtual-assistant">
+            <img src="{{ asset('imgs/robot-gray.svg') }}" alt="Assistente Virtual" class="img-size-20">
+            Atlas
+        </a>
          <a class="link-page pt-md txt-decoration-none text-base text-link color-primary w-full d-flex justify-start items-center gap-md" href="/tags">
             <img src="{{ asset('imgs/hashtag-gray.svg') }}" alt="Tag" class="img-size-20">
             Tags

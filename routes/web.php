@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use App\Services\PdfService;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TaskCategoryController;
@@ -13,6 +12,7 @@ use App\Http\Controllers\TagController;
 use App\Http\Controllers\TaskTimeLogController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\VirtualAssistantController;
 
 // Rotas públicas (sem autenticação)
 Route::get('/', function () {
@@ -42,6 +42,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/financial', function () {
         return view('financial');
     })->name('financial');
+
+    Route::get('/virtual-assistant', function () {
+        return view('virtualAssistant');
+    })->name('virtualAssistant');
 
     Route::get('/settings', function () {
         return view('settings');
@@ -133,6 +137,12 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [TagController::class, 'store'])->name('tags.store');
         Route::patch('/{id}', [TagController::class, 'update'])->name('tags.update');
         Route::delete('/{id}', [TagController::class, 'destroy'])->name('tags.destroy');
+    });
+
+    // Rotas API para Assistente Virtual
+    Route::prefix('api/virtual-assistant')->group(function () {
+        Route::post('/send-message', [VirtualAssistantController::class, 'sendMessage'])->name('virtual-assistant.sendMessage');
+         Route::get('/index-messages', [VirtualAssistantController::class, 'indexMessages'])->name('virtual-assistant.indexMessages');
     });
 });
 

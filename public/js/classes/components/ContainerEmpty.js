@@ -4,7 +4,7 @@ class ContainerEmpty {
 
     }
 
-    createContainerEmpty(selectorContainer, title, text, height100 = true) {
+    createContainerEmpty(selectorContainer, title, text, heightFull = true, imgSrc = null) {
 
         const selector = document.querySelector(selectorContainer);
 
@@ -18,7 +18,7 @@ class ContainerEmpty {
 
         const widthWindow = window.screen.width
 
-        if(height100 && widthWindow > 800){
+        if(heightFull && widthWindow > 800){
             containerEmpty.classList.add("h-full");
         }else if(widthWindow <= 800){
             containerEmpty.classList.add("mt-top-lg")
@@ -32,7 +32,11 @@ class ContainerEmpty {
         h3.innerText = title;
         p.innerText = text;
 
-        img.src="../../../imgs/search-light.svg";
+        if(imgSrc != null){
+            img.src= imgSrc;
+        }else{
+            img.src="../../../imgs/search-light.svg";
+        }
 
         containerText.append(h3, p);
         containerEmpty.append(img, containerText);

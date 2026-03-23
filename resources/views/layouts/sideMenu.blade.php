@@ -17,6 +17,10 @@
                 <img src="{{ asset('imgs/wallet-gray.svg') }}" alt="Financeiro" class="img-size-20">
                 Financeiro
             </a>
+             <a class="link-page pt-md txt-decoration-none text-base text-link color-primary w-full d-flex justify-start items-center gap-md" href="/virtual-assistant">
+                <img src="{{ asset('imgs/robot-gray.svg') }}" alt="Assistente Virtual" class="img-size-20">
+                Atlas
+            </a>
             <a class="link-page pt-md txt-decoration-none text-base text-link color-primary w-full d-flex justify-start items-center gap-md" href="/tags">
                 <img src="{{ asset('imgs/hashtag-gray.svg') }}" alt="Tag" class="img-size-20">
                 Tags
@@ -34,10 +38,10 @@
     <section class="w-full d-flex justify-between items-center gap-md pt-md bd-top">
         <div class="d-flex justify-start items-center gap-sm">
             <img
-                src="{{ asset(Auth::user()->photo) }}"
+                src="{{ Auth::user()->photo ? asset(Auth::user()->photo) : asset('imgs/photo-default.png') }}"
                 alt="Perfil"
                 class="img-preview-menu radius-50p img-profile-menu"
-                onerror="this.src='{{ asset('imgs/photo-default.png') }}';"
+                onerror="this.onerror=null; this.src='{{ asset('imgs/photo-default.png') }}';"
             />
             <div class="w-full d-flex flex-column justify-start items-start gap-xs">
                 <span class="text-sm fw-sb color-primary nickname-menu">{{ Auth::user()->nickname }}</span>
