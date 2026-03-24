@@ -14,14 +14,14 @@ class VirtualAssistantService
 
     public function __construct()
     {
-        $this->apiKey           = config('services.gemini.key');
-        $this->model            = config('services.gemini.model', 'gemini-2.0-flash');
+        $this->apiKey            = config('services.gemini.key');
+        $this->model             = config('services.gemini.model', 'gemini-2.0-flash');
         $this->systemInstruction = config('virtualAssistant.system_instruction');
-        $this->baseUrl          = "https://generativelanguage.googleapis.com/v1beta/models/{$this->model}:generateContent";
+        $this->baseUrl           = "https://generativelanguage.googleapis.com/v1beta/models/{$this->model}:generateContent";
     }
+
     public function generateContent($prompt)
     {
-
         $prompt = trim($prompt);
 
         if ($prompt === '') {
@@ -44,6 +44,11 @@ class VirtualAssistantService
         $interactionHistory = $this->buildInteractionHistory($interactions, $prompt);
         $currentInteraction = $this->storeInteraction($prompt);
 
+        $contextBuilder  = new ContextBuilderService();
+        $userContext     = $contextBuilder->build($prompt);
+
+        $fullInstruction = $this->systemInstruction . "\n\n" . $userContext;
+
         if (!$currentInteraction) {
             return [
                 'status'  => 'error',
@@ -60,7 +65,7 @@ class VirtualAssistantService
             ->post($this->baseUrl, [
                 'system_instruction' => [
                     'parts' => [
-                        ['text' => $this->systemInstruction],
+                        ['text' => $fullInstruction],
                     ],
                 ],
                 'contents' => $interactionHistory,
@@ -86,12 +91,13 @@ class VirtualAssistantService
             'data'    => $responseData,
         ];
     }
+
     private function storeInteraction($prompt)
     {
         try {
-            $interaction          = new VirtualAssistantInteraction();
+            $interaction = new VirtualAssistantInteraction();
             $interaction->user_id = auth()->id();
-            $interaction->prompt  = $prompt;
+            $interaction->prompt = $prompt;
             $interaction->save();
 
             return $interaction;
@@ -99,13 +105,14 @@ class VirtualAssistantService
             return null;
         }
     }
+
     private function updateInteraction($id, $response = null, $hasError = false)
     {
         try {
 
             $interaction = VirtualAssistantInteraction::find($id);
 
-            if (!$interaction) {
+            if (! $interaction) {
                 return null;
             }
 
@@ -118,6 +125,7 @@ class VirtualAssistantService
             return null;
         }
     }
+
     private function indexInteraction()
     {
         try {
@@ -125,22 +133,19 @@ class VirtualAssistantService
             return VirtualAssistantInteraction::where('user_id', auth()->id())
                 ->where('has_error', false)
                 ->orderBy('id', 'asc')
-                ->latest()
                 ->take(6)
                 ->get();
-
         } catch (\Throwable $e) {
             return [];
         }
     }
+
     private function buildInteractionHistory($interactions, $currentPrompt)
     {
         $interactionHistory = [];
 
         if ($interactions->isNotEmpty()) {
-
             $interactionHistory = $interactions
-
                 ->filter(fn($interaction) => ! empty($interaction->response))
                 ->flatMap(fn($interaction) => [
                     [
@@ -163,6 +168,7 @@ class VirtualAssistantService
 
         return $interactionHistory;
     }
+
     public function extractResponseText($response)
     {
         if (empty($response)) {

@@ -61,9 +61,10 @@ class VirtualAssistantController extends Controller
 
             $response = VirtualAssistantInteraction::where('user_id', auth()->id())
                 ->where('has_error', false)
-                ->orderBy('id', 'asc')
-                ->latest()
-                ->get();
+                ->orderBy('id', 'desc')
+                ->take(6)
+                ->get()
+                ->sortBy('id');
 
             if($response){
                 $messages = $this->buildMessageHistory($response);

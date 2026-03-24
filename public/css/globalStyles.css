@@ -804,6 +804,10 @@ Outros
     position: relative;
 }
 
+.translate-z-0{
+    transform: translateZ(0);
+}
+
 .position-absolute{
     position: absolute;
 }
@@ -911,6 +915,10 @@ Outros
 .scroll-auto{
     padding-right: var(--space-sm);
     overflow-y: auto;
+}
+
+.scroll-behavior-auto{
+    scroll-behavior: auto;
 }
 
 .text-wrap{

@@ -42,8 +42,10 @@
 
         <section class="w-full h-100-mx-vh h-full d-flex flex-column justify-between items-start bg-secondary  radius-sm pt-md gap-md bd-shadow-primary overflow-hidden" id="virtual-assistant-section">
             <form id="form-chat" class="w-full h-full d-flex flex-column justify-between items-start gap-md overflow-hidden">
-                <div id="container-chat" class="w-full h-full bd-primary radius-sm pt-md bg-secondary d-flex flex-column justify-start items-start gap-md">
+                <div id="container-scroll-chat" class="radius-sm pt-md w-full h-full d-flex justify-center items-center overflow-hidden bd-primary bg-secondary position-relative">
+                    <div id="container-chat" class="scroll-behavior-auto w-full h-full radius-sm d-flex flex-column justify-start items-start gap-md overflow-hidden">
 
+                    </div>
                 </div>
                 <div id="container-message-input" class="d-flex items-center justify-between w-full bg-secondary pt-input-primary bd-primary radius-sm">
                     <input id="input-message" type="text" name="message" placeholder="Digite sua mensagem..." class="text-base color-primary w-full">

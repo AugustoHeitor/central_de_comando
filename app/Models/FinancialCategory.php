@@ -9,6 +9,8 @@ class FinancialCategory extends Model
 {
     use HasFactory;
 
+    protected $table = 'financial_categories';
+
     protected $fillable = ['name', 'user_id'];
 
     public function user()
@@ -20,5 +22,5 @@ class FinancialCategory extends Model
     {
         return $this->hasMany(Task::class, 'category_id');
     }
-  
+
 }

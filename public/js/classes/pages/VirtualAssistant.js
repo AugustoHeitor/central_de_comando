@@ -29,7 +29,7 @@ class VirtualAssistant extends Master {
     }
 
     async sendMessage(formData, button){
-
+        this.createLoad();
         button.disabled = true;
 
         try {
@@ -70,25 +70,31 @@ class VirtualAssistant extends Master {
                 button.disabled = false;
             }, 2000);
 
+        } finally {
+            this.removeLoad();
         }
     }
 
-    async getAllMessages(){
+    async getAllMessages() {
+
         try {
+
+            this.createLoad();
 
             const response = await axios.get(`${this.url}/index-messages`, {
                 timeout: 5000
             });
 
             if (response.status === 200 && response.data.status === 'success') {
-
                 return response.data.data;
-
             }
 
         } catch (error) {
             console.error(error);
+        } finally {
+            this.removeLoad();
         }
+
     }
 
     formatMessage(text, senderType = "atlas"){
@@ -118,6 +124,7 @@ class VirtualAssistant extends Master {
             container.classList.add('justify-start');
 
             const avatarContainer = document.createElement('div');
+
             avatarContainer.classList.add(
                 'd-flex',
                 'justify-center',
@@ -176,6 +183,53 @@ class VirtualAssistant extends Master {
         }
 
         return container;
+    }
+
+    createLoad() {
+
+        const containerChat = document.querySelector('#container-scroll-chat');
+
+        containerChat.style.transform = 'translateZ(0)';
+
+        const containerLoad = document.createElement('div');
+        containerLoad.id = 'chat-load-overlay';
+        containerLoad.classList.add(
+            'fixed', 'z-index-screen',
+            'w-full', 'h-full',
+            'd-flex', 'flex-column',
+            'justify-center', 'items-center',
+            'gap-md', 'bg-secondary'
+        );
+
+        containerLoad.style.top  = '0';
+        containerLoad.style.left = '0';
+
+        const img = document.createElement('img');
+        img.src = "../../../imgs/robot-light.svg";
+        img.classList.add('img-size-60', 'pulse-animation');
+
+        const text = document.createElement('span');
+        text.textContent = 'Carregando...';
+        text.classList.add('color-secondary', 'text-sm', 'fw-m');
+
+        containerLoad.append(img, text);
+        containerChat.appendChild(containerLoad);
+    }
+
+    removeLoad() {
+        const load = document.querySelector('#chat-load-overlay');
+        const containerChat = document.querySelector('#container-scroll-chat');
+
+        if (load){
+
+            load.remove();
+
+            if (containerChat){
+                containerChat.style.transform = '';
+            }
+
+        }
+
     }
 
     updateChat(){

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class TaskTimeLog extends Model
 {
+    protected $table = 'task_time_logs';
     protected $fillable = [
         'task_id',
         'user_id',
