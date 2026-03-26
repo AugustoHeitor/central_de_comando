@@ -141,6 +141,7 @@ class VirtualAssistant extends Master {
             avatarContainer.appendChild(avatarImage);
 
             const messageBox = document.createElement('div');
+
             messageBox.classList.add(
                 'd-flex',
                 'items-start',
@@ -148,15 +149,14 @@ class VirtualAssistant extends Master {
                 'bg-secondary',
                 'pt-input-primary',
                 'bd-primary',
-                'radius-sm'
+                'radius-sm',
+                'text-base',
+                'flex-column',
+                'color-primary',
+                'gap-md'
             );
 
-            const messageText = document.createElement('span');
-            messageText.classList.add('text-base', 'color-primary');
-            messageText.textContent = message.text;
-            messageText.style.whiteSpace = 'pre-wrap';
-
-            messageBox.appendChild(messageText);
+            messageBox.innerHTML = this.utils.parseMarkdown(message.text);
 
             container.appendChild(avatarContainer);
             container.appendChild(messageBox);

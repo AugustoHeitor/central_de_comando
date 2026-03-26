@@ -57,6 +57,28 @@ class Utils {
         }
     }
 
+    parseMarkdown(text) {
+        return text
+        // Headings
+        .replace(/^#### (.+)$/gm,  '<h4>$1</h4>')
+        .replace(/^### (.+)$/gm,   '<h3>$1</h3>')
+        .replace(/^## (.+)$/gm,    '<h2>$1</h2>')
+        // Bold e italic
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.+?)\*/g,     '<em>$1</em>')
+        // Listas não-ordenadas (* item)
+        .replace(/^\* (.+)$/gm,    '<li>$1</li>')
+        // Listas ordenadas (1. item)
+        .replace(/^\d+\.\s+(.+)$/gm, '<li>$1</li>')
+        // Agrupa <li> consecutivos em <ul>/<ol>
+        .replace(/(<li>.*<\/li>\n?)+/g, m => `<ul>${m}</ul>`)
+        // Parágrafos (linhas soltas)
+        .replace(/^(?!<[hlu]|<\/[hlu])(.+)$/gm, '<p>$1</p>')
+        // Quebras duplas desnecessárias
+        .replace(/\n{2,}/g, '');
+    }
+
+
     removeElements(selector){
         const elementsToRemove = document.querySelectorAll(selector);
         const arrayToRemove = Array.from(elementsToRemove);

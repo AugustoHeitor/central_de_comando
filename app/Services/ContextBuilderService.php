@@ -14,29 +14,96 @@ class ContextBuilderService
     private $user;
     private $now;
 
+    private const INTENT_THRESHOLD = 0.90;
+
     private const FINANCE_KEYWORDS = [
-        'gasto', 'gastos', 'despesa', 'despesas', 'receita', 'receitas',
-        'financ', 'dinheiro', 'saldo', 'extrato', 'transação', 'transações',
-        'pagamento', 'pagamentos', 'custo', 'custos', 'orçamento', 'budget',
-        'renda', 'salário', 'income', 'expense', 'quanto gastei', 'quanto ganhei',
-        'quanto tenho', 'sobrou', 'faltou', 'deficit', 'superavit',
+
+        'quanto gastei'    => 3.0,
+        'quanto ganhei'    => 3.0,
+        'quanto tenho'     => 3.0,
+        'sobrou'           => 3.0,
+        'faltou'           => 3.0,
+        'saldo do mês'     => 3.0,
+        'extrato'          => 3.0,
+        'superavit'        => 3.0,
+        'deficit'          => 3.0,
+
+        'financ'           => 2.0,
+        'transação'        => 2.0,
+        'transações'       => 2.0,
+        'receita'          => 2.0,
+        'receitas'         => 2.0,
+        'despesa'          => 2.0,
+        'despesas'         => 2.0,
+        'orçamento'        => 2.0,
+        'salário'          => 2.0,
+        'pagamento'        => 2.0,
+        'pagamentos'       => 2.0,
+        'budget'           => 2.0,
+        'income'           => 2.0,
+        'expense'          => 2.0,
+        'renda'            => 2.0,
+
+        'gasto'            => 1.0,
+        'gastos'           => 1.0,
+        'custo'            => 1.0,
+        'custos'           => 1.0,
+        'dinheiro'         => 1.0,
+        'saldo'            => 1.0,
     ];
 
     private const TASK_KEYWORDS = [
-        'tarefa', 'tarefas', 'task', 'tasks', 'pendente', 'pendentes',
-        'prazo', 'prazos', 'deadline', 'urgente', 'urgentes', 'prioridade',
-        'concluí', 'concluída', 'concluídas', 'atrasada', 'atrasadas',
-        'produtividade', 'progresso', 'tempo gasto', 'horas trabalhadas',
-        'o que falta', 'o que tenho', 'atividade', 'atividades',
-        'backlog', 'andamento', 'em progresso', 'fazer',
+
+        'tarefas atrasadas'    => 3.0,
+        'tarefa atrasada'      => 3.0,
+        'o que falta fazer'    => 3.0,
+        'o que tenho pra fazer'=> 3.0,
+        'horas trabalhadas'    => 3.0,
+        'tempo gasto'          => 3.0,
+        'backlog'              => 3.0,
+        'em progresso'         => 3.0,
+
+        'tarefa'               => 2.0,
+        'tarefas'              => 2.0,
+        'task'                 => 2.0,
+        'tasks'                => 2.0,
+        'prazo'                => 2.0,
+        'prazos'               => 2.0,
+        'deadline'             => 2.0,
+        'urgente'              => 2.0,
+        'urgentes'             => 2.0,
+        'prioridade'           => 2.0,
+        'produtividade'        => 2.0,
+        'progresso'            => 2.0,
+        'concluí'              => 2.0,
+        'concluída'            => 2.0,
+        'concluídas'           => 2.0,
+
+        'pendente'             => 1.0,
+        'pendentes'            => 1.0,
+        'atrasada'             => 1.0,
+        'atrasadas'            => 1.0,
+        'atividade'            => 1.0,
+        'atividades'           => 1.0,
+        'andamento'            => 1.0,
+        'fazer'                => 1.0,
     ];
+
+    private const NEGATION_WORDS = [
+        'não', 'nao', 'nunca', 'jamais', 'sem',
+        'exceto', 'excluindo', 'ignore', 'ignora',
+        'tirando', 'apenas', 'somente',
+    ];
+
+    private const NEGATION_PENALTY = 2.5;
+
+    private const COMBO_BOOST = 0.15;
 
     private const STATUS_LABELS = [
         'to_do'       => 'A fazer',
         'in_progress' => 'Em andamento',
         'done'        => 'Finalizado',
     ];
-
     private const PRIORITY_LABELS = [
         'low'    => 'Baixa',
         'medium' => 'Média',
@@ -51,12 +118,9 @@ class ContextBuilderService
 
     public function build($prompt)
     {
-        $prompt = mb_strtolower($prompt);
+        [$needsFinance, $needsTasks] = $this->detectIntents($prompt);
 
-        $needsFinance = $this->matches($prompt, self::FINANCE_KEYWORDS);
-        $needsTasks   = $this->matches($prompt, self::TASK_KEYWORDS);
-
-        if (! $needsFinance && ! $needsTasks) {
+        if (!$needsFinance && !$needsTasks) {
             $needsFinance = true;
             $needsTasks   = true;
         }
@@ -78,13 +142,122 @@ class ContextBuilderService
         return implode("\n\n", array_filter($blocks));
     }
 
+    // ---------------------------------------------------------------
+    // Intent detection
+    // ---------------------------------------------------------------
+
+    private function detectIntents($prompt)
+    {
+        $normalized = $this->normalizePrompt($prompt);
+        $tokens     = $this->tokenize($normalized);
+
+        $rawFinance = $this->scoreKeywords($tokens, self::FINANCE_KEYWORDS);
+        $rawTask    = $this->scoreKeywords($tokens, self::TASK_KEYWORDS);
+
+        if ($rawFinance > 0 && $rawTask > 0) {
+            $rawFinance += self::COMBO_BOOST;
+            $rawTask    += self::COMBO_BOOST;
+        }
+
+        $maxFinance = $this->maxPossibleScore(self::FINANCE_KEYWORDS);
+        $maxTask    = $this->maxPossibleScore(self::TASK_KEYWORDS);
+
+        $scoreFinance = $maxFinance > 0 ? min($rawFinance / $maxFinance, 1.0) : 0.0;
+        $scoreTask    = $maxTask    > 0 ? min($rawTask    / $maxTask,    1.0) : 0.0;
+
+        return [
+            $scoreFinance >= self::INTENT_THRESHOLD,
+            $scoreTask    >= self::INTENT_THRESHOLD,
+        ];
+    }
+
+    private function scoreKeywords($tokens, $keywords)
+    {
+        $joined = implode(' ', $tokens);
+        $score  = 0.0;
+
+        foreach ($keywords as $keyword => $weight) {
+            $kwTokens = $this->tokenize($keyword);
+            $kwStr    = implode(' ', $kwTokens);
+
+            $occurrences = substr_count($joined, $kwStr);
+
+            if ($occurrences === 0) {
+                continue;
+            }
+
+            $offset = 0;
+
+            for ($i = 0; $i < $occurrences; $i++) {
+                $pos = strpos($joined, $kwStr, $offset);
+                if ($pos === false) {
+                    break;
+                }
+
+                $effectiveWeight = $this->isNegated($joined, $pos)
+                    ? $weight / self::NEGATION_PENALTY
+                    : $weight;
+
+                $score  += $effectiveWeight;
+                $offset  = $pos + strlen($kwStr);
+            }
+        }
+
+        return $score;
+    }
+
+    private function isNegated($text, $pos)
+    {
+
+        $before = mb_substr($text, 0, $pos);
+        $prev   = array_slice(
+            array_filter(explode(' ', $before)),
+            -4
+        );
+
+        foreach ($prev as $token) {
+            if (in_array(trim($token), self::NEGATION_WORDS, true)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    private function maxPossibleScore($keywords)
+    {
+        return array_sum($keywords);
+    }
+
+    // ---------------------------------------------------------------
+    // String helpers
+    // ---------------------------------------------------------------
+
+    private function normalizePrompt($prompt)
+    {
+        $prompt = strip_tags($prompt);
+        $prompt = mb_strtolower($prompt, 'UTF-8');
+        $prompt = preg_replace('/[^\p{L}\p{N}\s]/u', ' ', $prompt);
+        $prompt = preg_replace('/\s+/', ' ', $prompt);
+
+        return trim($prompt);
+    }
+
+    private function tokenize($text)
+    {
+        return array_values(array_filter(explode(' ', $text)));
+    }
+
+    // ---------------------------------------------------------------
+    // Context builders (inalterados)
+    // ---------------------------------------------------------------
+
     private function buildHeader()
     {
         return implode("\n", [
             '[CONTEXTO DO USUÁRIO]',
-            'Nome: ' . $this->user->nickname,
-            'Data atual: ' . $this->now->format('d/m/Y H:i'),
-            'Dia da semana: ' . $this->now->translatedFormat('l'),
+            'Nome: '            . $this->user->nickname,
+            'Data atual: '      . $this->now->format('d/m/Y H:i'),
+            'Dia da semana: '   . $this->now->translatedFormat('l'),
         ]);
     }
 
@@ -113,12 +286,8 @@ class ContextBuilderService
 
                 $lines[] = sprintf(
                     '  [%s][%s] %s | Categoria: %s | Prazo: %s (%s)',
-                    $status,
-                    $priority,
-                    $task->title,
-                    $category,
-                    $deadline->format('d/m/Y'),
-                    $daysLabel
+                    $status, $priority, $task->title,
+                    $category, $deadline->format('d/m/Y'), $daysLabel
                 );
             }
         }
@@ -161,8 +330,7 @@ class ContextBuilderService
 
     private function buildTimeLogsBlock()
     {
-        $lines = ['--- REGISTROS DE TEMPO (últimos 7 dias) ---'];
-
+        $lines     = ['--- REGISTROS DE TEMPO (últimos 7 dias) ---'];
         $weekStart = $this->now->copy()->subDays(7)->startOfDay();
 
         $logs = TaskTimeLog::with('task')
@@ -206,8 +374,7 @@ class ContextBuilderService
 
     private function buildFinancialBlock()
     {
-        $lines = ['--- FINANCEIRO (mês atual) ---'];
-
+        $lines      = ['--- FINANCEIRO (mês atual) ---'];
         $monthStart = $this->now->copy()->startOfMonth()->toDateString();
         $monthEnd   = $this->now->copy()->endOfMonth()->toDateString();
 
@@ -217,13 +384,13 @@ class ContextBuilderService
             ->orderBy('transaction_date')
             ->get();
 
-        $totalIncome  = $transactions->where('type', 'income')->sum('amount') / 100;
+        $totalIncome  = $transactions->where('type', 'income')->sum('amount')  / 100;
         $totalExpense = $transactions->where('type', 'expense')->sum('amount') / 100;
         $balance      = $totalIncome - $totalExpense;
 
-        $lines[] = sprintf('Receitas: R$ %s', number_format($totalIncome, 2, ',', '.'));
+        $lines[] = sprintf('Receitas: R$ %s', number_format($totalIncome,  2, ',', '.'));
         $lines[] = sprintf('Despesas: R$ %s', number_format($totalExpense, 2, ',', '.'));
-        $lines[] = sprintf('Saldo do mês: R$ %s', number_format($balance, 2, ',', '.'));
+        $lines[] = sprintf('Saldo do mês: R$ %s', number_format($balance,  2, ',', '.'));
 
         if ($balance < 0) {
             $lines[] = 'ALERTA: Saldo negativo no mês.';
@@ -232,12 +399,10 @@ class ContextBuilderService
         $expenseByCategory = $transactions
             ->where('type', 'expense')
             ->groupBy('category_id')
-            ->map(function ($group) {
-                return [
-                    'name'   => $group->first()->category?->name ?? 'Sem categoria',
-                    'amount' => $group->sum('amount') / 100,
-                ];
-            })
+            ->map(fn($g) => [
+                'name'   => $g->first()->category?->name ?? 'Sem categoria',
+                'amount' => $g->sum('amount') / 100,
+            ])
             ->sortByDesc('amount');
 
         $lines[] = 'Despesas por categoria:';
@@ -265,13 +430,11 @@ class ContextBuilderService
             $lines[] = '  Nenhuma categoria financeira cadastrada.';
         } else {
             foreach ($financialCategories as $cat) {
-                $count  = $transactions->where('category_id', $cat->id)->count();
-                $total  = $transactions->where('category_id', $cat->id)->sum('amount') / 100;
+                $count   = $transactions->where('category_id', $cat->id)->count();
+                $total   = $transactions->where('category_id', $cat->id)->sum('amount') / 100;
                 $lines[] = sprintf(
                     '  [Categoria Financeira] %s — %d transação(ões) | R$ %s no mês',
-                    $cat->name,
-                    $count,
-                    number_format($total, 2, ',', '.')
+                    $cat->name, $count, number_format($total, 2, ',', '.')
                 );
             }
         }
@@ -284,12 +447,12 @@ class ContextBuilderService
         $prevStart = $this->now->copy()->subMonth()->startOfMonth()->toDateString();
         $prevEnd   = $this->now->copy()->subMonth()->endOfMonth()->toDateString();
 
-        $prevTransactions = FinancialTransaction::where('user_id', $this->user->id)
+        $prev = FinancialTransaction::where('user_id', $this->user->id)
             ->whereBetween('transaction_date', [$prevStart, $prevEnd])
             ->get();
 
-        $prevIncome  = $prevTransactions->where('type', 'income')->sum('amount') / 100;
-        $prevExpense = $prevTransactions->where('type', 'expense')->sum('amount') / 100;
+        $prevIncome  = $prev->where('type', 'income')->sum('amount')  / 100;
+        $prevExpense = $prev->where('type', 'expense')->sum('amount') / 100;
 
         if ($prevIncome == 0 && $prevExpense == 0) {
             return 'Comparativo mês anterior: sem dados.';
@@ -297,48 +460,31 @@ class ContextBuilderService
 
         return sprintf(
             'Mês anterior — Receitas: R$ %s | Despesas: R$ %s',
-            number_format($prevIncome, 2, ',', '.'),
+            number_format($prevIncome,  2, ',', '.'),
             number_format($prevExpense, 2, ',', '.')
         );
     }
 
-    private function matches($prompt, $keywords)
-    {
-        foreach ($keywords as $keyword) {
-            if (str_contains($prompt, $keyword)) {
-                return true;
-            }
-        }
-        return false;
-    }
+    // ---------------------------------------------------------------
+    // Formatters
+    // ---------------------------------------------------------------
 
     private function formatSeconds($seconds)
     {
         $hours   = intdiv($seconds, 3600);
         $minutes = intdiv($seconds % 3600, 60);
 
-        if ($hours > 0) {
-            return "{$hours}h {$minutes}min";
-        }
-
-        return "{$minutes}min";
+        return $hours > 0 ? "{$hours}h {$minutes}min" : "{$minutes}min";
     }
 
     private function deadlineLabel($deadline)
     {
-        $diff = $this->now->copy()->startOfDay()->diffInDays($deadline->copy()->startOfDay(), false);
+        $diff = $this->now->copy()->startOfDay()
+                          ->diffInDays($deadline->copy()->startOfDay(), false);
 
-        if ($diff < 0) {
-            return 'ATRASADA há ' . abs($diff) . ' dia(s)';
-        }
-
-        if ($diff == 0) {
-            return 'vence HOJE';
-        }
-
-        if ($diff == 1) {
-            return 'vence amanhã';
-        }
+        if ($diff < 0)  return 'ATRASADA há ' . abs($diff) . ' dia(s)';
+        if ($diff == 0) return 'vence HOJE';
+        if ($diff == 1) return 'vence amanhã';
 
         return "vence em {$diff} dias";
     }
