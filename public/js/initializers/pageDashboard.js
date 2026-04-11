@@ -4,21 +4,6 @@ let tasks = [];
 let transactions = [];
 let timeDistribution = [];
 
-const itemsDropdown = [
-    {
-        "type": "inputDate",
-        "label": "Data Inicial",
-        "class": "input-start-date",
-        "storageKey": "start_date"
-    },
-    {
-        "type": "inputDate",
-        "label": "Data Final",
-        "class": "input-end-date",
-        "storageKey": "end_date"
-    }
-];
-
 const chartSettings = [
     {
         "type": "bar",
@@ -44,21 +29,23 @@ document.addEventListener('DOMContentLoaded', async ()=>{
 
     if(btnDropdownFilter){
         btnDropdownFilter.addEventListener('click', ()=>{
-            dashboard.components.dropdown.createDropdownFilter('.container-dropdown-filter', 'dropdown-filter', itemsDropdown);
+            const itemsDropdownDesktop = dashboard.dropdownFields
+            .filter(item => item.render?.desktop === true)
+            .map(item => ({ ...item }));
+
+            dashboard.components.dropdown.createDropdownFilter('.container-dropdown-filter', 'dropdown-filter', itemsDropdownDesktop);
         })
     }
 
     if(btnCloseMenuMobile){
         btnCloseMenuMobile.addEventListener("click", ()=>{
-            document.querySelector(".screen-menu-mobile").classList.remove("d-flex");
-            document.querySelector(".screen-menu-mobile").classList.add("none");
+            dashboard.utils.toggleVisibility(".screen-menu-mobile", "hide");
         })
     }
 
     if(btnOpenMenuMobile){
         btnOpenMenuMobile.addEventListener("click", ()=>{
-            document.querySelector(".screen-menu-mobile").classList.add("d-flex");
-            document.querySelector(".screen-menu-mobile").classList.remove("none");
+            dashboard.utils.toggleVisibility(".screen-menu-mobile", "show");
         })
     }
 

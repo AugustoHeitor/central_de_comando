@@ -40,24 +40,24 @@ document.addEventListener('DOMContentLoaded', async ()=>{
 
         btnFilterMobile.addEventListener('click', ()=>{
 
-            const statusOptions = [
-                { value: "null", label: 'Todos' },
-                { value: "true", label: 'Ativas' },
-                { value: "false", label: 'Inativas' },
-            ];
+            const itemsDropdownMobile = tag.dropdownFields
+            .filter(item => item.render?.mobile === true)
+            .map(item => ({ ...item }));
 
-            const itemsDropdown = [
-                {
-                    "type": "select",
-                    "label": "Status",
-                    "class": "select-status",
-                    "storageKey": "is_active",
-                    "nameAttribute": "isActive",
-                    "options": statusOptions
-                },
-            ];
+            itemsDropdownMobile.forEach((item)=>{
 
-            const itemsDropdownMobile = itemsDropdown.map(item => ({ ...item }));
+                if(item.nameAttribute === "status"){
+
+                    const data = tag.selectorOptions.status.options;
+                    const config = tag.selectorOptions.status.config;
+                    const defaultOption = tag.selectorOptions.status.defaultOption;
+
+                    item.options = tag.utils.getOptions(data, defaultOption, config);
+
+                }
+
+            })
+
             tag.components.dropdown.createDropdownFilter('.container-dropdown-filter', 'dropdown-filter', itemsDropdownMobile);
         })
     }

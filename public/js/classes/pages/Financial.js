@@ -29,12 +29,81 @@ class Financial extends Master {
             { name: "Data da Transação", value: "transaction_date" },
         ];
 
-
         this.components = {
             'modal': new Modal(),
             'dropdown': new Dropdown(this.localStorageName, this.paramKeysFilter, this.filterTransactions.bind(this), this.paramKeysOrder, this.createCardTransaction.bind(this)),
             'containerEmpty': new ContainerEmpty()
         };
+
+        this.selectorOptions = {
+            "type": {
+                "defaultOption": { value: '', label: 'Todos' },
+                "options": [
+                    { value: 'income', label: 'Entrada' },
+                    { value: 'expense', label: 'Saída' }
+                ],
+                "config": {
+                    "labelKey": "label",
+                    "valueKey": "value",
+                }
+            },
+            "category": {
+                "defaultOption": { value: '', label: 'Todas' },
+                "options": [],
+                "config": {
+                    "labelKey": "name",
+                    "valueKey": "id",
+                }
+            },
+        }
+
+        this.dropdownFields = [
+            {
+                "type": "inputDate",
+                "label": "Data Inicial",
+                "class": "input-start-date",
+                "storageKey": "start_date",
+                "render": {
+                    "desktop": true,
+                    "mobile": true
+                }
+            },
+            {
+                "type": "inputDate",
+                "label": "Data Final",
+                "class": "input-end-date",
+                "storageKey": "end_date",
+                "render": {
+                    "desktop": true,
+                    "mobile": true
+                }
+            },
+            {
+                "type": "select",
+                "label": "Categorias",
+                "class": "select-category",
+                "storageKey": "category",
+                "nameAttribute": "categories",
+                "options": [],
+                "render": {
+                    "desktop": true,
+                    "mobile": true
+                }
+            },
+            {
+                "type": "select",
+                "label": "Tipos",
+                "class": "select-type",
+                "storageKey": "type",
+                "nameAttribute": "types",
+                "options": [],
+                "render": {
+                    "desktop": false,
+                    "mobile": true
+                }
+            }
+        ];
+
     }
 
     init() {
@@ -233,209 +302,87 @@ class Financial extends Master {
         const containerPrimary = document.createElement('div');
 
         container.classList.add('w-full', 'h-full', 'd-flex', 'align-start', 'justify-start', 'flex-column', 'gap-lg', 'scroll-auto');
-
         containerPrimary.classList.add('w-full', 'd-flex', 'align-start', 'justify-start', 'gap-lg', 'flex-direction-mobile');
 
-        function createInputGroup({ iconSrc, iconAlt, labelFor, labelText, inputElement }) {
-            const group = document.createElement('div');
-            group.classList.add('w-full', 'd-flex', 'flex-column', 'justify-start', 'items-start', 'gap-sm');
+        const configFieldTitle = {
+            icon: { src: 'imgs/heading-light.svg', alt: 'Título' },
+            label: { for: 'title', text: 'Título' },
+            field: { type: 'text', required: true, value: transaction?.title || '', class: null, name: 'title' },
+            containerField: { class: null },
+            containerGroup: { class: null }
+        };
 
-            const labelWrapper = document.createElement('div');
-            labelWrapper.classList.add('d-flex', 'justify-start', 'items-center', 'gap-sm');
+        containerPrimary.append(this.components.modal.createFieldGroup(configFieldTitle));
 
-            const icon = document.createElement('img');
-            icon.src = iconSrc;
-            icon.alt = iconAlt;
-            icon.classList.add('img-size-15');
+        const configFieldAmount = {
+            icon: { src: 'imgs/coins-light.svg', alt: 'Valor' },
+            label: { for: 'amount', text: 'Valor' },
+            field: {
+                type: 'number',
+                required: true,
+                value: transaction?.amount ? this.utils.centsToReais(transaction.amount) : '',
+                class: null,
+                name: 'amount',
+                step: '0.01'
+            },
+            containerField: { class: null },
+            containerGroup: { class: ['w-full', 'd-flex', 'flex-column', 'w-mx-200-mobile', 'justify-start', 'items-start', 'gap-sm'] }
+        };
 
-            const label = document.createElement('label');
-            label.classList.add('color-light', 'text-base', 'fw-m');
-            label.setAttribute('for', labelFor);
-            label.textContent = labelText;
-
-            labelWrapper.append(icon);
-            labelWrapper.append(label);
-
-            const inputWrapper = document.createElement('div');
-            inputWrapper.classList.add('d-flex', 'items-center', 'justify-between', 'w-full', 'bg-secondary', 'pt-input-primary', 'bd-primary', 'radius-sm');
-            inputWrapper.append(inputElement);
-
-            group.append(labelWrapper);
-            group.append(inputWrapper);
-
-            return group;
-        }
-
-        const titleInput = document.createElement('input');
-        titleInput.value = transaction?.title ? transaction.title : "";
-        titleInput.required = true;
-        titleInput.type = 'text';
-        titleInput.name = 'title';
-        titleInput.classList.add('text-base', 'color-primary', 'w-full');
-        containerPrimary.append(createInputGroup({
-            iconSrc: 'imgs/heading-light.svg',
-            iconAlt: 'Título',
-            labelFor: 'title',
-            labelText: 'Título',
-            inputElement: titleInput
-        }));
+        containerPrimary.append(this.components.modal.createFieldGroup(configFieldAmount));
 
         container.appendChild(containerPrimary);
-
-        const amountGroup = document.createElement('div');
-        amountGroup.classList.add("w-full", "d-flex", "flex-column", "w-mx-200-mobile", "justify-start", "items-start", "gap-sm");
-
-        const amountLabelWrapper = document.createElement('div');
-        amountLabelWrapper.classList.add('d-flex', 'justify-start', 'items-center', 'gap-sm');
-
-        const amountIcon = document.createElement('img');
-        amountIcon.src = 'imgs/coins-light.svg';
-        amountIcon.alt = 'Valor';
-        amountIcon.classList.add('img-size-20');
-
-        const amountLabel = document.createElement('label');
-        amountLabel.classList.add('color-light', 'text-base', 'fw-m');
-        amountLabel.setAttribute('for', 'amount');
-        amountLabel.textContent = 'Valor';
-
-        amountLabelWrapper.append(amountIcon);
-        amountLabelWrapper.append(amountLabel);
-
-        const amountWrapper = document.createElement('div');
-        amountWrapper.classList.add("d-flex", "items-center", "justify-between", "w-full", "bg-secondary", "pt-input-primary", "bd-primary", "radius-sm");
-
-        const amountInput = document.createElement('input');
-        amountInput.required = true;
-        amountInput.type = 'number';
-        amountInput.name = 'amount';
-        amountInput.classList.add('w-full', 'text-base', 'color-primary', 'h-21');
-        amountInput.step = '0.01';
-
-        if(transaction?.amount){
-            amountInput.value = this.utils.centsToReais(transaction.amount);
-        } else {
-            amountInput.value = '';
-        }
-
-        amountWrapper.append(amountInput);
-        amountGroup.append(amountLabelWrapper);
-        amountGroup.append(amountWrapper);
-        containerPrimary.append(amountGroup);
 
         const fieldsWrapper = document.createElement('div');
         fieldsWrapper.classList.add('d-grid', 'grid-tmp-columns-3', 'grid-tmp-columns-2-responsive', 'grid-tmp-columns-1-responsive', 'w-full', 'align-start', 'justify-start', 'gap-lg');
 
-        const fields = [
-            {
-                name: 'type',
-                icon: 'imgs/up-down-light.svg',
-                label: 'Tipo',
-                iconClass: "img-size-20",
-                options: [
-                    { value: 'income', text: 'Entrada' },
-                    { value: 'expense', text: 'Saída' },
-                ]
-            },
-            {
-                name: 'category_id',
-                icon: 'imgs/tag-light.svg',
-                iconClass: "img-size-15",
-                label: 'Categorias',
-                options: categories
-            }
+        const typeOptions = [
+            { value: 'income', text: 'Entrada', selected: transaction?.type == 'income' },
+            { value: 'expense', text: 'Saída', selected: transaction?.type == 'expense' }
         ];
 
-        fields.forEach((field) => {
-            const group = document.createElement('div');
-            group.classList.add('w-full', 'd-flex', 'flex-column', 'justify-start', 'items-start', 'gap-sm', 'cnt-input-w');
+        const configFieldType = {
+            icon: { src: 'imgs/up-down-light.svg', alt: 'Tipo' },
+            label: { for: 'type', text: 'Tipo' },
+            field: { type: 'select', required: true, value: typeOptions, class: null, name: 'type' },
+            containerField: { class: null },
+            containerGroup: { class: ['w-full', 'd-flex', 'flex-column', 'justify-start', 'items-start', 'gap-sm', 'cnt-input-w'] }
+        };
 
-            const labelWrapper = document.createElement('div');
-            labelWrapper.classList.add('d-flex', 'justify-start', 'items-center', 'gap-sm');
+        fieldsWrapper.append(this.components.modal.createFieldGroup(configFieldType));
 
-            const icon = document.createElement('img');
-            icon.src = field.icon;
-            icon.alt = field.label;
-            icon.classList.add(field.iconClass);
+        const categoryOptions = categories.map((category) => ({
+            ...category,
+            selected: transaction?.category_id == category.value
+        }));
 
-            const label = document.createElement('label');
-            label.classList.add('color-light', 'text-base', 'fw-m');
-            label.setAttribute('for', field.name);
-            label.textContent = field.label;
+        const configFieldCategory = {
+            icon: { src: 'imgs/tag-light.svg', alt: 'Categorias' },
+            label: { for: 'category_id', text: 'Categorias' },
+            field: { type: 'select', required: true, value: categoryOptions, class: null, name: 'category_id' },
+            containerField: { class: null },
+            containerGroup: { class: ['w-full', 'd-flex', 'flex-column', 'justify-start', 'items-start', 'gap-sm', 'cnt-input-w'] }
+        };
 
-            labelWrapper.append(icon);
-            labelWrapper.append(label);
+        fieldsWrapper.append(this.components.modal.createFieldGroup(configFieldCategory));
 
-            const selectWrapper = document.createElement('div');
-            selectWrapper.classList.add('w-full', 'bg-secondary', 'radius-sm', 'bd-primary', 'pt-input-primary');
+        const configFieldDate = {
+            icon: { src: 'imgs/calendar-week-light.svg', alt: 'Data' },
+            label: { for: 'transaction_date', text: 'Data' },
+            field: {
+                type: 'date',
+                required: true,
+                value: transaction?.transaction_date
+                    ? this.utils.formatDate(transaction.transaction_date, 'iso')
+                    : this.utils.formatDate(new Date().toISOString().split('T')[0], 'iso'),
+                class: null,
+                name: 'transaction_date'
+            },
+            containerField: { class: null },
+            containerGroup: { class: ['w-full', 'd-flex', 'flex-column', 'justify-start', 'items-start', 'gap-sm', 'cnt-input-w'] }
+        };
 
-            const select = document.createElement('select');
-            select.name = field.name;
-            select.required = true;
-            select.classList.add('w-full', 'text-base', 'color-primary', 'h-21');
-
-            field.options.forEach(opt => {
-                const option = document.createElement('option');
-                option.value = opt.value;
-                option.classList.add("color-dark");
-
-                if(transaction){
-                    if (transaction[field.name] == opt.value) {
-                        option.selected = true;
-                    }
-                }
-
-                option.textContent = opt.text;
-                select.append(option);
-            });
-
-            selectWrapper.append(select);
-            group.append(labelWrapper);
-            group.append(selectWrapper);
-            fieldsWrapper.append(group);
-        });
-
-        const dateGroup = document.createElement('div');
-        dateGroup.classList.add('w-full', 'd-flex', 'flex-column', 'justify-start', 'items-start', 'gap-sm', 'cnt-input-w');
-
-        const dateLabelWrapper = document.createElement('div');
-        dateLabelWrapper.classList.add('d-flex', 'justify-start', 'items-center', 'gap-sm');
-
-        const dateIcon = document.createElement('img');
-        dateIcon.src = 'imgs/calendar-week-light.svg';
-        dateIcon.alt = 'Data';
-        dateIcon.classList.add('img-size-15');
-
-        const dateLabel = document.createElement('label');
-        dateLabel.classList.add('color-light', 'text-base', 'fw-m');
-        dateLabel.setAttribute('for', 'transaction_date');
-        dateLabel.textContent = 'Data';
-
-        dateLabelWrapper.append(dateIcon);
-        dateLabelWrapper.append(dateLabel);
-
-        const dateWrapper = document.createElement('div');
-        dateWrapper.classList.add('w-full', 'bg-secondary', 'radius-sm', 'bd-primary', 'pt-input-primary');
-
-        const dateInput = document.createElement('input');
-        dateInput.required = true;
-        dateInput.type = 'date';
-        dateInput.name = 'transaction_date';
-        dateInput.classList.add('w-full', 'text-base', 'color-primary', 'h-21');
-
-        if(transaction?.transaction_date){
-            const transactionDate = this.utils.formatDate(transaction?.transaction_date, 'iso');
-            dateInput.value = transactionDate;
-        }else{
-
-            const dateToday = this.utils.formatDate(new Date().toISOString().split('T')[0], 'iso');
-            dateInput.value = dateToday;
-
-        }
-
-        dateWrapper.append(dateInput);
-        dateGroup.append(dateLabelWrapper);
-        dateGroup.append(dateWrapper);
-        fieldsWrapper.append(dateGroup);
+        fieldsWrapper.append(this.components.modal.createFieldGroup(configFieldDate));
 
         container.append(fieldsWrapper);
 
@@ -555,20 +502,6 @@ class Financial extends Master {
         this.utils.addScrollY('#financial-section');
     }
 
-    createCategoryOptions(){
-        const categoryOptions = this.categories.map((category) => ({
-            value: category.id,
-            label: category.name
-        }));
-
-        categoryOptions.unshift({
-            value: "",
-            label: "Todas"
-        });
-
-        return categoryOptions;
-    }
-
     openModal(type, transaction = null){
 
         if(document.querySelector('.screen-modal')){
@@ -644,7 +577,7 @@ class Financial extends Master {
                                 type: "delete",
                                 event: (event)=>{
                                     const button = event.target;
-                                    const csrfToken = document.querySelector('input[name="_token"]').value;
+                                    const csrfToken = this.utils.getCsrfTokenValue();
                                     this.deleteTransaction(button, csrfToken, transaction.id);
                                 }
                             }

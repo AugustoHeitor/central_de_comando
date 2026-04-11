@@ -294,7 +294,7 @@ class Category extends Master {
                         event:  (event)=>{
 
                             const button = event.target;
-                            const csrfToken = document.querySelector('input[name="_token"]').value;
+                            const csrfToken = this.utils.getCsrfTokenValue();
                             const inputValue = document.querySelector('#input-category-edit').value;
                             this.updateCategory(inputValue, button, csrfToken, category.id);
                         }
@@ -346,7 +346,7 @@ class Category extends Master {
                         event:  (event)=>{
 
                             const button = event.target;
-                            const csrfToken = document.querySelector('input[name="_token"]').value;
+                            const csrfToken = this.utils.getCsrfTokenValue();
                             this.deleteCategory(button, csrfToken, category.id);
                         }
                     },

@@ -1,6 +1,6 @@
 class Utils {
 
-   addScrollY(selector, main = false) {
+    addScrollY(selector, main = false) {
 
         const container = document.querySelector(selector);
         if (!container) return;
@@ -77,7 +77,6 @@ class Utils {
         // Quebras duplas desnecessárias
         .replace(/\n{2,}/g, '');
     }
-
 
     removeElements(selector){
         const elementsToRemove = document.querySelectorAll(selector);
@@ -332,6 +331,36 @@ class Utils {
                 selectedElement.classList.add("none");
             }
         }
+    }
+
+    getOptions(data = [], defaultOption, config = {}) {
+
+        let options = [];
+
+        if (Array.isArray(data) && data.length > 0) {
+            options = data.map((item) => ({
+                value: item[config.valueKey],
+                label: item[config.labelKey]
+            }));
+
+            options.unshift({
+                value: defaultOption.value,
+                label: defaultOption.label
+            });
+        }
+
+        return options;
+    }
+
+    getCsrfTokenValue(){
+        const input = document.querySelector('input[name="_token"]');
+        let value = "";
+
+        if(input){
+            value = input.value;
+        }
+
+        return value;
     }
 }
 

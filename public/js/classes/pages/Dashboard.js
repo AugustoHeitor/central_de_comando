@@ -6,6 +6,7 @@ import MyChart from '../components/MyChart.js';
 class Dashboard extends Master {
 
     constructor(endpoint, tasks, transactions, timeDistribution, chartSettings = []) {
+
         super();
         this.tasks = tasks;
         this.transactions = transactions;
@@ -16,14 +17,39 @@ class Dashboard extends Master {
         this.url = this.baseUrl + endpoint;
         this.utils = new Utils();
         this.localStorageName = "dashboard";
+
         this.paramKeysFilter = [
             'start_date',
             'end_date',
         ];
+
         this.components = {
             'dropdown': new Dropdown(this.localStorageName, this.paramKeysFilter, this.filterDashboard.bind(this)),
             'chart': new MyChart(),
         };
+
+        this.dropdownFields = [
+            {
+                "type": "inputDate",
+                "label": "Data Inicial",
+                "class": "input-start-date",
+                "storageKey": "start_date",
+                "render": {
+                    "desktop": true,
+                    "mobile": true
+                }
+            },
+            {
+                "type": "inputDate",
+                "label": "Data Final",
+                "class": "input-end-date",
+                "storageKey": "end_date",
+                "render": {
+                    "desktop": true,
+                    "mobile": true
+                }
+            }
+        ];
 
         this.chartSettings = chartSettings;
     }

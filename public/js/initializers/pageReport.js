@@ -1,6 +1,5 @@
 import Report from '../classes/pages/Report.js';
 
-
 const now = new Date();
 const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
 const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
@@ -170,26 +169,20 @@ const cardsData = [
   }
 ];
 
-
 document.addEventListener('DOMContentLoaded', async ()=>{
 
     const report = new Report('report', cardsData);
     report.init();
 
     const btnCloseMenuMobile = document.querySelector('.btn-close-menu-mobile');
+
+    btnCloseMenuMobile.addEventListener("click", ()=>{
+        report.utils.toggleVisibility(".screen-menu-mobile", "hide");
+    })
+
     const btnOpenMenuMobile = document.querySelector('.btn-open-menu-mobile');
 
-    if(btnCloseMenuMobile){
-        btnCloseMenuMobile.addEventListener("click", ()=>{
-            document.querySelector(".screen-menu-mobile").classList.remove("d-flex");
-            document.querySelector(".screen-menu-mobile").classList.add("none");
-        })
-    }
-
-    if(btnOpenMenuMobile){
-        btnOpenMenuMobile.addEventListener("click", ()=>{
-            document.querySelector(".screen-menu-mobile").classList.add("d-flex");
-            document.querySelector(".screen-menu-mobile").classList.remove("none");
-        })
-    }
+    btnOpenMenuMobile.addEventListener("click", ()=>{
+        report.utils.toggleVisibility(".screen-menu-mobile", "show");
+    })
 })

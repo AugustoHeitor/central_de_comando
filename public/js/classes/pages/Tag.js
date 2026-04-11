@@ -72,6 +72,35 @@ class Tag extends Master {
             { name: "comments-dollar", src: "imgs/tagIcons/comments-dollar.svg", checked: false },
             { name: "mobile-button", src: "imgs/tagIcons/mobile-button.svg", checked: false }
         ];
+
+        this.selectorOptions = {
+            "status": {
+                "defaultOption": { value: '', label: 'Todos' },
+                "options": [
+                    { value: "true", label: 'Ativas' },
+                    { value: "false", label: 'Inativas' },
+                ],
+                "config": {
+                    "labelKey": "label",
+                    "valueKey": "value",
+                }
+            },
+        }
+
+        this.dropdownFields = [
+            {
+                "type": "select",
+                "label": "Status",
+                "class": "select-status",
+                "storageKey": "is_active",
+                "nameAttribute": "status",
+                "options": [],
+                "render": {
+                    "desktop": false,
+                    "mobile": true
+                }
+            }
+        ];
     }
 
     init() {
@@ -601,7 +630,7 @@ class Tag extends Master {
                                 type: "delete",
                                 event: (event)=>{
                                     const button = event.target;
-                                    const csrfToken = document.querySelector('input[name="_token"]').value;
+                                    const csrfToken = this.utils.getCsrfTokenValue();
                                     this.deleteTag(button, csrfToken, tag.id);
                                 }
                             }

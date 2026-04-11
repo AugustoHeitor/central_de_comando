@@ -47,15 +47,13 @@ document.addEventListener('DOMContentLoaded', ()=>{
     const btnCloseMenuMobile = document.querySelector('.btn-close-menu-mobile');
 
     btnCloseMenuMobile.addEventListener("click", ()=>{
-        document.querySelector(".screen-menu-mobile").classList.remove("d-flex");
-        document.querySelector(".screen-menu-mobile").classList.add("none");
+        setting.utils.toggleVisibility(".screen-menu-mobile", "hide");
     })
 
     const btnOpenMenuMobile = document.querySelector('.btn-open-menu-mobile');
 
     btnOpenMenuMobile.addEventListener("click", ()=>{
-        document.querySelector(".screen-menu-mobile").classList.add("d-flex");
-        document.querySelector(".screen-menu-mobile").classList.remove("none");
+        setting.utils.toggleVisibility(".screen-menu-mobile", "show");
     })
 
 })

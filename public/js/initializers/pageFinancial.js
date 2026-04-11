@@ -4,34 +4,11 @@ import Financial from '../classes/pages/Financial.js';
 let categories = [];
 let transactions = [];
 
-const itemsDropdown = [
-    {
-        "type": "inputDate",
-        "label": "Data Inicial",
-        "class": "input-start-date",
-        "storageKey": "start_date"
-    },
-    {
-        "type": "inputDate",
-        "label": "Data Final",
-        "class": "input-end-date",
-        "storageKey": "end_date"
-    },
-    {
-        "type": "select",
-        "label": "Categorias",
-        "class": "select-category",
-        "storageKey": "category",
-        "nameAttribute": "financialCategories",
-        "options": []
-    },
-];
+const categoryWarningMessage = 'Ao excluir esta categoria, todas as transações relacionadas a ela também serão permanentemente excluídas. Esta ação não pode ser desfeita.';
 
 document.addEventListener('DOMContentLoaded', async ()=>{
 
-    const messageWarning = 'Ao excluir esta categoria, todas as transações relacionadas a ela também serão permanentemente excluídas. Esta ação não pode ser desfeita.';
-
-    const category = new Category('financial-categories', messageWarning, categories);
+    const category = new Category('financial-categories', categoryWarningMessage, categories);
     await category.init();
 
 
@@ -68,13 +45,24 @@ document.addEventListener('DOMContentLoaded', async ()=>{
 
     if(btnDropdownFilter){
         btnDropdownFilter.addEventListener('click', ()=>{
-            itemsDropdown.forEach((item)=>{
-                if(item.nameAttribute === "financialCategories"){
-                    item.options = financial.createCategoryOptions();
+            const itemsDropdownDesktop = financial.dropdownFields
+            .filter(item => item.render?.desktop === true)
+            .map(item => ({ ...item }));
+
+            itemsDropdownDesktop.forEach((item)=>{
+
+                if(item.nameAttribute === "categories"){
+
+                    const data = financial.categories;
+                    const config = financial.selectorOptions.category.config;
+                    const defaultOption = financial.selectorOptions.category.defaultOption;
+
+                    item.options = financial.utils.getOptions(data, defaultOption, config);
+
                 }
             })
 
-            financial.components.dropdown.createDropdownFilter('.container-dropdown-filter', 'dropdown-filter', itemsDropdown);
+            financial.components.dropdown.createDropdownFilter('.container-dropdown-filter', 'dropdown-filter', itemsDropdownDesktop);
         })
     }
 
@@ -86,18 +74,17 @@ document.addEventListener('DOMContentLoaded', async ()=>{
         })
     }
 
+
     const btnCloseMenuMobile = document.querySelector('.btn-close-menu-mobile');
 
     btnCloseMenuMobile.addEventListener("click", ()=>{
-        document.querySelector(".screen-menu-mobile").classList.remove("d-flex");
-        document.querySelector(".screen-menu-mobile").classList.add("none");
+        financial.utils.toggleVisibility(".screen-menu-mobile", "hide");
     })
 
     const btnOpenMenuMobile = document.querySelector('.btn-open-menu-mobile');
 
     btnOpenMenuMobile.addEventListener("click", ()=>{
-        document.querySelector(".screen-menu-mobile").classList.add("d-flex");
-        document.querySelector(".screen-menu-mobile").classList.remove("none");
+        financial.utils.toggleVisibility(".screen-menu-mobile", "show");
     })
 
     const btnCategoryMobile = document.querySelector('#btn-category-mobile');
@@ -114,28 +101,31 @@ document.addEventListener('DOMContentLoaded', async ()=>{
     if(btnFilterMobile){
         btnFilterMobile.addEventListener('click', ()=>{
 
-            itemsDropdown.forEach((item)=>{
-                if(item.nameAttribute === "financialCategories"){
-                    item.options = financial.createCategoryOptions();
+           const itemsDropdownMobile = financial.dropdownFields
+            .filter(item => item.render?.mobile === true)
+            .map(item => ({ ...item }));
+
+            itemsDropdownMobile.forEach((item)=>{
+
+                if(item.nameAttribute === "categories"){
+
+                    const data = financial.categories;
+                    const config = financial.selectorOptions.category.config;
+                    const defaultOption = financial.selectorOptions.category.defaultOption;
+
+                    item.options = financial.utils.getOptions(data, defaultOption, config);
+
+                }else if(item.nameAttribute === "types"){
+
+                    const data = financial.selectorOptions.type.options;
+                    const config = financial.selectorOptions.type.config;
+                    const defaultOption = financial.selectorOptions.type.defaultOption;
+
+                    item.options = financial.utils.getOptions(data, defaultOption, config);
+
                 }
+
             })
-
-            const itemsDropdownMobile = itemsDropdown.map(item => ({ ...item }));
-
-            const selectStatus = {
-                "type": "select",
-                "label": "Tipos",
-                "class": "select-type",
-                "storageKey": "type",
-                "nameAttribute": "financialType",
-                "options": [
-                    { value: '', label: 'Todos' },
-                    { value: 'income', label: 'Entrada' },
-                    { value: 'expense', label: 'Saída' }
-                ]
-            }
-
-            itemsDropdownMobile.push(selectStatus);
 
             financial.components.dropdown.createDropdownFilter('.container-dropdown-filter', 'dropdown-filter', itemsDropdownMobile);
         })

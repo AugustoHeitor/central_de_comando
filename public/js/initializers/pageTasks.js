@@ -4,49 +4,11 @@ import Task from '../classes/pages/Task.js';
 let categories = [];
 let tasks = [];
 
-const priorityOptions = [
-    { value: '', label: 'Todos' },
-    { value: 'low', label: 'Baixa' },
-    { value: 'medium', label: 'Média' },
-    { value: 'urgent', label: 'Urgente' }
-];
-
-const itemsDropdown = [
-    {
-        "type": "inputDate",
-        "label": "Prazo Inicial",
-        "class": "input-start-deadline",
-        "storageKey": "start_deadline"
-    },
-    {
-        "type": "inputDate",
-        "label": "Prazo Final",
-        "class": "input-end-deadline",
-        "storageKey": "end_deadline"
-    },
-    {
-        "type": "select",
-        "label": "Categorias",
-        "class": "select-category",
-        "storageKey": "category",
-        "nameAttribute": "taskCategories",
-        "options": []
-    },
-    {
-        "type": "select",
-        "label": "Prioridade",
-        "class": "select-priority",
-        "storageKey": "priority",
-        "nameAttribute": "priority",
-        "options": priorityOptions
-    },
-];
+const categoryWarningMessage = 'Ao excluir esta categoria, todas as tarefas relacionadas a ela também serão permanentemente excluídas. Esta ação não pode ser desfeita.';
 
 document.addEventListener('DOMContentLoaded', async ()=>{
 
-    const messageWarning = 'Ao excluir esta categoria, todas as tarefas relacionadas a ela também serão permanentemente excluídas. Esta ação não pode ser desfeita.';
-
-    const category = new Category('task-categories', messageWarning, categories);
+    const category = new Category('task-categories', categoryWarningMessage, categories);
     await category.init();
 
     const task = new Task('tasks', tasks, categories);
@@ -58,16 +20,19 @@ document.addEventListener('DOMContentLoaded', async ()=>{
 
         btnCategory.addEventListener('click', ()=>{
             category.openModal()
-        })
+        });
+
     }
 
     const btnNewTask = document.querySelector('#btn-new-task');
 
     if(btnNewTask){
+
         btnNewTask.addEventListener('click', ()=>{
             task.openModal('add');
         })
-    }
+
+    };
 
     const btnsFilterStatus = Array.from(document.querySelectorAll('.btn-filter-status'));
 
@@ -79,15 +44,35 @@ document.addEventListener('DOMContentLoaded', async ()=>{
     const btnDropdownFilter = document.querySelector('.btn-dropdown-filter');
 
     if(btnDropdownFilter){
+
         btnDropdownFilter.addEventListener('click', ()=>{
 
-            itemsDropdown.forEach((item)=>{
-                if(item.nameAttribute === "taskCategories"){
-                    item.options = task.createCategoryOptions();
+            const itemsDropdownDesktop = task.dropdownFields
+            .filter(item => item.render?.desktop === true)
+            .map(item => ({ ...item }));
+
+            itemsDropdownDesktop.forEach((item)=>{
+
+                if(item.nameAttribute === "categories"){
+
+                    const data = task.categories;
+                    const config = task.selectorOptions.category.config;
+                    const defaultOption = task.selectorOptions.category.defaultOption;
+
+                    item.options = task.utils.getOptions(data, defaultOption, config);
+
+                }else if(item.nameAttribute === "priorities"){
+
+                    const data = task.selectorOptions.priority.options;
+                    const config = task.selectorOptions.priority.config;
+                    const defaultOption = task.selectorOptions.priority.defaultOption;
+
+                    item.options = task.utils.getOptions(data, defaultOption, config);
+
                 }
             })
 
-            task.components.dropdown.createDropdownFilter('.container-dropdown-filter', 'dropdown-filter', itemsDropdown);
+            task.components.dropdown.createDropdownFilter('.container-dropdown-filter', 'dropdown-filter', itemsDropdownDesktop);
         })
     }
 
@@ -102,54 +87,64 @@ document.addEventListener('DOMContentLoaded', async ()=>{
     const btnCloseMenuMobile = document.querySelector('.btn-close-menu-mobile');
 
     btnCloseMenuMobile.addEventListener("click", ()=>{
-        document.querySelector(".screen-menu-mobile").classList.remove("d-flex");
-        document.querySelector(".screen-menu-mobile").classList.add("none");
-    })
+        task.utils.toggleVisibility(".screen-menu-mobile", "hide");
+    });
 
     const btnOpenMenuMobile = document.querySelector('.btn-open-menu-mobile');
 
     btnOpenMenuMobile.addEventListener("click", ()=>{
-        document.querySelector(".screen-menu-mobile").classList.add("d-flex");
-        document.querySelector(".screen-menu-mobile").classList.remove("none");
-    })
+        task.utils.toggleVisibility(".screen-menu-mobile", "show");
+    });
 
     const btnCategoryMobile = document.querySelector('#btn-category-mobile');
 
     if(btnCategoryMobile){
 
         btnCategoryMobile.addEventListener('click', ()=>{
-            category.openModal()
-        })
+            category.openModal();
+        });
+
     }
 
     const btnFilterMobile = document.querySelector('.btn-mobile-filter');
 
     if(btnFilterMobile){
+
         btnFilterMobile.addEventListener('click', ()=>{
 
-            itemsDropdown.forEach((item)=>{
-                if(item.nameAttribute === "taskCategories"){
-                    item.options = task.createCategoryOptions();
+            const itemsDropdownMobile = task.dropdownFields
+            .filter(item => item.render?.mobile === true)
+            .map(item => ({ ...item }));
+
+            itemsDropdownMobile.forEach((item)=>{
+
+                if(item.nameAttribute === "categories"){
+
+                    const data = task.categories;
+                    const config = task.selectorOptions.category.config;
+                    const defaultOption = task.selectorOptions.category.defaultOption;
+
+                    item.options = task.utils.getOptions(data, defaultOption, config);
+
+                }else if(item.nameAttribute === "priorities"){
+
+                    const data = task.selectorOptions.priority.options;
+                    const config = task.selectorOptions.priority.config;
+                    const defaultOption = task.selectorOptions.priority.defaultOption;
+
+                    item.options = task.utils.getOptions(data, defaultOption, config);
+
+                }else if(item.nameAttribute === "status"){
+
+                    const data = task.selectorOptions.status.options;
+                    const config = task.selectorOptions.status.config;
+                    const defaultOption = task.selectorOptions.status.defaultOption;
+
+                    item.options = task.utils.getOptions(data, defaultOption, config);
+
                 }
+
             })
-
-            const itemsDropdownMobile = itemsDropdown.map(item => ({ ...item }));
-
-            const selectStatus = {
-                "type": "select",
-                "label": "Status",
-                "class": "select-status",
-                "storageKey": "status",
-                "nameAttribute": "taskStatus",
-                "options": [
-                    { value: '', label: 'Todos' },
-                    { value: 'to_do', label: 'A Fazer' },
-                    { value: 'in_progress', label: 'Em andamento' },
-                    { value: 'done', label: 'Finalizado' }
-                ]
-            }
-
-            itemsDropdownMobile.push(selectStatus);
 
             task.components.dropdown.createDropdownFilter('.container-dropdown-filter', 'dropdown-filter', itemsDropdownMobile);
         })

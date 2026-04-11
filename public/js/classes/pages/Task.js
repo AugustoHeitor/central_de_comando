@@ -15,6 +15,7 @@ class Task extends Master {
         this.localStorageName = "tasks";
         this.url = this.baseUrl + endpoint;
         this.utils = new Utils();
+
         this.paramKeysFilter = [
             'status',
             'priority',
@@ -27,6 +28,100 @@ class Task extends Master {
             { name: "Sem Ordenação", value: "none" },
             { name: "Prazo", value: "deadline" },
             { name: "Prioridade", value: "priority" },
+        ];
+
+        this.selectorOptions = {
+            "priority": {
+                "defaultOption": { value: '', label: 'Todos' },
+                "options": [
+                    { value: 'low', label: 'Baixa' },
+                    { value: 'medium', label: 'Média' },
+                    { value: 'urgent', label: 'Urgente' }
+                ],
+                "config": {
+                    "labelKey": "label",
+                    "valueKey": "value",
+                }
+            },
+            "status": {
+                "defaultOption": { value: '', label: 'Todos' },
+                "options": [
+                    { value: 'to_do', label: 'A Fazer' },
+                    { value: 'in_progress', label: 'Em andamento' },
+                    { value: 'done', label: 'Finalizado' }
+                ],
+                "config": {
+                    "labelKey": "label",
+                    "valueKey": "value",
+                }
+            },
+            "category": {
+                "defaultOption": { value: '', label: 'Todas' },
+                "options": [],
+                "config": {
+                    "labelKey": "name",
+                    "valueKey": "id",
+                }
+            },
+        }
+
+        this.dropdownFields = [
+            {
+                "type": "inputDate",
+                "label": "Prazo Inicial",
+                "class": "input-start-deadline",
+                "storageKey": "start_deadline",
+                "render": {
+                    "desktop": true,
+                    "mobile": true
+                }
+            },
+            {
+                "type": "inputDate",
+                "label": "Prazo Final",
+                "class": "input-end-deadline",
+                "storageKey": "end_deadline",
+                "render": {
+                    "desktop": true,
+                    "mobile": true
+                }
+            },
+            {
+                "type": "select",
+                "label": "Categorias",
+                "class": "select-category",
+                "storageKey": "category",
+                "nameAttribute": "categories",
+                "options": [],
+                "render": {
+                    "desktop": true,
+                    "mobile": true
+                }
+            },
+            {
+                "type": "select",
+                "label": "Prioridade",
+                "class": "select-priority",
+                "storageKey": "priority",
+                "nameAttribute": "priorities",
+                "options": [],
+                "render": {
+                    "desktop": true,
+                    "mobile": true
+                }
+            },
+            {
+                "type": "select",
+                "label": "Status",
+                "class": "select-status",
+                "storageKey": "status",
+                "nameAttribute": "status",
+                "options": [],
+                "render": {
+                    "desktop": false,
+                    "mobile": true
+                }
+            }
         ];
 
         this.components = {
@@ -74,10 +169,7 @@ class Task extends Master {
                 this.createCardTask();
 
                 if(response?.data?.data){
-                    const screenModal = document.querySelector('.screen-modal');
-                    if(screenModal){
-                        screenModal.remove();
-                    }
+                    this.components.modal.closeModal();
                 }
 
                 toastr.success(response.data.message, { timeOut: 2000 });
@@ -112,7 +204,7 @@ class Task extends Master {
         const formData = new FormData();
         const formattedDate = this.utils.localDateTimeGenerator();
 
-        const csrfToken = document.querySelector('input[name="_token"]').value;
+        const csrfToken = this.utils.getCsrfTokenValue();
         formData.append('_token', csrfToken);
 
         formData.append('started_at', formattedDate);
@@ -177,7 +269,7 @@ class Task extends Master {
         const formData = new FormData();
         const formattedDate = this.utils.localDateTimeGenerator();
 
-        const csrfToken = document.querySelector('input[name="_token"]').value;
+        const csrfToken = this.utils.getCsrfTokenValue();
         formData.append('_token', csrfToken);
 
         formData.append('stopped_at', formattedDate);
@@ -242,7 +334,7 @@ class Task extends Master {
 
     async updateTimeLog(taskId, timeLogId, input, formData){
 
-        const csrfToken = document.querySelector('input[name="_token"]').value;
+        const csrfToken = this.utils.getCsrfTokenValue();
         formData.append('_token', csrfToken);
 
         input.disabled = true;
@@ -372,10 +464,7 @@ class Task extends Master {
                 this.createCardTask();
 
                 if(response?.data?.data){
-                    const screenModal = document.querySelector('.screen-modal');
-                    if(screenModal){
-                        screenModal.remove();
-                    }
+                    this.components.modal.closeModal();
                 }
 
                 toastr.success(response.data.message, { timeOut: 2000 });
@@ -418,9 +507,7 @@ class Task extends Master {
 
             if (response.status === 200 && response.data.status === 'success') {
 
-                if(document.querySelector('.screen-modal')){
-                    document.querySelector('.screen-modal').remove();
-                }
+                this.components.modal.closeModal();
 
                 this.tasks?.splice(0, this.tasks.length,
                     ...this.tasks.filter((task) => task.id !== id)
@@ -497,7 +584,7 @@ class Task extends Master {
 
         if(Array.isArray(orderedTasks) && orderedTasks.length > 0){
 
-            orderedTasks?.forEach((task, index)=>{
+            orderedTasks?.forEach((task)=>{
                 const card = document.createElement('div');
 
                 card.classList.add(
@@ -600,238 +687,122 @@ class Task extends Master {
         this.utils.addScrollY('#task-section', false);
     }
 
-    createCategoryOptions(){
-        const categoryOptions = this.categories.map((category) => ({
-            value: category.id,
-            label: category.name
-        }));
-
-        categoryOptions.unshift({
-            value: "",
-            label: "Todas"
-        });
-
-        return categoryOptions;
-    }
-
     createContentModal(task = null) {
 
-        const categories = this.categories.map((category) => ({
-            value: category.id,
-            text: category.name
-        }));
-
         const container = document.createElement('div');
+
         container.classList.add('w-full', 'h-full', 'd-flex', 'align-start', 'justify-start', 'flex-column', 'gap-lg', 'scroll-auto');
 
-        function createInputGroup({ iconSrc, iconAlt, labelFor, labelText, inputElement }) {
-            const group = document.createElement('div');
-            group.classList.add('w-full', 'd-flex', 'flex-column', 'justify-start', 'items-start', 'gap-sm');
-
-            const labelWrapper = document.createElement('div');
-            labelWrapper.classList.add('d-flex', 'justify-start', 'items-center', 'gap-sm');
-
-            const icon = document.createElement('img');
-            icon.src = iconSrc;
-            icon.alt = iconAlt;
-            icon.classList.add('img-size-15');
-
-            const label = document.createElement('label');
-            label.classList.add('color-light', 'text-base', 'fw-m');
-            label.setAttribute('for', labelFor);
-            label.textContent = labelText;
-
-            labelWrapper.append(icon);
-            labelWrapper.append(label);
-
-            const inputWrapper = document.createElement('div');
-            inputWrapper.classList.add('d-flex', 'items-center', 'justify-between', 'w-full', 'bg-secondary', 'pt-input-primary', 'bd-primary', 'radius-sm');
-            inputWrapper.append(inputElement);
-
-            group.append(labelWrapper);
-            group.append(inputWrapper);
-
-            return group;
-        }
-
-        const titleInput = document.createElement('input');
-        titleInput.value = task?.title ? task.title : "";
-        titleInput.required = true;
-        titleInput.type = 'text';
-        titleInput.name = 'title';
-        titleInput.classList.add('text-base', 'color-primary', 'w-full');
-        container.append(createInputGroup({
-            iconSrc: 'imgs/heading-light.svg',
-            iconAlt: 'Título',
-            labelFor: 'title',
-            labelText: 'Título',
-            inputElement: titleInput
+        const categoryOptions = this.categories.map((category) => ({
+            value: category.id,
+            text: category.name,
+            selected: task?.category_id == category.id ? true : false
         }));
 
-        const descGroup = document.createElement('div');
-        descGroup.classList.add('w-full', 'd-flex', 'flex-column', 'justify-start', 'items-start', 'gap-sm');
+        const statusOptions = this.selectorOptions.status.options.map((status) => ({
+            value: status.value,
+            text: status.label,
+            selected: task?.status == status.value ? true : false
+        }));
 
-        const descLabelWrapper = document.createElement('div');
-        descLabelWrapper.classList.add('d-flex', 'justify-start', 'items-center', 'gap-sm');
+        const priorityOptions = this.selectorOptions.priority.options.map((priority) => ({
+            value: priority.value,
+            text: priority.label,
+            selected: task?.priority == priority.value ? true : false
+        }));
 
-        const descIcon = document.createElement('img');
-        descIcon.src = 'imgs/text-light.svg';
-        descIcon.alt = 'Descrição';
-        descIcon.classList.add('img-size-15');
+        const configFieldTitle = {
+            icon: { src: 'imgs/heading-light.svg', alt: 'Título' },
+            label: { for: 'title', text: 'Título' },
+            field: { type: 'text', required: true, value: task?.title || '', class: null, name: 'title' },
+            containerField: { class: null },
+            containerGroup: { class: null }
+        };
 
-        const descLabel = document.createElement('label');
-        descLabel.classList.add('color-light', 'text-base', 'fw-m');
-        descLabel.setAttribute('for', 'description');
-        descLabel.textContent = 'Descrição';
+        const fieldTitle = this.components.modal.createFieldGroup(configFieldTitle);
+        container.append(fieldTitle);
 
-        descLabelWrapper.append(descIcon);
-        descLabelWrapper.append(descLabel);
+        const configFieldDescription = {
+            icon: { src: 'imgs/text-light.svg', alt: 'Descrição' },
+            label: { for: 'description', text: 'Descrição' },
+            field: { type: 'textarea', required: false, value: task?.description || '', class: ['w-full', 'h-mn-300', 'bg-secondary', 'pt-right-sm', 'bd-primary', 'radius-sm'], name: 'description' },
+            containerField: { class: null },
+            containerGroup: { class: null }
+        };
 
-        const descWrapper = document.createElement('div');
-        descWrapper.classList.add('w-full', 'h-mn-300', 'bg-secondary', 'pt-right-sm', 'bd-primary', 'radius-sm');
+        const fieldDescription = this.components.modal.createFieldGroup(configFieldDescription);
+        container.append(fieldDescription);
 
-        const descTextarea = document.createElement('textarea');
-        descTextarea.value = task?.description ? task.description : "";
-        descTextarea.name = 'description';
-        descTextarea.classList.add('w-full', 'h-full', 'text-base', 'color-primary', 'pt-input-primary');
+        const containerPrimary = document.createElement('div');
 
-        descWrapper.append(descTextarea);
-        descGroup.append(descLabelWrapper);
-        descGroup.append(descWrapper);
-        container.append(descGroup);
+        containerPrimary.classList.add('d-grid', 'w-full', 'align-start', 'justify-start', 'gap-lg', 'grid-tmp-columns-4', "grid-tmp-columns-3-responsive", "grid-tmp-columns-2-responsive", "grid-tmp-columns-1-responsive");
 
-        const fieldsWrapper = document.createElement('div');
-        fieldsWrapper.classList.add('d-grid', 'w-full', 'align-start', 'justify-start', 'gap-lg', 'grid-tmp-columns-4', "grid-tmp-columns-3-responsive", "grid-tmp-columns-2-responsive", "grid-tmp-columns-1-responsive");
+        const configFieldStatus = {
+            icon: { src: 'imgs/columns-light.svg', alt: 'Status' },
+            label: { for: 'status', text: 'Status' },
+            field: { type: 'select', required: true, value: statusOptions, class: null, name: 'status' },
+            containerField: { class: null },
+            containerGroup: { class: null },
+        };
 
-        const fields = [
-            {
-                name: 'status',
-                icon: 'imgs/columns-light.svg',
-                label: 'Status',
-                options: [
-                    { value: 'to_do', text: 'A fazer' },
-                    { value: 'in_progress', text: 'Em andamento' },
-                    { value: 'done', text: 'Concluído' }
-                ]
+        const fieldStatus = this.components.modal.createFieldGroup(configFieldStatus);
+        containerPrimary.append(fieldStatus);
+
+        const configFieldPriority = {
+            icon: { src: 'imgs/circle-exclamation-light.svg', alt: 'Prioridade' },
+            label: { for: 'priority', text: 'Prioridade' },
+            field: { type: 'select', required: true, value: priorityOptions, class: null, name: 'priority' },
+            containerField: { class: null },
+            containerGroup: { class: null },
+        };
+
+        const fieldPriority = this.components.modal.createFieldGroup(configFieldPriority);
+        containerPrimary.append(fieldPriority);
+
+        const configFieldCategory = {
+            icon: { src: 'imgs/tag-light.svg', alt: 'Categoria' },
+            label: { for: 'category_id', text: 'Categoria' },
+            field: {
+                type: 'select',
+                required: true,
+                value: categoryOptions,
+                class: null,
+                name: 'category_id'
             },
-            {
-                name: 'priority',
-                icon: 'imgs/circle-exclamation-light.svg',
-                label: 'Prioridade',
-                options: [
-                    { value: 'low', text: 'Baixa' },
-                    { value: 'medium', text: 'Média' },
-                    { value: 'urgent', text: 'Urgente' }
-                ]
+            containerField: { class: null },
+            containerGroup: { class: null },
+        };
+
+        const fieldCategory = this.components.modal.createFieldGroup(configFieldCategory);
+        containerPrimary.append(fieldCategory);
+
+        const configFieldDeadline = {
+            icon: { src: 'imgs/calendar-week-light.svg', alt: 'Prazo' },
+            label: { for: 'deadline', text: 'Prazo' },
+            field: {
+                type: 'date',
+                required: true,
+                value: task?.deadline
+                    ? this.utils.formatDate(task.deadline, 'iso')
+                    : this.utils.formatDate(new Date().toISOString().split('T')[0], 'iso'),
+                class: null,
+                name: 'deadline'
             },
-            {
-                name: 'category_id',
-                icon: 'imgs/tag-light.svg',
-                label: 'Categorias',
-                options: categories
-            }
-        ];
+            containerField: { class: null },
+            containerGroup: { class: null },
+        };
 
-        fields.forEach((field) => {
-            const group = document.createElement('div');
-            group.classList.add('w-full', 'd-flex', 'flex-column', 'justify-start', 'items-start', 'gap-sm', 'cnt-input-w');
+        const fieldDeadline = this.components.modal.createFieldGroup(configFieldDeadline);
+        containerPrimary.append(fieldDeadline);
 
-            const labelWrapper = document.createElement('div');
-            labelWrapper.classList.add('d-flex', 'justify-start', 'items-center', 'gap-sm');
-
-            const icon = document.createElement('img');
-            icon.src = field.icon;
-            icon.alt = field.label;
-            icon.classList.add('img-size-15');
-
-            const label = document.createElement('label');
-            label.classList.add('color-light', 'text-base', 'fw-m');
-            label.setAttribute('for', field.name);
-            label.textContent = field.label;
-
-            labelWrapper.append(icon);
-            labelWrapper.append(label);
-
-            const selectWrapper = document.createElement('div');
-            selectWrapper.classList.add('w-full', 'bg-secondary', 'radius-sm', 'bd-primary', 'pt-input-primary');
-
-            const select = document.createElement('select');
-            select.name = field.name;
-            select.required = true;
-            select.classList.add('w-full', 'text-base', 'color-primary', 'h-21');
-
-            field.options.forEach(opt => {
-                const option = document.createElement('option');
-                option.value = opt.value;
-                option.classList.add("color-dark");
-
-                if(task){
-                    if (task[field.name] == opt.value) {
-                        option.selected = true;
-                    }
-                }
-
-                option.textContent = opt.text;
-                select.append(option);
-            });
-
-            selectWrapper.append(select);
-            group.append(labelWrapper);
-            group.append(selectWrapper);
-            fieldsWrapper.append(group);
-        });
-
-        const deadlineGroup = document.createElement('div');
-        deadlineGroup.classList.add('w-full', 'd-flex', 'flex-column', 'justify-start', 'items-start', 'gap-sm', 'cnt-input-w');
-
-        const deadlineLabelWrapper = document.createElement('div');
-        deadlineLabelWrapper.classList.add('d-flex', 'justify-start', 'items-center', 'gap-sm');
-
-        const deadlineIcon = document.createElement('img');
-        deadlineIcon.src = 'imgs/calendar-week-light.svg';
-        deadlineIcon.alt = 'Tempo';
-        deadlineIcon.classList.add('img-size-15');
-
-        const deadlineLabel = document.createElement('label');
-        deadlineLabel.classList.add('color-light', 'text-base', 'fw-m');
-        deadlineLabel.setAttribute('for', 'deadline');
-        deadlineLabel.textContent = 'Prazo';
-
-        deadlineLabelWrapper.append(deadlineIcon);
-        deadlineLabelWrapper.append(deadlineLabel);
-
-        const deadlineWrapper = document.createElement('div');
-        deadlineWrapper.classList.add('w-full', 'bg-secondary', 'radius-sm', 'bd-primary', 'pt-input-primary');
-
-        const deadlineInput = document.createElement('input');
-        deadlineInput.required = true;
-        deadlineInput.type = 'date';
-        deadlineInput.name = 'deadline';
-        deadlineInput.classList.add('w-full', 'text-base', 'color-primary', 'h-21');
-
-        if(task?.deadline){
-            const taskDeadline = this.utils.formatDate(task?.deadline, 'iso');
-            deadlineInput.value = taskDeadline;
-        }else{
-            const dateToday = this.utils.formatDate(new Date().toISOString().split('T')[0], 'iso');
-            deadlineInput.value = dateToday;
-        }
-
-        deadlineWrapper.append(deadlineInput);
-        deadlineGroup.append(deadlineLabelWrapper);
-        deadlineGroup.append(deadlineWrapper);
-        fieldsWrapper.append(deadlineGroup);
-
-        container.append(fieldsWrapper);
+        container.append(containerPrimary);
 
         return container;
     }
 
     openModal(type, task = null){
 
-        if(document.querySelector('.screen-modal')){
-            document.querySelector('.screen-modal').remove();
-        }
+        this.components.modal.closeModal();
 
         if(type === 'add'){
             const buttonsConfig = [
@@ -839,7 +810,7 @@ class Task extends Master {
                     text: "Cancelar",
                     type: "cancel",
                     event: ()=>{
-                        document.querySelector('.screen-modal').remove();
+                       this.components.modal.closeModal();
                     }
                 },
                 {
@@ -900,7 +871,7 @@ class Task extends Master {
                                 type: "delete",
                                 event: (event)=>{
                                     const button = event.target;
-                                    const csrfToken = document.querySelector('input[name="_token"]').value;
+                                    const csrfToken = this.utils.getCsrfTokenValue();
                                     this.deleteTask(button, csrfToken, task.id);
                                 }
                             }

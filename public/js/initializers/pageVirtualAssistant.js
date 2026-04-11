@@ -8,12 +8,13 @@ document.addEventListener('DOMContentLoaded', async ()=>{
     virtualAssistant.init();
 
     const formChat = document.querySelector('#form-chat');
+    const inputMessage = document.querySelector('#input-message');
+
+    inputMessage.focus();
 
     formChat.addEventListener('submit', (e)=>{
 
         e.preventDefault();
-
-        const inputMessage = document.querySelector('#input-message');
 
         if(inputMessage.value.length > 0){
 
@@ -25,19 +26,19 @@ document.addEventListener('DOMContentLoaded', async ()=>{
             virtualAssistant.sendMessage(formData, buttonSubmit);
         }
 
-    })
+    });
 
     const btnCloseMenuMobile = document.querySelector('.btn-close-menu-mobile');
 
     btnCloseMenuMobile.addEventListener("click", ()=>{
         virtualAssistant.utils.toggleVisibility(".screen-menu-mobile", "hide");
-    })
+    });
 
     const btnOpenMenuMobile = document.querySelector('.btn-open-menu-mobile');
 
     btnOpenMenuMobile.addEventListener("click", ()=>{
         virtualAssistant.utils.toggleVisibility(".screen-menu-mobile", "show");
-    })
+    });
 })
 
 

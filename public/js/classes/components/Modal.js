@@ -1,5 +1,9 @@
 class Modal {
 
+    constructor() {
+        this.screen = null;
+    }
+
     createModal(config, contentHTML, buttonsHTML) {
 
         const screen = document.createElement('div');
@@ -48,12 +52,12 @@ class Modal {
 
         closeBtn.append(closeIcon);
         closeBtn.addEventListener('click', () => {
-            screen.remove();
+            this.closeModal();
         });
 
         screen.addEventListener("mousedown", (event) => {
             if (event.target === screen) {
-                screen.remove();
+                this.closeModal();
             }
         });
 
@@ -79,6 +83,8 @@ class Modal {
         screen.append(modal);
 
         document.body.append(screen);
+
+        this.screen = screen;
     }
 
     createButtons(configs) {
@@ -285,6 +291,36 @@ class Modal {
 
             fieldWrapper.append(field);
 
+        }else if(config.field.type == "select"){
+
+            const field = this.createSelectField(config);
+
+            if(config.containerField.class == null){
+                fieldWrapper.classList.add('w-full', 'bg-secondary', 'radius-sm', 'bd-primary', 'pt-input-primary');
+            }
+
+            fieldWrapper.append(field);
+
+        }else if(config.field.type == "date"){
+
+            const field = this.createDateField(config);
+
+            if(config.containerField.class == null){
+                fieldWrapper.classList.add('w-full', 'bg-secondary', 'radius-sm', 'bd-primary', 'pt-input-primary');
+            }
+
+            fieldWrapper.append(field);
+
+        }else if(config.field.type == "number"){
+
+            const field = this.createNumberField(config);
+
+            if(config.containerField.class == null){
+                fieldWrapper.classList.add('d-flex', 'items-center', 'justify-between', 'w-full', 'bg-secondary',  'bd-primary', 'radius-sm');
+            }
+
+            fieldWrapper.append(field);
+
         }
 
         if(config.containerField.class != null){
@@ -307,6 +343,26 @@ class Modal {
 
         if(config.field.class == null){
             field.classList.add('text-base', 'color-primary', 'w-full', 'pt-input-primary', 'h-35');
+        }else{
+            field.classList.add(...config.field.class);
+        }
+
+        return field;
+
+    }
+
+
+    createNumberField(config) {
+
+        const field = document.createElement('input');
+        field.value = config?.field?.value ? config?.field?.value : "";
+        field.required = config.field.required;
+        field.type = 'number';
+        field.name = config.field.name;
+        field.step = config.field.step;
+
+        if(config.field.class == null){
+            field.classList.add('w-full', 'text-base', 'color-primary', 'pt-input-primary', 'h-35');
         }else{
             field.classList.add(...config.field.class);
         }
@@ -442,6 +498,60 @@ class Modal {
         }
 
         return wrapper;
+    }
+
+    createSelectField(config) {
+
+        const field = document.createElement('select');
+        field.name = config.field.name;
+        field.required = config.field.required;
+
+        if (config.field.class != null) {
+            field.classList.add(...config.field.class);
+        }else{
+            field.classList.add('w-full', 'text-base', 'color-primary', 'h-21');
+        }
+
+        config.field.value.forEach((opt) => {
+
+            const option = document.createElement('option');
+            option.value = opt.value;
+            option.classList.add("color-dark");
+
+            if (opt.selected == true) {
+                option.selected = true;
+            }
+
+            option.textContent = opt.text;
+            field.append(option);
+
+        });
+
+        return field;
+
+    }
+
+    createDateField(config){
+
+        const field = document.createElement('input');
+        field.value = config?.field?.value ? config?.field?.value : "";
+        field.required = config.field.required;
+        field.type = 'date';
+        field.name = config.field.name;
+
+        if (config.field.class != null) {
+            field.classList.add(...config.field.class);
+        }else{
+            field.classList.add('w-full', 'text-base', 'color-primary', 'h-21');
+        }
+
+        return field;
+    }
+
+    closeModal(){
+        if(this.screen != null){
+            this.screen.remove();
+        }
     }
 }
 

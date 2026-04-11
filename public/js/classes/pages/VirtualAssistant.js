@@ -29,6 +29,7 @@ class VirtualAssistant extends Master {
     }
 
     async sendMessage(formData, button){
+
         this.createLoad();
         button.disabled = true;
 
@@ -217,6 +218,7 @@ class VirtualAssistant extends Master {
     }
 
     removeLoad() {
+
         const load = document.querySelector('#chat-load-overlay');
         const containerChat = document.querySelector('#container-scroll-chat');
 
@@ -233,15 +235,18 @@ class VirtualAssistant extends Master {
     }
 
     updateChat(){
-        document.querySelector('#container-chat').replaceChildren();
 
-        let orderedMessages = this.messages;
+        const chat = document.querySelector('#container-chat');
+
+        chat.replaceChildren();
+
+        let orderedMessages = [...this.messages];
 
         if(Array.isArray(orderedMessages) && orderedMessages.length > 0){
 
             orderedMessages?.forEach((message)=>{
                 const card = this.createMessageCard(message);
-                document.querySelector('#container-chat').append(card);
+                chat.append(card);
             })
 
         }else{
@@ -251,7 +256,7 @@ class VirtualAssistant extends Master {
         }
 
         this.utils.addScrollY('#container-chat', false);
-        document.querySelector('#container-chat').scrollTop = document.querySelector('#container-chat').scrollHeight;
+        chat.scrollTop = chat.scrollHeight;
     }
 }
 
